@@ -1,0 +1,30 @@
+package layout
+
+import "templ-ui-kit/view/components"
+
+templ HomePage() {
+	@Layout("Moja Strona") {
+		<h1 class="text-3xl font-bold mb-6">
+			Witaj na mojej stronie!
+		</h1>
+
+		<div class="space-y-4">
+			<div>
+				<h2 class="text-xl font-semibold mb-2">
+					Przykładowe przyciski:
+				</h2>
+				@components.Button("Kliknij mnie")
+			</div>
+
+			<div class="flex gap-3">
+				@components.Button("Pierwszy")
+				@components.Button("Drugi")
+				@components.Button("Trzeci")
+			</div>
+
+			<p class="text-gray-600 mt-4">
+				To jest przykładowa strona z komponentami templ!
+			</p>
+		</div>
+	}
+}
