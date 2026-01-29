@@ -1,15 +1,6 @@
 package components
-templ Form() {
+templ Form(children templ.Component) {
     <form hx-post="/submit" class="max-w-md mx-auto">
-        @FormInput("username", "text", "Wpisz nazwę", "Nazwa użytkownika", "", true)
-        
-        @FormInput("email", "email", "twoj@email.com", "Email", "", true)
-        
-        @FormSelect("country", "Kraj", []string{"Polska", "Niemcy", "Francja"}, "Polska", false)
-        
-      
-        <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
-            Wyślij
-        </button>
+        @children
     </form>
 }
