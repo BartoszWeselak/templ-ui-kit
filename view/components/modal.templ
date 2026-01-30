@@ -1,34 +1,119 @@
 package components
 
-templ Modal(id string, title string, content templ.Component) {
+import "fmt"
+
+type ModalSize string
+type ModalPosition string
+
+const (
+    // Sizes
+    ModalSizeSmall  ModalSize = "small"
+    ModalSizeMedium ModalSize = "medium"
+    ModalSizeLarge  ModalSize = "large"
+    ModalSizeFull   ModalSize = "full"
+    
+    // Positions
+    ModalPositionTop    ModalPosition = "top"
+    ModalPositionCenter ModalPosition = "center"
+    ModalPositionBottom ModalPosition = "bottom"
+)
+
+type ModalProps struct {
+    ID        string
+    Title     string
+    Content   templ.Component
+    Size      ModalSize
+    Position  ModalPosition
+    ClassName string
+    ShowClose bool
+}
+
+type ModalTriggerProps struct {
+    ModalID   string
+    Text      string
+    Variant   ButtonVariant
+    Size      ButtonSize
+    ClassName string
+}
+
+func getModalClasses(props ModalProps) string {
+    // Defaults
+    if props.Size == "" {
+        props.Size = ModalSizeMedium
+    }
+    if props.Position == "" {
+        props.Position = ModalPositionTop
+    }
+    
+    // Base classes
+    baseClasses := "relative mx-auto p-5 border shadow-lg rounded-md bg-white"
+    
+    // Size classes
+    sizeClasses := ""
+    switch props.Size {
+    case ModalSizeSmall:
+        sizeClasses = "w-80 max-w-sm"
+    case ModalSizeMedium:
+        sizeClasses = "w-96 max-w-md"
+    case ModalSizeLarge:
+        sizeClasses = "w-[600px] max-w-2xl"
+    case ModalSizeFull:
+        sizeClasses = "w-full max-w-4xl mx-4"
+    }
+    
+    // Position classes
+    positionClasses := ""
+    switch props.Position {
+    case ModalPositionTop:
+        positionClasses = "top-20"
+    case ModalPositionCenter:
+        positionClasses = "top-1/2 -translate-y-1/2"
+    case ModalPositionBottom:
+        positionClasses = "bottom-20"
+    }
+    
+    return fmt.Sprintf("%s %s %s %s",
+        baseClasses,
+        sizeClasses,
+        positionClasses,
+        props.ClassName,
+    )
+}
+
+templ Modal(props ModalProps) {
     <div 
-        id={ id }
+        id={ props.ID }
         class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+        onclick={ templ.ComponentScript{Call: "if(event.target === this) document.getElementById('" + props.ID + "').classList.add('hidden')"} }
     >
-        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class={ getModalClasses(props) }>
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-bold text-gray-900">{ title }</h3>
-                <button 
-                    onclick={ templ.ComponentScript{Call: "document.getElementById('" + id + "').classList.add('hidden')"} }
-                    class="text-gray-400 hover:text-gray-600"
-                >
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
+                <h3 class="text-lg font-bold text-gray-900">{ props.Title }</h3>
+                if props.ShowClose {
+                    <button 
+                        onclick={ templ.ComponentScript{Call: "document.getElementById('" + props.ID + "').classList.add('hidden')"} }
+                        class="text-gray-400 hover:text-gray-600 transition-colors"
+                        aria-label="Close modal"
+                    >
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                }
             </div>
             <div class="mt-2">
-                @content
+                @props.Content
             </div>
         </div>
     </div>
 }
 
-templ ModalTrigger(modalId string, buttonText string) {
-    <button 
-        onclick={ templ.ComponentScript{Call: "document.getElementById('" + modalId + "').classList.remove('hidden')"} }
-        class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-    >
-        { buttonText }
-    </button>
+templ ModalTrigger(props ModalTriggerProps) {
+    @Button(ButtonProps{
+        Text: props.Text,
+        OnClick: templ.ComponentScript{Call: "document.getElementById('" + props.ModalID + "').classList.remove('hidden')"},
+        Variant: props.Variant,
+        Size: props.Size,
+        ClassName: props.ClassName,
+    })
 }

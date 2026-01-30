@@ -9,6 +9,8 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import "templ-ui-kit/view/components"
+import "io"
+import "context"
 
 func checkout() {
 }
@@ -105,6 +107,29 @@ func HomePage() templ.Component {
 				Message:  "Did you know...",
 				Variant:  components.ErrorVariantInfo,
 				ShowIcon: false,
+			}).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = components.Modal(components.ModalProps{
+				ID:    "largeModal",
+				Title: "Large Modal",
+				Content: templ.ComponentFunc(func(ctx context.Context, w io.Writer) error {
+					_, err := io.WriteString(w, "<p>Hello from modal!</p>")
+					return err
+				}),
+				Size:      components.ModalSizeLarge,
+				Position:  components.ModalPositionCenter,
+				ShowClose: true,
+			}).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = components.ModalTrigger(components.ModalTriggerProps{
+				ModalID: "largeModal",
+				Text:    "Open Large Modal",
+				Variant: components.VariantPrimary,
+				Size:    components.SizeLarge,
 			}).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err

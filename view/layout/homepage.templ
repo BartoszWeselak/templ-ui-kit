@@ -1,8 +1,8 @@
 package layout
 
 import "templ-ui-kit/view/components"
-
-
+import "io"
+import "context"
 func checkout(){
 }
 
@@ -63,6 +63,29 @@ templ HomePage() {
 							Variant: components.ErrorVariantInfo,
 							ShowIcon: false,
 						})
+					
+						// Duży wyśrodkowany modal
+						@components.Modal(components.ModalProps{
+							ID: "largeModal",
+							Title: "Large Modal",
+							Content: templ.ComponentFunc(func(ctx context.Context, w io.Writer) error {
+								_, err := io.WriteString(w, "<p>Hello from modal!</p>")
+								return err
+							}),
+							Size: components.ModalSizeLarge,
+							Position: components.ModalPositionCenter,
+							ShowClose: true,
+						})
+
+						@components.ModalTrigger(components.ModalTriggerProps{
+							ModalID: "largeModal",
+							Text: "Open Large Modal",
+							Variant: components.VariantPrimary,
+							Size: components.SizeLarge,
+						})
+
+						// Pełny modal bez przycisku zamykania
+						
 			<p class="text-gray-600 mt-4">
 				To jest przykładowa strona z komponentami templ!
 			</p>
