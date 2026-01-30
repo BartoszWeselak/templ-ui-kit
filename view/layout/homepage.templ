@@ -17,10 +17,7 @@ templ HomePage() {
 				<h2 class="text-xl font-semibold mb-2">
 					Przykładowe przyciski:
 				</h2>
-			</div>
-
-					@components.Error("error")
-		
+			</div>		
 					@components.Button(components.ButtonProps{
 						Text: "Click me",
 						OnClick: templ.ComponentScript{Call: "alert('test!')"},
@@ -45,6 +42,27 @@ templ HomePage() {
 						Shadow: components.ShadowLarge,
 						BorderRadius: components.RadiusMedium,
 					})
+											// Warning
+						@components.Error(components.ErrorProps{
+							Message: "Please check your input",
+							Variant: components.ErrorVariantWarning,
+							ShowIcon: true,
+						})
+
+						// Success
+						@components.Error(components.ErrorProps{
+							Message: "Successfully saved!",
+							Variant: components.ErrorVariantSuccess,
+							Size: components.ErrorSizeLarge,
+							ShowIcon: true,
+						})
+
+						// Info bez ikony
+						@components.Error(components.ErrorProps{
+							Message: "Did you know...",
+							Variant: components.ErrorVariantInfo,
+							ShowIcon: false,
+						})
 			<p class="text-gray-600 mt-4">
 				To jest przykładowa strona z komponentami templ!
 			</p>

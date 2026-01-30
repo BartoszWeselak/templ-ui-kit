@@ -50,10 +50,6 @@ func HomePage() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = components.Error("error").Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
 			templ_7745c5c3_Err = components.Button(components.ButtonProps{
 				Text:    "Click me",
 				OnClick: templ.ComponentScript{Call: "alert('test!')"},
@@ -84,6 +80,31 @@ func HomePage() templ.Component {
 				Size:         components.CardSizeLarge,
 				Shadow:       components.ShadowLarge,
 				BorderRadius: components.RadiusMedium,
+			}).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = components.Error(components.ErrorProps{
+				Message:  "Please check your input",
+				Variant:  components.ErrorVariantWarning,
+				ShowIcon: true,
+			}).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = components.Error(components.ErrorProps{
+				Message:  "Successfully saved!",
+				Variant:  components.ErrorVariantSuccess,
+				Size:     components.ErrorSizeLarge,
+				ShowIcon: true,
+			}).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = components.Error(components.ErrorProps{
+				Message:  "Did you know...",
+				Variant:  components.ErrorVariantInfo,
+				ShowIcon: false,
 			}).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err

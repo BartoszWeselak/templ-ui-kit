@@ -8,7 +8,90 @@ package components
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-func Error(message string) templ.Component {
+import "fmt"
+
+type ErrorVariant string
+type ErrorSize string
+
+const (
+	// Variants
+	ErrorVariantDanger  ErrorVariant = "danger"
+	ErrorVariantWarning ErrorVariant = "warning"
+	ErrorVariantInfo    ErrorVariant = "info"
+	ErrorVariantSuccess ErrorVariant = "success"
+
+	// Sizes
+	ErrorSizeSmall  ErrorSize = "small"
+	ErrorSizeMedium ErrorSize = "medium"
+	ErrorSizeLarge  ErrorSize = "large"
+)
+
+type ErrorProps struct {
+	Message   string
+	Variant   ErrorVariant
+	Size      ErrorSize
+	ClassName string
+	ShowIcon  bool
+}
+
+func getErrorClasses(props ErrorProps) string {
+	// Defaults
+	if props.Variant == "" {
+		props.Variant = ErrorVariantDanger
+	}
+	if props.Size == "" {
+		props.Size = ErrorSizeMedium
+	}
+
+	// Base classes
+	baseClasses := "border rounded relative flex items-center"
+
+	// Variant classes
+	variantClasses := ""
+	switch props.Variant {
+	case ErrorVariantDanger:
+		variantClasses = "bg-red-100 border-red-400 text-red-700"
+	case ErrorVariantWarning:
+		variantClasses = "bg-yellow-100 border-yellow-400 text-yellow-700"
+	case ErrorVariantInfo:
+		variantClasses = "bg-blue-100 border-blue-400 text-blue-700"
+	case ErrorVariantSuccess:
+		variantClasses = "bg-green-100 border-green-400 text-green-700"
+	}
+
+	// Size classes
+	sizeClasses := ""
+	switch props.Size {
+	case ErrorSizeSmall:
+		sizeClasses = "px-2 py-1 text-sm"
+	case ErrorSizeMedium:
+		sizeClasses = "px-4 py-3 text-base"
+	case ErrorSizeLarge:
+		sizeClasses = "px-6 py-4 text-lg"
+	}
+
+	return fmt.Sprintf("%s %s %s %s",
+		baseClasses,
+		variantClasses,
+		sizeClasses,
+		props.ClassName,
+	)
+}
+
+func getIconSize(size ErrorSize) string {
+	switch size {
+	case ErrorSizeSmall:
+		return "w-4 h-4"
+	case ErrorSizeMedium:
+		return "w-5 h-5"
+	case ErrorSizeLarge:
+		return "w-6 h-6"
+	default:
+		return "w-5 h-5"
+	}
+}
+
+func Error(props ErrorProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -29,20 +112,66 @@ func Error(message string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative\" role=\"alert\"><svg class=\"inline w-5 h-5 mr-2\" fill=\"currentColor\" viewBox=\"0 0 20 20\"><path fill-rule=\"evenodd\" d=\"M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z\" clip-rule=\"evenodd\"></path></svg> <span class=\"font-medium\">")
+		var templ_7745c5c3_Var2 = []any{getErrorClasses(props)}
+		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var2 string
-		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(message)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/components/error.templ`, Line: 8, Col: 43}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</span></div>")
+		var templ_7745c5c3_Var3 string
+		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var2).String())
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/components/error.templ`, Line: 1, Col: 0}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" role=\"alert\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if props.ShowIcon {
+			var templ_7745c5c3_Var4 = []any{fmt.Sprintf("inline mr-2 %s", getIconSize(props.Size))}
+			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var4...)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<svg class=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var5 string
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var4).String())
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/components/error.templ`, Line: 1, Col: 0}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\" fill=\"currentColor\" viewBox=\"0 0 20 20\"><path fill-rule=\"evenodd\" d=\"M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z\" clip-rule=\"evenodd\"></path></svg> ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<span class=\"font-medium\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var6 string
+		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(props.Message)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/components/error.templ`, Line: 93, Col: 49}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</span></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
