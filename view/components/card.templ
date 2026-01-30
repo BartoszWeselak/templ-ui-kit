@@ -1,12 +1,139 @@
 package components
+import "fmt"
 
-templ Card(title string, content string) {
-    <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-        <h3 class="text-xl font-bold mb-3 text-gray-800">
-            { title }
-        </h3>
-        <p class="text-gray-600">
-            { content }
-        </p>
+type CardVariant string
+type CardSize string
+type CardShadow string
+type CardBorderRadius string
+
+const (
+    // Variants (colors)
+    CardVariantGray   CardVariant = "gray"
+    CardVariantWhite  CardVariant = "white"
+    CardVariantBlue   CardVariant = "blue"
+    
+    // Sizes
+    CardSizeSmall  CardSize = "small"
+    CardSizeMedium CardSize = "medium"
+    CardSizeLarge  CardSize = "large"
+    CardSizeFull   CardSize = "full"
+    CardSizeHalf   CardSize = "half"
+    
+    // Shadows
+    ShadowNone   CardShadow = "none"
+    ShadowSmall  CardShadow = "small"
+    ShadowMedium CardShadow = "medium"
+    ShadowLarge  CardShadow = "large"
+    
+    // Border Radius
+    RadiusNone   CardBorderRadius = "none"
+    RadiusSmall  CardBorderRadius = "small"
+    RadiusMedium CardBorderRadius = "medium"
+    RadiusLarge  CardBorderRadius = "large"
+)
+
+type CardProps struct {
+    Title        string
+    Content      string
+    Variant      CardVariant
+    Size         CardSize
+    Shadow       CardShadow
+    BorderRadius CardBorderRadius
+    ClassName    string
+}
+
+func getCardClasses(props CardProps) string {
+    // Defaults
+    if props.Variant == "" {
+        props.Variant = CardVariantWhite
+    }
+    if props.Size == "" {
+        props.Size = CardSizeMedium
+    }
+    if props.Shadow == "" {
+        props.Shadow = ShadowMedium
+    }
+    if props.BorderRadius == "" {
+        props.BorderRadius = RadiusLarge
+    }
+    
+    // Base classes
+    baseClasses := "p-6 hover:shadow-lg transition-shadow border ring-2 ring-black/5"
+    
+    // Variant classes (background colors)
+    variantClasses := ""
+    switch props.Variant {
+    case CardVariantGray:
+        variantClasses = "bg-gray-200"
+    case CardVariantWhite:
+        variantClasses = "bg-white"
+    case CardVariantBlue:
+        variantClasses = "bg-blue-50"
+    }
+    
+    // Size classes
+    sizeClasses := ""
+    switch props.Size {
+    case CardSizeSmall:
+        sizeClasses = "w-48 h-48"
+    case CardSizeMedium:
+        sizeClasses = "w-96 h-96"
+    case CardSizeLarge:
+        sizeClasses = "w-full h-auto"
+    case CardSizeFull:
+        sizeClasses = "w-full"
+    case CardSizeHalf:
+        sizeClasses = "w-1/2"
+    }
+    
+    // Shadow classes
+    shadowClasses := ""
+    switch props.Shadow {
+    case ShadowNone:
+        shadowClasses = "shadow-none"
+    case ShadowSmall:
+        shadowClasses = "shadow-sm"
+    case ShadowMedium:
+        shadowClasses = "shadow-md"
+    case ShadowLarge:
+        shadowClasses = "shadow-lg"
+    }
+    
+    // Border radius classes
+    radiusClasses := ""
+    switch props.BorderRadius {
+    case RadiusNone:
+        radiusClasses = "rounded-none"
+    case RadiusSmall:
+        radiusClasses = "rounded-sm"
+    case RadiusMedium:
+        radiusClasses = "rounded-md"
+    case RadiusLarge:
+        radiusClasses = "rounded-lg"
+    }
+    
+    // Combine all classes
+    return fmt.Sprintf("%s %s %s %s %s %s",
+        baseClasses,
+        variantClasses,
+        sizeClasses,
+        shadowClasses,
+        radiusClasses,
+        props.ClassName,
+    )
+}
+
+templ Card(props CardProps) {
+    <div class={ getCardClasses(props) }>
+        if props.Title != "" {
+            <h3 class="text-xl font-bold mb-3 text-gray-800">
+                { props.Title }
+            </h3>
+        }
+        if props.Content != "" {
+            <p class="text-gray-600">
+                { props.Content }
+            </p>
+        }
     </div>
 }

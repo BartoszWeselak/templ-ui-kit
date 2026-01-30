@@ -8,7 +8,131 @@ package components
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-func Card(title string, content string) templ.Component {
+import "fmt"
+
+type CardVariant string
+type CardSize string
+type CardShadow string
+type CardBorderRadius string
+
+const (
+	// Variants (colors)
+	CardVariantGray  CardVariant = "gray"
+	CardVariantWhite CardVariant = "white"
+	CardVariantBlue  CardVariant = "blue"
+
+	// Sizes
+	CardSizeSmall  CardSize = "small"
+	CardSizeMedium CardSize = "medium"
+	CardSizeLarge  CardSize = "large"
+	CardSizeFull   CardSize = "full"
+	CardSizeHalf   CardSize = "half"
+
+	// Shadows
+	ShadowNone   CardShadow = "none"
+	ShadowSmall  CardShadow = "small"
+	ShadowMedium CardShadow = "medium"
+	ShadowLarge  CardShadow = "large"
+
+	// Border Radius
+	RadiusNone   CardBorderRadius = "none"
+	RadiusSmall  CardBorderRadius = "small"
+	RadiusMedium CardBorderRadius = "medium"
+	RadiusLarge  CardBorderRadius = "large"
+)
+
+type CardProps struct {
+	Title        string
+	Content      string
+	Variant      CardVariant
+	Size         CardSize
+	Shadow       CardShadow
+	BorderRadius CardBorderRadius
+	ClassName    string
+}
+
+func getCardClasses(props CardProps) string {
+	// Defaults
+	if props.Variant == "" {
+		props.Variant = CardVariantWhite
+	}
+	if props.Size == "" {
+		props.Size = CardSizeMedium
+	}
+	if props.Shadow == "" {
+		props.Shadow = ShadowMedium
+	}
+	if props.BorderRadius == "" {
+		props.BorderRadius = RadiusLarge
+	}
+
+	// Base classes
+	baseClasses := "p-6 hover:shadow-lg transition-shadow border ring-2 ring-black/5"
+
+	// Variant classes (background colors)
+	variantClasses := ""
+	switch props.Variant {
+	case CardVariantGray:
+		variantClasses = "bg-gray-200"
+	case CardVariantWhite:
+		variantClasses = "bg-white"
+	case CardVariantBlue:
+		variantClasses = "bg-blue-50"
+	}
+
+	// Size classes
+	sizeClasses := ""
+	switch props.Size {
+	case CardSizeSmall:
+		sizeClasses = "w-48 h-48"
+	case CardSizeMedium:
+		sizeClasses = "w-96 h-96"
+	case CardSizeLarge:
+		sizeClasses = "w-full h-auto"
+	case CardSizeFull:
+		sizeClasses = "w-full"
+	case CardSizeHalf:
+		sizeClasses = "w-1/2"
+	}
+
+	// Shadow classes
+	shadowClasses := ""
+	switch props.Shadow {
+	case ShadowNone:
+		shadowClasses = "shadow-none"
+	case ShadowSmall:
+		shadowClasses = "shadow-sm"
+	case ShadowMedium:
+		shadowClasses = "shadow-md"
+	case ShadowLarge:
+		shadowClasses = "shadow-lg"
+	}
+
+	// Border radius classes
+	radiusClasses := ""
+	switch props.BorderRadius {
+	case RadiusNone:
+		radiusClasses = "rounded-none"
+	case RadiusSmall:
+		radiusClasses = "rounded-sm"
+	case RadiusMedium:
+		radiusClasses = "rounded-md"
+	case RadiusLarge:
+		radiusClasses = "rounded-lg"
+	}
+
+	// Combine all classes
+	return fmt.Sprintf("%s %s %s %s %s %s",
+		baseClasses,
+		variantClasses,
+		sizeClasses,
+		shadowClasses,
+		radiusClasses,
+		props.ClassName,
+	)
+}
+
+func Card(props CardProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -29,33 +153,67 @@ func Card(title string, content string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow\"><h3 class=\"text-xl font-bold mb-3 text-gray-800\">")
+		var templ_7745c5c3_Var2 = []any{getCardClasses(props)}
+		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var2 string
-		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(title)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/components/card.templ`, Line: 6, Col: 19}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</h3><p class=\"text-gray-600\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var3 string
-		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(content)
+		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var2).String())
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/components/card.templ`, Line: 9, Col: 21}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/components/card.templ`, Line: 1, Col: 0}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</p></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if props.Title != "" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<h3 class=\"text-xl font-bold mb-3 text-gray-800\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var4 string
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(props.Title)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/components/card.templ`, Line: 130, Col: 29}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</h3>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		if props.Content != "" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<p class=\"text-gray-600\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var5 string
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(props.Content)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/components/card.templ`, Line: 135, Col: 31}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</p>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

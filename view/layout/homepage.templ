@@ -2,14 +2,8 @@ package layout
 
 import "templ-ui-kit/view/components"
 
-templ formContent() {
-    @components.FormInput("username", "text", "Nazwa", "Użytkownik", "", true)
-    @components.FormInput("email", "email", "Email", "Email", "", false)
-    @components.Button("Wyślij",handleClick("test"))
-}
 
-script handleClick(msg string) {
-    alert(msg);
+func checkout(){
 }
 
 templ HomePage() {
@@ -25,12 +19,32 @@ templ HomePage() {
 				</h2>
 			</div>
 
-					@components.Button("button",handleClick("test"))
-					@components.Card("card title","card content")
 					@components.Error("error")
-					@components.Form(formContent())
 		
+					@components.Button(components.ButtonProps{
+						Text: "Click me",
+						OnClick: templ.ComponentScript{Call: "alert('test!')"},
+					})
+					@components.Button(components.ButtonProps{
+						Text: "Buy Now",
+						OnClick: templ.ComponentScript{Call: "alert('buy!')"},
+						Variant: components.VariantBuy,
+						Size: components.SizeLarge,
 
+					})
+					@components.Card(components.CardProps{
+						Title: "My Title",
+						Content: "My content",
+					})
+
+					@components.Card(components.CardProps{
+						Title: "Custom Card",
+						Content: "This is custom",
+						Variant: components.CardVariantBlue,
+						Size: components.CardSizeLarge,
+						Shadow: components.ShadowLarge,
+						BorderRadius: components.RadiusMedium,
+					})
 			<p class="text-gray-600 mt-4">
 				To jest przykładowa strona z komponentami templ!
 			</p>

@@ -1,13 +1,119 @@
 package components
 
+import "fmt"
 
+type ButtonVariant string
+type ButtonSize string
+type ButtonWidth string
 
-templ Button(text string, onClick templ.ComponentScript) {
-    <button 
+const (
+    // Variants
+    VariantPrimary   ButtonVariant = "primary"
+    VariantSecondary ButtonVariant = "secondary"
+    VariantDanger    ButtonVariant = "danger"
+    VariantTab       ButtonVariant = "tab"
+    VariantBuy       ButtonVariant = "buy"
+    VariantNone      ButtonVariant = "none"
+    
+    // Sizes
+    SizeSmall  ButtonSize = "small"
+    SizeMedium ButtonSize = "medium"
+    SizeLarge  ButtonSize = "large"
+    SizeXLarge ButtonSize = "xlarge"
+    
+    // Widths
+    WidthXSmall ButtonWidth = "xsmall"
+    WidthSmall  ButtonWidth = "small"
+    WidthMedium ButtonWidth = "medium"
+    WidthLarge  ButtonWidth = "large"
+)
+
+type ButtonProps struct {
+    Text      string
+    OnClick   templ.ComponentScript
+    Variant   ButtonVariant
+    Size      ButtonSize
+    Width     ButtonWidth
+    ClassName string
+    Disabled  bool
+}
+
+func getButtonClasses(props ButtonProps) string {
+    // Base classes
+    baseClasses := "hover:opacity-80"
+    
+    if props.Variant == "" {
+        props.Variant = VariantPrimary
+    }
+    if props.Size == "" {
+        props.Size = SizeMedium
+    }
+    // Variant classes
+    variantClasses := ""
+    switch props.Variant {
+    case VariantPrimary:
+        variantClasses = "bg-blue-500 text-white"
+    case VariantSecondary:
+        variantClasses = "bg-gray-500 text-white"
+    case VariantDanger:
+        variantClasses = "bg-red-500 text-white"
+    case VariantTab:
+        variantClasses = "bg-white text-black"
+    case VariantBuy:
+        variantClasses = "bg-green-500 text-white rounded-lg"
+    case VariantNone:
+        variantClasses = ""
+    default:
+        variantClasses = "bg-blue-500 text-white" // default primary
+    }
+    
+    // Size classes
+    sizeClasses := ""
+    switch props.Size {
+    case SizeSmall:
+        sizeClasses = "px-2 py-1 text-sm"
+    case SizeMedium:
+        sizeClasses = "px-4 py-2 text-base"
+    case SizeLarge:
+        sizeClasses = "px-6 py-3 text-lg"
+    case SizeXLarge:
+        sizeClasses = "py-4 text-lg"
+    }
+    
+    // Width classes
+    widthClasses := "w-full" // default
+    switch props.Width {
+    case WidthXSmall:
+        widthClasses = "w-[4%]"
+    case WidthSmall:
+        widthClasses = "w-1/6"
+    case WidthMedium:
+        widthClasses = "w-1/4"
+    case WidthLarge:
+        widthClasses = "w-1/2"
+    }
+    
+    // Combine all classes
+    classes := fmt.Sprintf("%s %s %s %s %s", 
+        baseClasses, 
+        variantClasses, 
+        sizeClasses, 
+        widthClasses,
+        props.ClassName,
+    )
+    
+    return classes
+}
+
+templ Button(props ButtonProps) {
+    <button
         type="button"
-        class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-        onclick={ onClick }
+        class={ getButtonClasses(props) }
+        onclick={ props.OnClick }
+        if props.Disabled {
+            disabled
+        }
     >
-        { text }
+        { props.Text }
     </button>
 }
