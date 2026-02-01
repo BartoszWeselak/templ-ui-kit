@@ -26,9 +26,14 @@ func main() {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 	})
-
+	http.HandleFunc("/pricing", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		err := layout.PricingPanel().Render(context.Background(), w)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+	})
 	fmt.Println("Server starting on :8080")
-	fmt.Println("Visit: http://localhost:8080/admin")
 
 	http.ListenAndServe(":8080", nil)
 }
