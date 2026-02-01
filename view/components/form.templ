@@ -1,6 +1,92 @@
 package components
-templ Form(children templ.Component) {
-    <form hx-post="/submit" class="max-w-md mx-auto">
-        @children
+
+import "fmt"
+
+type FormMethod string
+type FormSize string
+
+const (
+    // Methods
+    FormMethodPost FormMethod = "POST"
+    FormMethodGet  FormMethod = "GET"
+    FormMethodPut  FormMethod = "PUT"
+    FormMethodPatch FormMethod = "PATCH"
+    FormMethodDelete FormMethod = "DELETE"
+    
+    // Sizes
+    FormSizeSmall  FormSize = "small"
+    FormSizeMedium FormSize = "medium"
+    FormSizeLarge  FormSize = "large"
+    FormSizeFull   FormSize = "full"
+)
+
+type FormProps struct {
+    Action    string
+    Method    FormMethod
+    Size      FormSize
+    ClassName string
+    HxPost    string
+    HxGet     string
+    HxPut     string
+    HxTarget  string
+    HxSwap    string
+    Children  templ.Component
+}
+
+func getFormClasses(props FormProps) string {
+    // Defaults
+    if props.Size == "" {
+        props.Size = FormSizeMedium
+    }
+    
+    // Base classes
+    baseClasses := "mx-auto"
+    
+    // Size classes
+    sizeClasses := ""
+    switch props.Size {
+    case FormSizeSmall:
+        sizeClasses = "max-w-sm"
+    case FormSizeMedium:
+        sizeClasses = "max-w-md"
+    case FormSizeLarge:
+        sizeClasses = "max-w-lg"
+    case FormSizeFull:
+        sizeClasses = "w-full"
+    }
+    
+    return fmt.Sprintf("%s %s %s",
+        baseClasses,
+        sizeClasses,
+        props.ClassName,
+    )
+}
+
+templ Form(props FormProps) {
+    <form
+        if props.Action != "" {
+            action={ props.Action }
+        }
+        if props.Method != "" {
+            method={ string(props.Method) }
+        }
+        if props.HxPost != "" {
+            hx-post={ props.HxPost }
+        }
+        if props.HxGet != "" {
+            hx-get={ props.HxGet }
+        }
+        if props.HxPut != "" {
+            hx-put={ props.HxPut }
+        }
+        if props.HxTarget != "" {
+            hx-target={ props.HxTarget }
+        }
+        if props.HxSwap != "" {
+            hx-swap={ props.HxSwap }
+        }
+        class={ getFormClasses(props) }
+    >
+        @props.Children
     </form>
 }

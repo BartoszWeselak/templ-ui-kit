@@ -1,0 +1,273 @@
+package layout
+
+import "templ-ui-kit/view/components"
+import "io"
+import "context"
+
+templ AdminPage() {
+	@Layout("Panel Administracyjny") {
+		<div class="space-y-6">
+			<!-- Header Section -->
+			<div class="flex justify-between items-center mb-8">
+				<h1 class="text-3xl font-bold text-gray-800">
+					Panel Administracyjny
+				</h1>
+				<div class="flex gap-2">
+					@components.Button(components.ButtonProps{
+						Text: "Wyloguj",
+						OnClick: templ.ComponentScript{Call: "alert('Wylogowano')"},
+						Variant: components.VariantDanger,
+						Size: components.SizeSmall,
+						Width: components.WidthSmall,
+					})
+				</div>
+			</div>
+
+			<!-- Stats Cards -->
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+				@components.Card(components.CardProps{
+					Title: "Użytkownicy",
+					Content: "1,234 aktywnych użytkowników",
+					Variant: components.CardVariantBlue,
+					Size: components.CardSizeFull,
+					Shadow: components.ShadowMedium,
+					BorderRadius: components.RadiusLarge,
+				})
+
+				@components.Card(components.CardProps{
+					Title: "Zamówienia",
+					Content: "567 zamówień w tym miesiącu",
+					Variant: components.CardVariantWhite,
+					Size: components.CardSizeFull,
+					Shadow: components.ShadowMedium,
+					BorderRadius: components.RadiusLarge,
+				})
+
+				@components.Card(components.CardProps{
+					Title: "Przychody",
+					Content: "125,430 PLN",
+					Variant: components.CardVariantWhite,
+					Size: components.CardSizeFull,
+					Shadow: components.ShadowMedium,
+					BorderRadius: components.RadiusLarge,
+				})
+			</div>
+
+			<!-- Notifications Section -->
+			<div class="space-y-3">
+				<h2 class="text-xl font-semibold text-gray-800">Powiadomienia</h2>
+				
+				@components.Error(components.ErrorProps{
+					Message: "Uwaga! 5 produktów ma niski stan magazynowy",
+					Variant: components.ErrorVariantWarning,
+					ShowIcon: true,
+				})
+
+				@components.Error(components.ErrorProps{
+					Message: "System został pomyślnie zaktualizowany",
+					Variant: components.ErrorVariantSuccess,
+					ShowIcon: true,
+				})
+
+				@components.Error(components.ErrorProps{
+					Message: "Nowe zamówienie oczekuje na zatwierdzenie",
+					Variant: components.ErrorVariantInfo,
+					ShowIcon: true,
+				})
+			</div>
+
+			<!-- Quick Actions -->
+			<div class="space-y-3">
+				<h2 class="text-xl font-semibold text-gray-800">Szybkie Akcje</h2>
+				
+				<div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+					@components.Button(components.ButtonProps{
+						Text: "Dodaj Użytkownika",
+						OnClick: templ.ComponentScript{Call: "document.getElementById('addUserModal').classList.remove('hidden')"},
+						Variant: components.VariantPrimary,
+						Size: components.SizeMedium,
+						Width: components.WidthSmall,
+					})
+
+					@components.Button(components.ButtonProps{
+						Text: "Nowy Produkt",
+						OnClick: templ.ComponentScript{Call: "document.getElementById('addProductModal').classList.remove('hidden')"},
+						Variant: components.VariantBuy,
+						Size: components.SizeMedium,
+						Width: components.WidthSmall,
+					})
+
+					@components.Button(components.ButtonProps{
+						Text: "Raporty",
+						OnClick: templ.ComponentScript{Call: "alert('Generowanie raportu...')"},
+						Variant: components.VariantSecondary,
+						Size: components.SizeMedium,
+						Width: components.WidthSmall,
+					})
+
+					@components.Button(components.ButtonProps{
+						Text: "Ustawienia",
+						OnClick: templ.ComponentScript{Call: "document.getElementById('settingsModal').classList.remove('hidden')"},
+						Variant: components.VariantSecondary,
+						Size: components.SizeMedium,
+						Width: components.WidthSmall,
+					})
+				</div>
+			</div>
+
+			<!-- Recent Activity -->
+			<div class="space-y-3">
+				<h2 class="text-xl font-semibold text-gray-800">Ostatnia Aktywność</h2>
+				
+				@components.Card(components.CardProps{
+					Title: "Nowe zamówienie #1234",
+					Content: "Jan Kowalski złożył zamówienie na kwotę 450 PLN - 5 min temu",
+					Variant: components.CardVariantGray,
+					Size: components.CardSizeFull,
+					Shadow: components.ShadowSmall,
+					BorderRadius: components.RadiusMedium,
+				})
+
+				@components.Card(components.CardProps{
+					Title: "Aktualizacja profilu",
+					Content: "Anna Nowak zaktualizowała swoje dane kontaktowe - 15 min temu",
+					Variant: components.CardVariantGray,
+					Size: components.CardSizeFull,
+					Shadow: components.ShadowSmall,
+					BorderRadius: components.RadiusMedium,
+				})
+
+				@components.Card(components.CardProps{
+					Title: "Nowy komentarz",
+					Content: "Piotr Wiśniewski dodał recenzję produktu - 1 godz. temu",
+					Variant: components.CardVariantGray,
+					Size: components.CardSizeFull,
+					Shadow: components.ShadowSmall,
+					BorderRadius: components.RadiusMedium,
+				})
+			</div>
+
+			<!-- Modals -->
+			
+			<!-- Add User Modal -->
+			@components.Modal(components.ModalProps{
+				ID: "addUserModal",
+				Title: "Dodaj Nowego Użytkownika",
+				Content: templ.ComponentFunc(func(ctx context.Context, w io.Writer) error {
+					_, err := io.WriteString(w, `
+						<div class="space-y-4">
+							<div class="mb-4">
+								<label class="block text-gray-700 font-medium mb-2">Imię i Nazwisko</label>
+								<input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Jan Kowalski">
+							</div>
+							<div class="mb-4">
+								<label class="block text-gray-700 font-medium mb-2">Email</label>
+								<input type="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="jan@example.com">
+							</div>
+							<div class="mb-4">
+								<label class="block text-gray-700 font-medium mb-2">Rola</label>
+								<select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+									<option>Administrator</option>
+									<option>Moderator</option>
+									<option>Użytkownik</option>
+								</select>
+							</div>
+							<button class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:opacity-80" onclick="alert('Użytkownik dodany!'); document.getElementById('addUserModal').classList.add('hidden')">
+								Dodaj Użytkownika
+							</button>
+						</div>
+					`)
+					return err
+				}),
+				Size: components.ModalSizeMedium,
+				Position: components.ModalPositionCenter,
+				ShowClose: true,
+			})
+
+			<!-- Add Product Modal -->
+			@components.Modal(components.ModalProps{
+				ID: "addProductModal",
+				Title: "Dodaj Nowy Produkt",
+				Content: templ.ComponentFunc(func(ctx context.Context, w io.Writer) error {
+					_, err := io.WriteString(w, `
+						<div class="space-y-4">
+							<div class="mb-4">
+								<label class="block text-gray-700 font-medium mb-2">Nazwa Produktu</label>
+								<input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nazwa produktu">
+							</div>
+							<div class="mb-4">
+								<label class="block text-gray-700 font-medium mb-2">Cena (PLN)</label>
+								<input type="number" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="99.99">
+							</div>
+							<div class="mb-4">
+								<label class="block text-gray-700 font-medium mb-2">Kategoria</label>
+								<select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+									<option>Elektronika</option>
+									<option>Odzież</option>
+									<option>Żywność</option>
+									<option>Dom i Ogród</option>
+								</select>
+							</div>
+							<div class="mb-4">
+								<label class="block text-gray-700 font-medium mb-2">Stan Magazynowy</label>
+								<input type="number" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="100">
+							</div>
+							<button class="w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:opacity-80" onclick="alert('Produkt dodany!'); document.getElementById('addProductModal').classList.add('hidden')">
+								Dodaj Produkt
+							</button>
+						</div>
+					`)
+					return err
+				}),
+				Size: components.ModalSizeMedium,
+				Position: components.ModalPositionCenter,
+				ShowClose: true,
+			})
+
+			<!-- Settings Modal -->
+			@components.Modal(components.ModalProps{
+				ID: "settingsModal",
+				Title: "Ustawienia Systemu",
+				Content: templ.ComponentFunc(func(ctx context.Context, w io.Writer) error {
+					_, err := io.WriteString(w, `
+						<div class="space-y-4">
+							<div class="mb-4">
+								<label class="flex items-center">
+									<input type="checkbox" class="mr-2" checked>
+									<span class="text-gray-700">Powiadomienia e-mail</span>
+								</label>
+							</div>
+							<div class="mb-4">
+								<label class="flex items-center">
+									<input type="checkbox" class="mr-2">
+									<span class="text-gray-700">Powiadomienia SMS</span>
+								</label>
+							</div>
+							<div class="mb-4">
+								<label class="flex items-center">
+									<input type="checkbox" class="mr-2" checked>
+									<span class="text-gray-700">Automatyczne kopie zapasowe</span>
+								</label>
+							</div>
+							<div class="mb-4">
+								<label class="block text-gray-700 font-medium mb-2">Język interfejsu</label>
+								<select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+									<option>Polski</option>
+									<option>English</option>
+									<option>Deutsch</option>
+								</select>
+							</div>
+							<button class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:opacity-80" onclick="alert('Ustawienia zapisane!'); document.getElementById('settingsModal').classList.add('hidden')">
+								Zapisz Ustawienia
+							</button>
+						</div>
+					`)
+					return err
+				}),
+				Size: components.ModalSizeMedium,
+				Position: components.ModalPositionCenter,
+				ShowClose: true,
+			})
+		</div>
+	}
+}

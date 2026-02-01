@@ -1,32 +1,124 @@
 package components
 
-templ FormSelect(name string, label string, options []string, selected string, required bool) {
+import "fmt"
+
+type SelectOption struct {
+    Value string
+    Label string
+}
+
+type FormSelectProps struct {
+    Name        string
+    Label       string
+    Options     []SelectOption
+    Selected    string
+    Placeholder string
+    Required    bool
+    Disabled    bool
+    Size        InputSize
+    Variant     InputVariant
+    ClassName   string
+    ErrorMsg    string
+    HelpText    string
+}
+
+func getSelectClasses(props FormSelectProps) string {
+    // Defaults
+    if props.Size == "" {
+        props.Size = InputSizeMedium
+    }
+    if props.Variant == "" {
+        props.Variant = InputVariantDefault
+    }
+    
+    // Base classes
+    baseClasses := "w-full border rounded-lg focus:outline-none focus:ring-2 transition-colors bg-white"
+    
+    // Size classes
+    sizeClasses := ""
+    switch props.Size {
+    case InputSizeSmall:
+        sizeClasses = "px-3 py-1 text-sm"
+    case InputSizeMedium:
+        sizeClasses = "px-4 py-2 text-base"
+    case InputSizeLarge:
+        sizeClasses = "px-5 py-3 text-lg"
+    }
+    
+    // Variant classes
+    variantClasses := ""
+    switch props.Variant {
+    case InputVariantDefault:
+        variantClasses = "border-gray-300 focus:ring-blue-500 focus:border-transparent"
+    case InputVariantError:
+        variantClasses = "border-red-500 focus:ring-red-500 focus:border-red-500"
+    case InputVariantSuccess:
+        variantClasses = "border-green-500 focus:ring-green-500 focus:border-green-500"
+    }
+    
+    // Disabled state
+    disabledClasses := ""
+    if props.Disabled {
+        disabledClasses = "bg-gray-100 cursor-not-allowed opacity-60"
+    }
+    
+    return fmt.Sprintf("%s %s %s %s %s",
+        baseClasses,
+        sizeClasses,
+        variantClasses,
+        disabledClasses,
+        props.ClassName,
+    )
+}
+
+templ FormSelect(props FormSelectProps) {
     <div class="mb-4">
-        <label for={ name } class="block text-gray-700 font-medium mb-2">
-            { label }
-            if required {
-                <span class="text-red-500">*</span>
-            }
-        </label>
+        if props.Label != "" {
+            <label for={ props.Name } class={ getLabelClasses(props.Size) }>
+                { props.Label }
+                if props.Required {
+                    <span class="text-red-500">*</span>
+                }
+            </label>
+        }
         <select
-            id={ name }
-            name={ name }
-            if required {
+            id={ props.Name }
+            name={ props.Name }
+            class={ getSelectClasses(props) }
+            if props.Required {
                 required
             }
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+            if props.Disabled {
+                disabled
+            }
         >
-            <option value="">Wybierz...</option>
-            for _, option := range options {
+            <option value="">
+                if props.Placeholder != "" {
+                    { props.Placeholder }
+                } else {
+                    Wybierz...
+                }
+            </option>
+            for _, option := range props.Options {
                 <option 
-                    value={ option }
-                    if option == selected {
+                    value={ option.Value }
+                    if option.Value == props.Selected {
                         selected
                     }
                 >
-                    { option }
+                    { option.Label }
                 </option>
             }
         </select>
+        if props.ErrorMsg != "" {
+            <p class="mt-1 text-sm text-red-600">
+                { props.ErrorMsg }
+            </p>
+        }
+        if props.HelpText != "" && props.ErrorMsg == "" {
+            <p class="mt-1 text-sm text-gray-500">
+                { props.HelpText }
+            </p>
+        }
     </div>
 }

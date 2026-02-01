@@ -17,5 +17,15 @@ func main() {
 		}
 	})
 
+	// Nowy route dla strony admina
+	http.HandleFunc("/admin", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
+		err := layout.AdminPage().Render(context.Background(), w)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+	})
+
 	http.ListenAndServe(":8080", nil)
 }
