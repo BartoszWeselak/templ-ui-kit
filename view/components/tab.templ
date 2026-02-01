@@ -1,0 +1,99 @@
+package components
+
+import "fmt"
+
+type TabVariant string
+type TabSize string
+
+const (
+    // Variants
+    TabVariantPrimary   TabVariant = "primary"
+    TabVariantSecondary TabVariant = "secondary"
+    TabVariantNone      TabVariant = "none"
+
+    // Sizes
+    TabSizeSmall  TabSize = "small"
+    TabSizeMedium TabSize = "medium"
+    TabSizeLarge  TabSize = "large"
+)
+
+type TabProps struct {
+    Label     string
+    OnClick   templ.ComponentScript
+    Variant   TabVariant
+    Size      TabSize
+    Active    bool
+    ClassName string
+    Disabled  bool
+}
+
+func getTabClasses(props TabProps) string {
+    baseClasses := "cursor-pointer transition-all duration-200"
+
+    if props.Variant == "" {
+        props.Variant = TabVariantPrimary
+    }
+    if props.Size == "" {
+        props.Size = TabSizeMedium
+    }
+
+    // Variant classes
+    variantClasses := ""
+    switch props.Variant {
+    case TabVariantPrimary:
+        if props.Active {
+            variantClasses = "bg-blue-500 text-white border-b-2 border-blue-700"
+        } else {
+            variantClasses = "bg-white text-blue-500 hover:bg-blue-100"
+        }
+    case TabVariantSecondary:
+        if props.Active {
+            variantClasses = "bg-gray-500 text-white border-b-2 border-gray-700"
+        } else {
+            variantClasses = "bg-white text-gray-500 hover:bg-gray-100"
+        }
+    case TabVariantNone:
+        variantClasses = ""
+    default:
+        variantClasses = "bg-white text-blue-500 hover:bg-blue-100"
+    }
+
+    // Size classes
+    sizeClasses := ""
+    switch props.Size {
+    case TabSizeSmall:
+        sizeClasses = "px-3 py-1 text-sm"
+    case TabSizeMedium:
+        sizeClasses = "px-4 py-2 text-base"
+    case TabSizeLarge:
+        sizeClasses = "px-6 py-3 text-lg"
+    }
+
+    // Disabled
+    disabledClasses := ""
+    if props.Disabled {
+        disabledClasses = "opacity-50 cursor-not-allowed"
+    }
+
+    classes := fmt.Sprintf("%s %s %s %s %s",
+        baseClasses,
+        variantClasses,
+        sizeClasses,
+        disabledClasses,
+        props.ClassName,
+    )
+
+    return classes
+}
+
+templ Tab(props TabProps) {
+    <div
+        class={ getTabClasses(props) }
+        onclick={ props.OnClick }
+        if props.Disabled {
+            disabled
+        }
+    >
+        { props.Label }
+    </div>
+}
