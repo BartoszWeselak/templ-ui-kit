@@ -1,0 +1,27 @@
+package layouts
+
+import "templ-ui-kit/src/components"
+
+templ Base(title string, content templ.Component) {
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>{ title }</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body>
+        @components.Navbar(components.NavbarProps{
+            Items: []components.NavbarItem{
+                {Text: "Home", Href: "/", Active: false},
+                {Text: "Admin", Href: "/admin", Active: false},
+            },
+            Variant: components.NavbarPrimary,
+        })
+        
+        <div class="p-8">
+            @content
+        </div>
+    </body>
+    </html>
+}

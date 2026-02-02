@@ -1,0 +1,178 @@
+package pages
+
+import "templ-ui-kit/src/components"
+import "fmt"
+
+type AdminStats struct {
+    Users    int
+    Products int
+    Orders   int
+    Revenue  float64
+}
+
+templ AdminPanel(stats AdminStats) {
+    <div class="space-y-6">
+        <h1 class="text-3xl font-bold text-gray-800">Panel Administratora</h1>
+        
+        <!-- Statystyki -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            @components.Card(components.CardProps{
+                Title: "Użytkownicy",
+                Content: fmt.Sprintf("%d", stats.Users),
+                Variant: components.CardVariantWhite,
+                Size: components.CardSizeFull,
+                Shadow: components.ShadowMedium,
+            })
+            
+            @components.Card(components.CardProps{
+                Title: "Produkty",
+                Content: fmt.Sprintf("%d", stats.Products),
+                Variant: components.CardVariantBlue,
+                Size: components.CardSizeFull,
+                Shadow: components.ShadowMedium,
+            })
+            
+            @components.Card(components.CardProps{
+                Title: "Zamówienia",
+                Content: fmt.Sprintf("%d", stats.Orders),
+                Variant: components.CardVariantWhite,
+                Size: components.CardSizeFull,
+                Shadow: components.ShadowMedium,
+            })
+            
+            @components.Card(components.CardProps{
+                Title: "Przychód",
+                Content: fmt.Sprintf("%.2f zł", stats.Revenue),
+                Variant: components.CardVariantBlue,
+                Size: components.CardSizeFull,
+                Shadow: components.ShadowMedium,
+            })
+        </div>
+        
+        <!-- Formularz dodawania produktu -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800">Dodaj nowy produkt</h2>
+            
+            @components.Form(components.FormProps{
+                Action: "/admin/products",
+                Method: components.FormMethodPost,
+                Size: components.FormSizeFull,
+                Children: productForm(),
+            })
+        </div>
+        
+        <!-- Ostatnie zamówienia -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800">Ostatnie zamówienia</h2>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Klient</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Data</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kwota</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">#001</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">Jan Kowalski</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">2025-02-02</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">299.99 zł</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    Zrealizowane
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">#002</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">Anna Nowak</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">2025-02-01</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">149.50 zł</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    W trakcie
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">#003</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">Piotr Wiśniewski</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">2025-01-31</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">499.00 zł</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    Zrealizowane
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="mt-4 flex justify-center">
+                @components.Pagination(components.PaginationProps{
+                    CurrentPage: 1,
+                    TotalPages: 5,
+                    BaseURL: "/admin/orders?page=",
+                    Variant: components.PaginationVariantPrimary,
+                    Size: components.PaginationSizeMedium,
+                })
+            </div>
+        </div>
+    </div>
+}
+
+templ productForm() {
+    @components.FormInput(components.FormInputProps{
+        Name: "name",
+        Type: "text",
+        Label: "Nazwa produktu",
+        Placeholder: "Wprowadź nazwę produktu",
+        Required: true,
+        Size: components.InputSizeMedium,
+    })
+    
+    @components.FormInput(components.FormInputProps{
+        Name: "price",
+        Type: "number",
+        Label: "Cena",
+        Placeholder: "0.00",
+        Required: true,
+        Size: components.InputSizeMedium,
+        HelpText: "Podaj cenę w złotych",
+    })
+    
+    @components.FormSelect(components.FormSelectProps{
+        Name: "category",
+        Label: "Kategoria",
+        Options: []components.SelectOption{
+            {Value: "electronics", Label: "Elektronika"},
+            {Value: "clothing", Label: "Odzież"},
+            {Value: "books", Label: "Książki"},
+            {Value: "home", Label: "Dom i ogród"},
+        },
+        Required: true,
+        Size: components.InputSizeMedium,
+    })
+    
+    <div class="flex gap-4">
+        @components.Button(components.ButtonProps{
+            Text: "Dodaj produkt",
+            Variant: components.VariantPrimary,
+            Size: components.SizeMedium,
+            Width: components.WidthMedium,
+        })
+        
+        @components.Button(components.ButtonProps{
+            Text: "Anuluj",
+            Variant: components.VariantSecondary,
+            Size: components.SizeMedium,
+            Width: components.WidthMedium,
+        })
+    </div>
+}
