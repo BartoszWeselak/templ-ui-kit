@@ -1,0 +1,408 @@
+package main
+
+import "fmt"
+type Page string
+
+const (
+	PageDashboard Page = "dashboard"
+	PageProducts  Page = "products"
+	PageOrders    Page = "orders"
+	PageCustomers Page = "customers"
+)
+
+// Dane produktu
+type Product struct {
+	ID       int
+	Name     string
+	Price    float64
+	Stock    int
+	Category string
+}
+
+// Dane zamówienia
+type Order struct {
+	ID       int
+	Customer string
+	Total    float64
+	Status   string
+	Date     string
+}
+
+// Props dla layoutu
+type AdminProps struct {
+	CurrentPage Page
+	Products    []Product
+	Orders      []Order
+	PageNum     int
+	TotalPages  int
+}
+
+// Layout - główny szablon
+templ Layout(props AdminProps) {
+	<!DOCTYPE html>
+	<html lang="pl">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>Panel Admina E-commerce</title>
+			<script src="https://cdn.tailwindcss.com"></script>
+		</head>
+		<body class="bg-gray-50">
+			<!-- Nagłówek -->
+			<header class="bg-white shadow-sm border-b">
+				<div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+					<h1 class="text-2xl font-bold text-gray-900">🛍️ E-commerce Admin</h1>
+					<div class="flex items-center gap-4">
+						<span class="text-sm text-gray-600">Admin User</span>
+						<button class="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600">
+							Wyloguj
+						</button>
+					</div>
+				</div>
+			</header>
+			<!-- Główny kontener -->
+			<div class="max-w-7xl mx-auto px-4 py-6">
+				<div class="flex gap-6">
+					<!-- Sidebar -->
+					@Sidebar(props.CurrentPage)
+					<!-- Główna zawartość -->
+					<main class="flex-1">
+						if props.CurrentPage == PageDashboard {
+							@Dashboard()
+						} else if props.CurrentPage == PageProducts {
+							@ProductsList(props.Products, props.PageNum, props.TotalPages)
+						} else if props.CurrentPage == PageOrders {
+							@OrdersList(props.Orders, props.PageNum, props.TotalPages)
+						} else if props.CurrentPage == PageCustomers {
+							@CustomersList()
+						}
+					</main>
+				</div>
+			</div>
+		</body>
+	</html>
+}
+
+// Sidebar z nawigacją
+templ Sidebar(currentPage Page) {
+	<aside class="w-64">
+		<div class="bg-white rounded-lg shadow p-4">
+			<nav class="space-y-2">
+				<a
+					href="/admin/dashboard"
+					class={ "block px-4 py-3 rounded-lg transition-colors" , templ.KV("bg-blue-500 text-white", currentPage==PageDashboard) , templ.KV("text-gray-700 hover:bg-gray-100", currentPage !=PageDashboard) }
+				>
+					<span class="flex items-center gap-3">
+						<span>📊</span>
+						<span class="font-medium">Dashboard</span>
+					</span>
+				</a>
+				<a
+					href="/admin/products"
+					class={ "block px-4 py-3 rounded-lg transition-colors" , templ.KV("bg-blue-500 text-white", currentPage==PageProducts) , templ.KV("text-gray-700 hover:bg-gray-100", currentPage !=PageProducts) }
+				>
+					<span class="flex items-center gap-3">
+						<span>📦</span>
+						<span class="font-medium">Produkty</span>
+					</span>
+				</a>
+				<a
+					href="/admin/orders"
+					class={ "block px-4 py-3 rounded-lg transition-colors" , templ.KV("bg-blue-500 text-white", currentPage==PageOrders) , templ.KV("text-gray-700 hover:bg-gray-100", currentPage !=PageOrders) }
+				>
+					<span class="flex items-center gap-3">
+						<span>🛒</span>
+						<span class="font-medium">Zamówienia</span>
+					</span>
+				</a>
+				<a
+					href="/admin/customers"
+					class={ "block px-4 py-3 rounded-lg transition-colors" , templ.KV("bg-blue-500 text-white", currentPage==PageCustomers) , templ.KV("text-gray-700 hover:bg-gray-100", currentPage !=PageCustomers) }
+				>
+					<span class="flex items-center gap-3">
+						<span>👥</span>
+						<span class="font-medium">Klienci</span>
+					</span>
+				</a>
+			</nav>
+		</div>
+	</aside>
+}
+
+// Dashboard - strona główna
+templ Dashboard() {
+	<div class="space-y-6">
+		<h2 class="text-3xl font-bold text-gray-900">Dashboard</h2>
+		<!-- Statystyki -->
+		<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+			<div class="bg-white rounded-lg shadow p-6 border-l-4 border-blue-500">
+				<div class="flex items-center justify-between">
+					<div>
+						<p class="text-sm text-gray-600">Sprzedaż</p>
+						<p class="text-2xl font-bold text-gray-900">48,500 PLN</p>
+					</div>
+					<div class="text-3xl">💰</div>
+				</div>
+			</div>
+			<div class="bg-white rounded-lg shadow p-6 border-l-4 border-green-500">
+				<div class="flex items-center justify-between">
+					<div>
+						<p class="text-sm text-gray-600">Zamówienia</p>
+						<p class="text-2xl font-bold text-gray-900">127</p>
+					</div>
+					<div class="text-3xl">📋</div>
+				</div>
+			</div>
+			<div class="bg-white rounded-lg shadow p-6 border-l-4 border-purple-500">
+				<div class="flex items-center justify-between">
+					<div>
+						<p class="text-sm text-gray-600">Produkty</p>
+						<p class="text-2xl font-bold text-gray-900">543</p>
+					</div>
+					<div class="text-3xl">📦</div>
+				</div>
+			</div>
+			<div class="bg-white rounded-lg shadow p-6 border-l-4 border-orange-500">
+				<div class="flex items-center justify-between">
+					<div>
+						<p class="text-sm text-gray-600">Klienci</p>
+						<p class="text-2xl font-bold text-gray-900">89</p>
+					</div>
+					<div class="text-3xl">👥</div>
+				</div>
+			</div>
+		</div>
+		<!-- Ostatnie zamówienia -->
+		<div class="bg-white rounded-lg shadow">
+			<div class="px-6 py-4 border-b">
+				<h3 class="text-lg font-semibold text-gray-900">Ostatnie zamówienia</h3>
+			</div>
+			<div class="overflow-x-auto">
+				<table class="min-w-full divide-y divide-gray-200">
+					<thead class="bg-gray-50">
+						<tr>
+							<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
+							<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Klient</th>
+							<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kwota</th>
+							<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+						</tr>
+					</thead>
+					<tbody class="bg-white divide-y divide-gray-200">
+						<tr>
+							<td class="px-6 py-4 text-sm text-gray-900">#1234</td>
+							<td class="px-6 py-4 text-sm text-gray-900">Jan Kowalski</td>
+							<td class="px-6 py-4 text-sm text-gray-900">350.00 PLN</td>
+							<td class="px-6 py-4">
+								<span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+									Zrealizowane
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td class="px-6 py-4 text-sm text-gray-900">#1235</td>
+							<td class="px-6 py-4 text-sm text-gray-900">Anna Nowak</td>
+							<td class="px-6 py-4 text-sm text-gray-900">1,200.50 PLN</td>
+							<td class="px-6 py-4">
+								<span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+									W trakcie
+								</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+}
+
+// Lista produktów
+templ ProductsList(products []Product, pageNum, totalPages int) {
+	<div class="space-y-6">
+		<div class="flex justify-between items-center">
+			<h2 class="text-3xl font-bold text-gray-900">Produkty</h2>
+			<button class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+				+ Dodaj produkt
+			</button>
+		</div>
+		<!-- Tabela produktów -->
+		<div class="bg-white rounded-lg shadow overflow-hidden">
+			<div class="overflow-x-auto">
+				<table class="min-w-full divide-y divide-gray-200">
+					<thead class="bg-gray-50">
+						<tr>
+							<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
+							<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nazwa</th>
+							<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Cena</th>
+							<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Stan</th>
+							<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kategoria</th>
+							<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Akcje</th>
+						</tr>
+					</thead>
+					<tbody class="bg-white divide-y divide-gray-200">
+						if len(products) > 0 {
+							for _, product := range products {
+								<tr class="hover:bg-gray-50">
+									<td class="px-6 py-4 text-sm text-gray-900">{ fmt.Sprintf("#%d", product.ID) }</td>
+									<td class="px-6 py-4 text-sm font-medium text-gray-900">{ product.Name }</td>
+									<td class="px-6 py-4 text-sm text-gray-900">{ fmt.Sprintf("%.2f PLN", product.Price) }</td>
+									<td class="px-6 py-4 text-sm text-gray-900">{ fmt.Sprintf("%d szt.", product.Stock) }</td>
+									<td class="px-6 py-4 text-sm text-gray-600">{ product.Category }</td>
+									<td class="px-6 py-4 text-sm space-x-2">
+										<button class="text-blue-600 hover:text-blue-800">Edytuj</button>
+										<button class="text-red-600 hover:text-red-800">Usuń</button>
+									</td>
+								</tr>
+							}
+						} else {
+							<tr>
+								<td colspan="6" class="px-6 py-8 text-center text-gray-500">
+									Brak produktów
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+			if totalPages > 1 {
+				<div class="px-6 py-4 border-t bg-gray-50">
+					<div class="flex justify-center">
+						<!-- Paginacja (uproszczona) -->
+						<div class="flex gap-1">
+							for i := 1; i <= totalPages; i++ {
+								<a
+									href={ templ.URL(fmt.Sprintf("/admin/products?page=%d", i)) }
+									class={ "px-3 py-2 text-sm rounded" , templ.KV("bg-blue-500 text-white", i==pageNum) , templ.KV("bg-white text-gray-700 hover:bg-gray-100", i !=pageNum) }
+								>
+									{ fmt.Sprintf("%d", i) }
+								</a>
+							}
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+	</div>
+}
+
+// Lista zamówień
+templ OrdersList(orders []Order, pageNum, totalPages int) {
+	<div class="space-y-6">
+		<h2 class="text-3xl font-bold text-gray-900">Zamówienia</h2>
+		<!-- Filtry -->
+		<div class="flex gap-2">
+			<button class="px-4 py-2 bg-blue-500 text-white rounded-lg">Wszystkie</button>
+			<button class="px-4 py-2 bg-white text-gray-700 rounded-lg hover:bg-gray-100">Oczekujące</button>
+			<button class="px-4 py-2 bg-white text-gray-700 rounded-lg hover:bg-gray-100">W trakcie</button>
+			<button class="px-4 py-2 bg-white text-gray-700 rounded-lg hover:bg-gray-100">Zrealizowane</button>
+		</div>
+		<!-- Tabela zamówień -->
+		<div class="bg-white rounded-lg shadow overflow-hidden">
+			<div class="overflow-x-auto">
+				<table class="min-w-full divide-y divide-gray-200">
+					<thead class="bg-gray-50">
+						<tr>
+							<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
+							<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Klient</th>
+							<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Data</th>
+							<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kwota</th>
+							<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+							<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Akcje</th>
+						</tr>
+					</thead>
+					<tbody class="bg-white divide-y divide-gray-200">
+						if len(orders) > 0 {
+							for _, order := range orders {
+								<tr class="hover:bg-gray-50">
+									<td class="px-6 py-4 text-sm text-gray-900">{ fmt.Sprintf("#%d", order.ID) }</td>
+									<td class="px-6 py-4 text-sm text-gray-900">{ order.Customer }</td>
+									<td class="px-6 py-4 text-sm text-gray-600">{ order.Date }</td>
+									<td class="px-6 py-4 text-sm font-medium text-gray-900">{ fmt.Sprintf("%.2f PLN", order.Total) }</td>
+									<td class="px-6 py-4">
+										if order.Status == "pending" {
+											<span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
+												Oczekujące
+											</span>
+										} else if order.Status == "processing" {
+											<span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+												W trakcie
+											</span>
+										} else if order.Status == "completed" {
+											<span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+												Zrealizowane
+											</span>
+										}
+									</td>
+									<td class="px-6 py-4 text-sm">
+										<button class="text-blue-600 hover:text-blue-800">Szczegóły</button>
+									</td>
+								</tr>
+							}
+						} else {
+							<tr>
+								<td colspan="6" class="px-6 py-8 text-center text-gray-500">
+									Brak zamówień
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+}
+
+// Lista klientów
+templ CustomersList() {
+	<div class="space-y-6">
+		<div class="flex justify-between items-center">
+			<h2 class="text-3xl font-bold text-gray-900">Klienci</h2>
+			<button class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
+				📊 Eksportuj
+			</button>
+		</div>
+		<div class="bg-white rounded-lg shadow overflow-hidden">
+			<div class="overflow-x-auto">
+				<table class="min-w-full divide-y divide-gray-200">
+					<thead class="bg-gray-50">
+						<tr>
+							<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
+							<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Imię i nazwisko</th>
+							<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
+							<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Zamówienia</th>
+							<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Akcje</th>
+						</tr>
+					</thead>
+					<tbody class="bg-white divide-y divide-gray-200">
+						<tr class="hover:bg-gray-50">
+							<td class="px-6 py-4 text-sm text-gray-900">#101</td>
+							<td class="px-6 py-4 text-sm font-medium text-gray-900">Jan Kowalski</td>
+							<td class="px-6 py-4 text-sm text-gray-600">jan.kowalski@example.com</td>
+							<td class="px-6 py-4 text-sm text-gray-900">15</td>
+							<td class="px-6 py-4 text-sm">
+								<button class="text-blue-600 hover:text-blue-800">Zobacz</button>
+							</td>
+						</tr>
+						<tr class="hover:bg-gray-50">
+							<td class="px-6 py-4 text-sm text-gray-900">#102</td>
+							<td class="px-6 py-4 text-sm font-medium text-gray-900">Anna Nowak</td>
+							<td class="px-6 py-4 text-sm text-gray-600">anna.nowak@example.com</td>
+							<td class="px-6 py-4 text-sm text-gray-900">8</td>
+							<td class="px-6 py-4 text-sm">
+								<button class="text-blue-600 hover:text-blue-800">Zobacz</button>
+							</td>
+						</tr>
+						<tr class="hover:bg-gray-50">
+							<td class="px-6 py-4 text-sm text-gray-900">#103</td>
+							<td class="px-6 py-4 text-sm font-medium text-gray-900">Piotr Wiśniewski</td>
+							<td class="px-6 py-4 text-sm text-gray-600">piotr.wisniewski@example.com</td>
+							<td class="px-6 py-4 text-sm text-gray-900">22</td>
+							<td class="px-6 py-4 text-sm">
+								<button class="text-blue-600 hover:text-blue-800">Zobacz</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+}

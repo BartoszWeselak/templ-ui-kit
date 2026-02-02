@@ -1,0 +1,119 @@
+package components
+
+import "fmt"
+
+type PaginationVariant string
+type PaginationSize string
+
+const (
+    // Variants
+    PaginationVariantPrimary   PaginationVariant = "primary"
+    PaginationVariantSecondary PaginationVariant = "secondary"
+    
+    // Sizes
+    PaginationSizeSmall  PaginationSize = "small"
+    PaginationSizeMedium PaginationSize = "medium"
+    PaginationSizeLarge  PaginationSize = "large"
+)
+
+type PaginationProps struct {
+    CurrentPage int
+    TotalPages  int
+    BaseURL     string // np. "/products?page="
+    Variant     PaginationVariant
+    Size        PaginationSize
+    ClassName   string
+}
+
+func getPaginationButtonClasses(props PaginationProps, isActive bool, isDisabled bool) string {
+    if props.Variant == "" {
+        props.Variant = PaginationVariantPrimary
+    }
+    if props.Size == "" {
+        props.Size = PaginationSizeMedium
+    }
+    
+    // Base classes
+    baseClasses := "border transition-colors inline-flex items-center justify-center"
+    
+    // Size classes
+    sizeClasses := ""
+    switch props.Size {
+    case PaginationSizeSmall:
+        sizeClasses = "px-2 py-1 text-sm min-w-[32px]"
+    case PaginationSizeMedium:
+        sizeClasses = "px-3 py-2 text-base min-w-[40px]"
+    case PaginationSizeLarge:
+        sizeClasses = "px-4 py-3 text-lg min-w-[48px]"
+    }
+    
+    // Variant classes
+    variantClasses := ""
+    if isDisabled {
+        variantClasses = "bg-gray-100 text-gray-400 cursor-not-allowed border-gray-300"
+    } else if isActive {
+        switch props.Variant {
+        case PaginationVariantPrimary:
+            variantClasses = "bg-blue-500 text-white border-blue-500"
+        case PaginationVariantSecondary:
+            variantClasses = "bg-gray-500 text-white border-gray-500"
+        }
+    } else {
+        switch props.Variant {
+        case PaginationVariantPrimary:
+            variantClasses = "bg-white text-blue-500 border-gray-300 hover:bg-blue-50"
+        case PaginationVariantSecondary:
+            variantClasses = "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+        }
+    }
+    
+    return fmt.Sprintf("%s %s %s", baseClasses, sizeClasses, variantClasses)
+}
+
+templ Pagination(props PaginationProps) {
+    <div class={ fmt.Sprintf("flex items-center gap-1 %s", props.ClassName) }>
+        // Previous button
+        if props.CurrentPage > 1 {
+            <a
+                href={ templ.URL(fmt.Sprintf("%s%d", props.BaseURL, props.CurrentPage - 1)) }
+                class={ getPaginationButtonClasses(props, false, false) }
+            >
+                &lsaquo;
+            </a>
+        } else {
+            <span class={ getPaginationButtonClasses(props, false, true) }>
+                &lsaquo;
+            </span>
+        }
+        
+        // Page numbers
+        for page := 1; page <= props.TotalPages; page++ {
+            if page == props.CurrentPage {
+                <span class={ getPaginationButtonClasses(props, true, false) }>
+                    { fmt.Sprintf("%d", page) }
+                </span>
+            } else {
+                <a
+                    href={ templ.URL(fmt.Sprintf("%s%d", props.BaseURL, page)) }
+                    class={ getPaginationButtonClasses(props, false, false) }
+                >
+                    { fmt.Sprintf("%d", page) }
+                </a>
+            }
+        }
+        
+        // Next button
+        if props.CurrentPage < props.TotalPages {
+            <a
+                href={ templ.URL(fmt.Sprintf("%s%d", props.BaseURL, props.CurrentPage + 1)) }
+                class={ getPaginationButtonClasses(props, false, false) }
+            >
+                &rsaquo;
+            </a>
+        } else {
+            <span class={ getPaginationButtonClasses(props, false, true) }>
+                &rsaquo;
+            </span>
+        }
+    </div>
+}
