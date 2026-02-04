@@ -52,6 +52,7 @@ func Base(title string, content templ.Component) templ.Component {
 			Items: []components.NavbarItem{
 				{Text: "Home", Href: "/", Active: false},
 				{Text: "Admin", Href: "/admin", Active: false},
+				{Text: "Pricing", Href: "/price", Active: false},
 			},
 			Variant: components.NavbarPrimary,
 		}).Render(ctx, templ_7745c5c3_Buffer)
