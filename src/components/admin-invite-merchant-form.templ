@@ -1,0 +1,125 @@
+package components
+
+type AdminInviteMerchantFormProps struct {
+    Data           AdminInviteMerchantFormData
+    Errors         AdminInviteMerchantFormErrors
+    IsStateVisible bool
+}
+
+type AdminInviteMerchantFormData struct {
+    Email     string `form:"email"`
+    StoreName string `form:"store_name"`
+    StoreSlug string `form:"store_slug"`
+}
+
+type AdminInviteMerchantFormErrors struct {
+    GenericMessage string // Displays above submit button
+    Email          string
+    StoreName      string
+    StoreSlug      string
+}
+
+templ AdminInviteMerchantForm(props AdminInviteMerchantFormProps) {
+    <form
+        hx-post="/admin/merchants"
+        hx-swap="outerHTML"
+        hx-indicator="#invite-spinner"
+        hx-disabled-elt="find button[type='submit']"
+        class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6"
+    >
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">Invite Merchant</h2>
+        
+        <fieldset class="space-y-4">
+            // Email field
+            <div class="mb-4">
+                <label for="email" class="block text-gray-700 font-medium mb-2">
+                    Email
+                    <span class="text-red-500">*</span>
+                </label>
+                <input
+                    name="email"
+                    id="email"
+                    type="email"
+                    value={ props.Data.Email }
+                    class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 transition-colors border-gray-300 focus:ring-blue-500 focus:border-transparent"
+                    if props.IsStateVisible && props.Errors.Email != "" {
+                        aria-invalid="true"
+                    }
+                    required
+                />
+                if props.IsStateVisible && props.Errors.Email != "" {
+                    <small class="block mt-1 text-sm text-red-600" role="alert">
+                        { props.Errors.Email }
+                    </small>
+                }
+            </div>
+            
+            // Store Name field
+            <div class="mb-4">
+                <label for="store_name" class="block text-gray-700 font-medium mb-2">
+                    Store name
+                    <span class="text-red-500">*</span>
+                </label>
+                <input
+                    name="store_name"
+                    id="store_name"
+                    type="text"
+                    value={ props.Data.StoreName }
+                    class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 transition-colors border-gray-300 focus:ring-blue-500 focus:border-transparent"
+                    if props.IsStateVisible && props.Errors.StoreName != "" {
+                        aria-invalid="true"
+                    }
+                    required
+                />
+                if props.IsStateVisible && props.Errors.StoreName != "" {
+                    <small class="block mt-1 text-sm text-red-600" role="alert">
+                        { props.Errors.StoreName }
+                    </small>
+                }
+            </div>
+            
+            // Store Slug field
+            <div class="mb-4">
+                <label for="store_slug" class="block text-gray-700 font-medium mb-2">
+                    Store slug
+                    <span class="text-red-500">*</span>
+                </label>
+                <input
+                    name="store_slug"
+                    id="store_slug"
+                    type="text"
+                    value={ props.Data.StoreSlug }
+                    class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 transition-colors border-gray-300 focus:ring-blue-500 focus:border-transparent"
+                    if props.IsStateVisible && props.Errors.StoreSlug != "" {
+                        aria-invalid="true"
+                    }
+                    required
+                />
+                if props.IsStateVisible && props.Errors.StoreSlug != "" {
+                    <small class="block mt-1 text-sm text-red-600" role="alert">
+                        { props.Errors.StoreSlug }
+                    </small>
+                }
+                <small class="block mt-1 text-sm text-gray-500">
+                    This will be used in the store URL (e.g., yourdomain.com/store/slug)
+                </small>
+            </div>
+        </fieldset>
+        
+        // Generic error message
+        if props.IsStateVisible && props.Errors.GenericMessage != "" {
+            <div class="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+                <small role="alert">{ props.Errors.GenericMessage }</small>
+            </div>
+        }
+        
+        // Submit button
+        <button 
+            type="submit"
+            class="w-full bg-blue-500 text-white px-6 py-3 rounded-lg hover:opacity-80 transition-opacity flex items-center justify-center gap-2"
+        >
+            <span id="invite-spinner" class="htmx-indicator inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+            <span>Invite merchant</span>
+        </button>
+    </form>
+}
