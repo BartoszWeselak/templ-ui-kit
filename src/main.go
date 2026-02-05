@@ -9,15 +9,20 @@ import (
 )
 
 func main() {
+	// Serve static files
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("src/static"))))
+
+	// Home page
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		content := components.Card(components.CardProps{
 			Title:   "Witaj",
 			Content: "Strona główna",
 		})
 
-		layouts.Base("Home", content).Render(r.Context(), w)
+		layouts.BaseWithTheme("Home", content).Render(r.Context(), w)
 	})
 
+	// Admin panel
 	http.HandleFunc("/admin", func(w http.ResponseWriter, r *http.Request) {
 		stats := pages.AdminStats{
 			Users:    150,
@@ -26,9 +31,67 @@ func main() {
 			Revenue:  15234.50,
 		}
 
-		layouts.Base("Admin Panel", pages.AdminPanel(stats)).Render(r.Context(), w)
+		layouts.BaseWithTheme("Admin Panel", pages.AdminPanel(stats)).Render(r.Context(), w)
 	})
 
-	fmt.Println("http://localhost:8080")
+	// Admin merchants page
+	http.HandleFunc("/admin/merchants", func(w http.ResponseWriter, r *http.Request) {
+		// Example data
+		merchants := []components.MerchantListItem{
+			{
+				ID:        "1",
+				Email:     "john@example.com",
+				StoreName: "John's Store",
+				StoreSlug: "johns-store",
+				Status:    components.UserStatusActive,
+			},
+			{
+				ID:        "2",
+				Email:     "jane@example.com",
+				StoreName: "Jane's Shop",
+				StoreSlug: "janes-shop",
+				Status:    components.UserStatusPending,
+			},
+			{
+				ID:        "3",
+				Email:     "bob@example.com",
+				StoreName: "Bob's Market",
+				StoreSlug: "bobs-market",
+				Status:    components.UserStatusInactive,
+			},
+		}
+
+		pageProps := pages.AdminMerchantsPageProps{
+			InviteForm: components.AdminInviteMerchantFormProps{
+				Data: components.AdminInviteMerchantFormData{
+					Email:     "",
+					StoreName: "",
+					StoreSlug: "",
+				},
+				Errors: components.AdminInviteMerchantFormErrors{
+					GenericMessage: "",
+					Email:          "",
+					StoreName:      "",
+					StoreSlug:      "",
+				},
+				IsStateVisible: false,
+			},
+			MerchantList: components.MerchantListProps{
+				Merchants:     merchants,
+				CurrentPage:   1,
+				TotalPages:    3,
+				PaginationURL: "/admin/merchants?page=",
+			},
+			SuccessMessage: "",
+			ErrorMessage:   "",
+		}
+
+		layouts.BaseWithTheme("Merchant Management", pages.AdminMerchantsPage(pageProps)).Render(r.Context(), w)
+	})
+
+	fmt.Println("Server running on http://localhost:8080")
+	fmt.Println("- Home: http://localhost:8080")
+	fmt.Println("- Admin: http://localhost:8080/admin")
+	fmt.Println("- Merchants: http://localhost:8080/admin/merchants")
 	http.ListenAndServe(":8080", nil)
 }
