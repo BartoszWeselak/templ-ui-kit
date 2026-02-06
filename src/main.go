@@ -15,11 +15,16 @@ func main() {
 	// Home page
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		content := components.Card(components.CardProps{
-			Title:   "Witaj",
-			Content: "Strona główna",
+			Title:   "Witaj w Templ UI Kit",
+			Content: "Sprawdź dostępne strony w menu nawigacji",
 		})
 
 		layouts.BaseWithTheme("Home", content).Render(r.Context(), w)
+	})
+
+	// Button examples page
+	http.HandleFunc("/examples/buttons", func(w http.ResponseWriter, r *http.Request) {
+		layouts.BaseWithTheme("Button Examples", pages.ButtonExamples()).Render(r.Context(), w)
 	})
 
 	// Admin panel
@@ -91,6 +96,7 @@ func main() {
 
 	fmt.Println("Server running on http://localhost:8080")
 	fmt.Println("- Home: http://localhost:8080")
+	fmt.Println("- Button Examples: http://localhost:8080/examples/buttons")
 	fmt.Println("- Admin: http://localhost:8080/admin")
 	fmt.Println("- Merchants: http://localhost:8080/admin/merchants")
 	http.ListenAndServe(":8080", nil)

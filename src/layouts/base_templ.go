@@ -51,6 +51,7 @@ func BaseWithTheme(title string, content templ.Component) templ.Component {
 		templ_7745c5c3_Err = components.Navbar(components.NavbarProps{
 			Items: []components.NavbarItem{
 				{Text: "Home", Href: "/", Active: false},
+				{Text: "Button Examples", Href: "/examples/buttons", Active: false},
 				{Text: "Admin", Href: "/admin", Active: false},
 				{Text: "Merchants", Href: "/admin/merchants", Active: false},
 			},
