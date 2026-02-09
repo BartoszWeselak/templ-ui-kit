@@ -1,0 +1,574 @@
+package layout
+
+import (
+	"fmt"
+	"net/http"
+	"templ-ui-kit/src/components"
+	"templ-ui-kit/src/layouts"
+	"templ-ui-kit/src/pages"
+)
+templ TestLayout() {
+	<!DOCTYPE html>
+	<html lang="pl">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>Templ Components - Test Layout</title>
+			<script src="https://cdn.tailwindcss.com"></script>
+			<style>
+				.component-section {
+					margin-bottom: 3rem;
+					padding: 2rem;
+					background: #f9fafb;
+					border-radius: 0.5rem;
+				}
+				.component-title {
+					font-size: 1.5rem;
+					font-weight: bold;
+					margin-bottom: 1.5rem;
+					color: #1f2937;
+					border-bottom: 2px solid #3b82f6;
+					padding-bottom: 0.5rem;
+				}
+				.demo-grid {
+					display: grid;
+					gap: 1.5rem;
+					margin-top: 1rem;
+				}
+				.demo-item {
+					padding: 1rem;
+					background: white;
+					border-radius: 0.375rem;
+					border: 1px solid #e5e7eb;
+				}
+				.demo-label {
+					font-size: 0.875rem;
+					font-weight: 600;
+					color: #6b7280;
+					margin-bottom: 0.5rem;
+				}
+			</style>
+		</head>
+		<body class="bg-gray-100 p-8">
+			<div class="max-w-7xl mx-auto">
+				<header class="mb-8">
+					<h1 class="text-4xl font-bold text-gray-900 mb-2">Templ Components Test Layout</h1>
+					<p class="text-gray-600">Wszystkie komponenty w jednym miejscu do testowania</p>
+				</header>
+				// BUTTONS
+				<section class="component-section">
+					<h2 class="component-title">🔘 Buttons</h2>
+					<div class="demo-grid">
+						<div class="demo-item">
+							<div class="demo-label">Variants</div>
+							<div class="flex gap-2 flex-wrap">
+								@Button(ButtonProps{Text: "Primary Button", Variant: VariantPrimary})
+								@Button(ButtonProps{Text: "Secondary Button", Variant: VariantSecondary})
+								@Button(ButtonProps{Text: "Danger Button", Variant: VariantDanger})
+								@Button(ButtonProps{Text: "Buy Button", Variant: VariantBuy})
+							</div>
+						</div>
+						<div class="demo-item">
+							<div class="demo-label">Sizes</div>
+							<div class="flex gap-2 items-center flex-wrap">
+								@Button(ButtonProps{Text: "Small", Size: SizeSmall})
+								@Button(ButtonProps{Text: "Medium", Size: SizeMedium})
+								@Button(ButtonProps{Text: "Large", Size: SizeLarge})
+								@Button(ButtonProps{Text: "XLarge", Size: SizeXLarge})
+							</div>
+						</div>
+						<div class="demo-item">
+							<div class="demo-label">With Icons</div>
+							<div class="flex gap-2 flex-wrap">
+								@Button(ButtonProps{Text: "Add Item", Icon: IconPlus(), IconPosition: IconLeft})
+								@Button(ButtonProps{Text: "Delete", Icon: IconTrash(), Variant: VariantDanger})
+								@Button(ButtonProps{Text: "Download", Icon: IconDownload(), IconPosition: IconRight, Variant: VariantBuy})
+							</div>
+						</div>
+						<div class="demo-item">
+							<div class="demo-label">States</div>
+							<div class="flex gap-2 flex-wrap">
+								@Button(ButtonProps{Text: "Loading...", Loading: true})
+								@Button(ButtonProps{Text: "Disabled", Disabled: true})
+							</div>
+						</div>
+						<div class="demo-item">
+							<div class="demo-label">Widths</div>
+							<div class="space-y-2">
+								@Button(ButtonProps{Text: "XSmall Width", Width: WidthXSmall})
+								@Button(ButtonProps{Text: "Small Width", Width: WidthSmall})
+								@Button(ButtonProps{Text: "Medium Width", Width: WidthMedium})
+								@Button(ButtonProps{Text: "Large Width", Width: WidthLarge})
+								@Button(ButtonProps{Text: "Full Width (default)"})
+							</div>
+						</div>
+					</div>
+				</section>
+				// CARDS
+				<section class="component-section">
+					<h2 class="component-title">🃏 Cards</h2>
+					<div class="demo-grid grid-cols-1 md:grid-cols-3">
+						@Card(CardProps{
+							Title:   "Card White",
+							Content: "This is a white card with medium shadow and large border radius.",
+							Variant: CardVariantWhite,
+							Size:    CardSizeMedium,
+						})
+						@Card(CardProps{
+							Title:   "Card Gray",
+							Content: "This is a gray card variant.",
+							Variant: CardVariantGray,
+							Size:    CardSizeMedium,
+						})
+						@Card(CardProps{
+							Title:   "Card Blue",
+							Content: "This is a blue card variant.",
+							Variant: CardVariantBlue,
+							Size:    CardSizeMedium,
+						})
+					</div>
+					<div class="demo-grid grid-cols-1 mt-4">
+						@Card(CardProps{
+							Title:   "Full Width Card",
+							Content: "This card takes the full width of its container.",
+							Size:    CardSizeFull,
+						})
+						@Card(CardProps{
+							Title:        "Small Shadow Card",
+							Content:      "This card has a small shadow.",
+							Shadow:       ShadowSmall,
+							BorderRadius: RadiusSmall,
+						})
+					</div>
+				</section>
+				// ERRORS / ALERTS
+				<section class="component-section">
+					<h2 class="component-title">⚠️ Errors & Alerts</h2>
+					<div class="demo-grid">
+						@Error(ErrorProps{
+							Message:  "Error: Something went wrong!",
+							Variant:  ErrorVariantDanger,
+							ShowIcon: true,
+						})
+						@Error(ErrorProps{
+							Message:  "Warning: Please check your input",
+							Variant:  ErrorVariantWarning,
+							ShowIcon: true,
+						})
+						@Error(ErrorProps{
+							Message:  "Info: New updates available",
+							Variant:  ErrorVariantInfo,
+							ShowIcon: true,
+						})
+						@Error(ErrorProps{
+							Message:  "Success: Operation completed successfully!",
+							Variant:  ErrorVariantSuccess,
+							ShowIcon: true,
+						})
+						<div class="demo-item">
+							<div class="demo-label">Different Sizes</div>
+							@Error(ErrorProps{
+								Message:  "Small error message",
+								Size:     ErrorSizeSmall,
+								ShowIcon: true,
+							})
+							@Error(ErrorProps{
+								Message:  "Medium error message",
+								Size:     ErrorSizeMedium,
+								ShowIcon: true,
+							})
+							@Error(ErrorProps{
+								Message:  "Large error message",
+								Size:     ErrorSizeLarge,
+								ShowIcon: true,
+							})
+						</div>
+					</div>
+				</section>
+				// MESSAGES
+				<section class="component-section">
+					<h2 class="component-title">💬 Messages</h2>
+					<div class="demo-grid">
+						@GenericError(GenericErrorProps{
+							Message:   "Failed to save your changes. Please try again.",
+							Closeable: true,
+							ID:        "error-msg-1",
+						})
+						@GenericSuccess(GenericSuccessProps{
+							Message:   "Your profile has been updated successfully!",
+							Closeable: true,
+							ID:        "success-msg-1",
+						})
+						@GenericError(GenericErrorProps{
+							Message:   "This is a non-closeable error message",
+							Closeable: false,
+							ID:        "error-msg-2",
+						})
+					</div>
+				</section>
+				// FORM INPUTS
+				<section class="component-section">
+					<h2 class="component-title">📝 Form Inputs</h2>
+					<div class="demo-grid grid-cols-1 md:grid-cols-2">
+						<div class="demo-item">
+							@FormInput(FormInputProps{
+								Name:        "username",
+								Label:       "Username",
+								Placeholder: "Enter username",
+								Required:    true,
+							})
+						</div>
+						<div class="demo-item">
+							@FormInput(FormInputProps{
+								Name:        "email",
+								Type:        "email",
+								Label:       "Email",
+								Placeholder: "your@email.com",
+								HelpText:    "We'll never share your email",
+							})
+						</div>
+						<div class="demo-item">
+							@FormInput(FormInputProps{
+								Name:     "password",
+								Type:     "password",
+								Label:    "Password",
+								Variant:  InputVariantError,
+								ErrorMsg: "Password must be at least 8 characters",
+							})
+						</div>
+						<div class="demo-item">
+							@FormInput(FormInputProps{
+								Name:    "confirm",
+								Type:    "password",
+								Label:   "Confirm Password",
+								Variant: InputVariantSuccess,
+							})
+						</div>
+						<div class="demo-item">
+							@FormInput(FormInputProps{
+								Name:     "disabled",
+								Label:    "Disabled Input",
+								Value:    "Can't edit this",
+								Disabled: true,
+							})
+						</div>
+						<div class="demo-item">
+							@FormInput(FormInputProps{
+								Name:        "large",
+								Label:       "Large Input",
+								Placeholder: "Large size",
+								Size:        InputSizeLarge,
+							})
+						</div>
+					</div>
+				</section>
+				// FORM SELECTS
+				<section class="component-section">
+					<h2 class="component-title">🔽 Form Selects</h2>
+					<div class="demo-grid grid-cols-1 md:grid-cols-2">
+						<div class="demo-item">
+							@FormSelect(FormSelectProps{
+								Name:        "country",
+								Label:       "Country",
+								Placeholder: "Select country...",
+								Required:    true,
+								Options: []SelectOption{
+									{Value: "pl", Label: "Poland"},
+									{Value: "us", Label: "United States"},
+									{Value: "uk", Label: "United Kingdom"},
+									{Value: "de", Label: "Germany"},
+								},
+							})
+						</div>
+						<div class="demo-item">
+							@FormSelect(FormSelectProps{
+								Name:     "status",
+								Label:    "Status",
+								Selected: "active",
+								HelpText: "Choose the current status",
+								Options: []SelectOption{
+									{Value: "active", Label: "Active"},
+									{Value: "inactive", Label: "Inactive"},
+									{Value: "pending", Label: "Pending"},
+								},
+							})
+						</div>
+						<div class="demo-item">
+							@FormSelect(FormSelectProps{
+								Name:     "error",
+								Label:    "With Error",
+								Variant:  InputVariantError,
+								ErrorMsg: "This field is required",
+								Options: []SelectOption{
+									{Value: "1", Label: "Option 1"},
+									{Value: "2", Label: "Option 2"},
+								},
+							})
+						</div>
+						<div class="demo-item">
+							@FormSelect(FormSelectProps{
+								Name:     "disabled",
+								Label:    "Disabled Select",
+								Disabled: true,
+								Selected: "1",
+								Options: []SelectOption{
+									{Value: "1", Label: "Locked Option"},
+								},
+							})
+						</div>
+					</div>
+				</section>
+				// PAGINATION
+				<section class="component-section">
+					<h2 class="component-title">📄 Pagination</h2>
+					<div class="demo-grid">
+						<div class="demo-item">
+							<div class="demo-label">Primary Pagination (Page 1 of 5)</div>
+							@Pagination(PaginationProps{
+								CurrentPage: 1,
+								TotalPages:  5,
+								BaseURL:     "#page=",
+								Variant:     PaginationVariantPrimary,
+							})
+						</div>
+						<div class="demo-item">
+							<div class="demo-label">Secondary Pagination (Page 3 of 5)</div>
+							@Pagination(PaginationProps{
+								CurrentPage: 3,
+								TotalPages:  5,
+								BaseURL:     "#page=",
+								Variant:     PaginationVariantSecondary,
+							})
+						</div>
+						<div class="demo-item">
+							<div class="demo-label">Small Pagination</div>
+							@Pagination(PaginationProps{
+								CurrentPage: 1,
+								TotalPages:  3,
+								BaseURL:     "#page=",
+								Size:        PaginationSizeSmall,
+							})
+						</div>
+						<div class="demo-item">
+							<div class="demo-label">Large Pagination</div>
+							@Pagination(PaginationProps{
+								CurrentPage: 2,
+								TotalPages:  4,
+								BaseURL:     "#page=",
+								Size:        PaginationSizeLarge,
+							})
+						</div>
+					</div>
+				</section>
+				// TABS
+				<section class="component-section">
+					<h2 class="component-title">📑 Tabs</h2>
+					<div class="demo-grid">
+						<div class="demo-item">
+							<div class="demo-label">Primary Tabs</div>
+							<div class="flex gap-1 border-b">
+								@Tab(TabProps{Label: "Overview", Active: true, Variant: TabVariantPrimary})
+								@Tab(TabProps{Label: "Settings", Variant: TabVariantPrimary})
+								@Tab(TabProps{Label: "Profile", Variant: TabVariantPrimary})
+								@Tab(TabProps{Label: "Disabled", Variant: TabVariantPrimary, Disabled: true})
+							</div>
+						</div>
+						<div class="demo-item">
+							<div class="demo-label">Secondary Tabs</div>
+							<div class="flex gap-1 border-b">
+								@Tab(TabProps{Label: "Dashboard", Variant: TabVariantSecondary})
+								@Tab(TabProps{Label: "Analytics", Active: true, Variant: TabVariantSecondary})
+								@Tab(TabProps{Label: "Reports", Variant: TabVariantSecondary})
+							</div>
+						</div>
+						<div class="demo-item">
+							<div class="demo-label">Large Tabs</div>
+							<div class="flex gap-1 border-b">
+								@Tab(TabProps{Label: "Home", Active: true, Size: TabSizeLarge})
+								@Tab(TabProps{Label: "Products", Size: TabSizeLarge})
+								@Tab(TabProps{Label: "Contact", Size: TabSizeLarge})
+							</div>
+						</div>
+						<div class="demo-item">
+							<div class="demo-label">Small Tabs</div>
+							<div class="flex gap-1 border-b">
+								@Tab(TabProps{Label: "Tab 1", Active: true, Size: TabSizeSmall})
+								@Tab(TabProps{Label: "Tab 2", Size: TabSizeSmall})
+								@Tab(TabProps{Label: "Tab 3", Size: TabSizeSmall})
+							</div>
+						</div>
+					</div>
+				</section>
+				// MODALS
+				<section class="component-section">
+					<h2 class="component-title">🪟 Modals</h2>
+					<div class="demo-item">
+						<div class="demo-label">Modal Triggers</div>
+						<div class="flex gap-2 flex-wrap">
+							@ModalTrigger(ModalTriggerProps{
+								ModalID: "modal-small",
+								Text:    "Open Small Modal",
+							})
+							@ModalTrigger(ModalTriggerProps{
+								ModalID: "modal-medium",
+								Text:    "Open Medium Modal",
+							})
+							@ModalTrigger(ModalTriggerProps{
+								ModalID: "modal-large",
+								Text:    "Open Large Modal",
+							})
+						</div>
+					</div>
+				</section>
+				// Modal Definitions
+				@Modal(ModalProps{
+					ID:        "modal-small",
+					Title:     "Small Modal",
+					Size:      ModalSizeSmall,
+					ShowClose: true,
+					Content: modalSmallContent(),
+				})
+				@Modal(ModalProps{
+					ID:        "modal-medium",
+					Title:     "Medium Modal",
+					Size:      ModalSizeMedium,
+					ShowClose: true,
+					Content: modalMediumContent(),
+				})
+				@Modal(ModalProps{
+					ID:        "modal-large",
+					Title:     "Large Modal",
+					Size:      ModalSizeLarge,
+					ShowClose: true,
+					Content: modalLargeContent(),
+				})
+				// COMBINED EXAMPLE
+				<section class="component-section">
+					<h2 class="component-title">🎨 Combined Example - User Profile Form</h2>
+					<div class="demo-item">
+						@Card(CardProps{
+							Title: "Edit Profile",
+							Size:  CardSizeFull,
+						})
+						<form class="space-y-4 mt-4">
+							<div class="grid grid-cols-2 gap-4">
+								@FormInput(FormInputProps{
+									Name:        "firstName",
+									Label:       "First Name",
+									Placeholder: "John",
+									Required:    true,
+								})
+								@FormInput(FormInputProps{
+									Name:        "lastName",
+									Label:       "Last Name",
+									Placeholder: "Doe",
+									Required:    true,
+								})
+							</div>
+							@FormInput(FormInputProps{
+								Name:        "profileEmail",
+								Type:        "email",
+								Label:       "Email",
+								Placeholder: "john.doe@example.com",
+								Required:    true,
+							})
+							@FormSelect(FormSelectProps{
+								Name:     "role",
+								Label:    "Role",
+								Selected: "user",
+								Options: []SelectOption{
+									{Value: "admin", Label: "Administrator"},
+									{Value: "user", Label: "User"},
+									{Value: "guest", Label: "Guest"},
+								},
+							})
+							<div id="success-profile" class="hidden">
+								@GenericSuccess(GenericSuccessProps{
+									Message: "Profile updated successfully!",
+								})
+							</div>
+							<div class="flex gap-2 mt-6">
+								@Button(ButtonProps{
+									Text:    "Cancel",
+									Variant: VariantSecondary,
+								})
+								@Button(ButtonProps{
+									Text:    "Save Changes",
+									Icon:    IconCheck(),
+									Type:    "submit",
+									OnClick: templ.ComponentScript{Call: "event.preventDefault(); document.getElementById('success-profile').classList.remove('hidden')"},
+								})
+							</div>
+						</form>
+					</div>
+				</section>
+				<footer class="mt-8 text-center text-gray-600 pb-8">
+					<p>Test Layout dla komponentów Templ • Wszystkie komponenty w jednym miejscu</p>
+				</footer>
+			</div>
+		</body>
+	</html>
+}
+
+// Modal content components
+templ modalSmallContent() {
+	<p class="text-gray-600">This is a small modal window. Perfect for simple confirmations or alerts.</p>
+	<div class="mt-4 flex gap-2">
+		@Button(ButtonProps{
+			Text:    "OK",
+			OnClick: templ.ComponentScript{Call: "document.getElementById('modal-small').classList.add('hidden')"},
+		})
+	</div>
+}
+
+templ modalMediumContent() {
+	<p class="text-gray-600 mb-4">This is a medium-sized modal. It has more space for content and forms.</p>
+	@FormInput(FormInputProps{
+		Name:        "modal-name",
+		Label:       "Your Name",
+		Placeholder: "Enter your name",
+	})
+	<div class="mt-4 flex gap-2">
+		@Button(ButtonProps{
+			Text:    "Cancel",
+			Variant: VariantSecondary,
+			OnClick: templ.ComponentScript{Call: "document.getElementById('modal-medium').classList.add('hidden')"},
+		})
+		@Button(ButtonProps{
+			Text: "Submit",
+		})
+	</div>
+}
+
+templ modalLargeContent() {
+	<p class="text-gray-600 mb-4">This is a large modal with plenty of space for complex forms and detailed content.</p>
+	<div class="grid grid-cols-2 gap-4 mb-4">
+		@FormInput(FormInputProps{
+			Name:  "modal-first",
+			Label: "First Name",
+		})
+		@FormInput(FormInputProps{
+			Name:  "modal-last",
+			Label: "Last Name",
+		})
+	</div>
+	@FormInput(FormInputProps{
+		Name:  "modal-email",
+		Type:  "email",
+		Label: "Email",
+	})
+	<div class="mb-4">
+		<label class="block text-gray-700 font-medium mb-2">Message</label>
+		<textarea rows="4" class="w-full border rounded-lg focus:outline-none focus:ring-2 transition-colors px-4 py-2 text-base border-gray-300 focus:ring-blue-500"></textarea>
+	</div>
+	<div class="mt-4 flex gap-2 justify-end">
+		@Button(ButtonProps{
+			Text:    "Cancel",
+			Variant: VariantSecondary,
+			OnClick: templ.ComponentScript{Call: "document.getElementById('modal-large').classList.add('hidden')"},
+		})
+		@Button(ButtonProps{
+			Text: "Send Message",
+		})
+	</div>
+}
