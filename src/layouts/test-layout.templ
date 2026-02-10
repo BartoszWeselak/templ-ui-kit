@@ -1,12 +1,154 @@
-package layout
+package layouts
 
 import (
-	"fmt"
-	"net/http"
 	"templ-ui-kit/src/components"
-	"templ-ui-kit/src/layouts"
-	"templ-ui-kit/src/pages"
 )
+
+// Aliasy dla ułatwienia - używamy nazw z pakietu components
+type (
+	ButtonProps = components.ButtonProps
+	ButtonVariant = components.ButtonVariant
+	ButtonSize = components.ButtonSize
+	ButtonWidth = components.ButtonWidth
+	IconPosition = components.IconPosition
+	CardProps = components.CardProps
+	CardVariant = components.CardVariant
+	CardSize = components.CardSize
+	CardShadow = components.CardShadow
+	CardBorderRadius = components.CardBorderRadius
+	ErrorProps = components.ErrorProps
+	ErrorVariant = components.ErrorVariant
+	ErrorSize = components.ErrorSize
+	GenericErrorProps = components.GenericErrorProps
+	GenericSuccessProps = components.GenericSuccessProps
+	FormInputProps = components.FormInputProps
+	InputSize = components.InputSize
+	InputVariant = components.InputVariant
+	FormSelectProps = components.FormSelectProps
+	SelectOption = components.SelectOption
+	PaginationProps = components.PaginationProps
+	PaginationVariant = components.PaginationVariant
+	PaginationSize = components.PaginationSize
+	TabProps = components.TabProps
+	TabVariant = components.TabVariant
+	TabSize = components.TabSize
+	ModalProps = components.ModalProps
+	ModalSize = components.ModalSize
+	ModalPosition = components.ModalPosition
+	ModalTriggerProps = components.ModalTriggerProps
+)
+
+// Aliasy dla funkcji komponentów
+var (
+	Button = components.Button
+	Card = components.Card
+	Error = components.Error
+	GenericError = components.GenericError
+	GenericSuccess = components.GenericSuccess
+	FormInput = components.FormInput
+	FormSelect = components.FormSelect
+	Pagination = components.Pagination
+	Tab = components.Tab
+	Modal = components.Modal
+	ModalTrigger = components.ModalTrigger
+	IconPlus = components.IconPlus
+	IconTrash = components.IconTrash
+	IconDownload = components.IconDownload
+	IconCheck = components.IconCheck
+)
+
+// Aliasy dla stałych
+const (
+	// Button variants
+	VariantPrimary = components.VariantPrimary
+	VariantSecondary = components.VariantSecondary
+	VariantDanger = components.VariantDanger
+	VariantBuy = components.VariantBuy
+	
+	// Button sizes
+	SizeSmall = components.SizeSmall
+	SizeMedium = components.SizeMedium
+	SizeLarge = components.SizeLarge
+	SizeXLarge = components.SizeXLarge
+	
+	// Button widths
+	WidthXSmall = components.WidthXSmall
+	WidthSmall = components.WidthSmall
+	WidthMedium = components.WidthMedium
+	WidthLarge = components.WidthLarge
+	
+	// Icon positions
+	IconLeft = components.IconLeft
+	IconRight = components.IconRight
+	
+	// Card variants
+	CardVariantGray = components.CardVariantGray
+	CardVariantWhite = components.CardVariantWhite
+	CardVariantBlue = components.CardVariantBlue
+	
+	// Card sizes
+	CardSizeSmall = components.CardSizeSmall
+	CardSizeMedium = components.CardSizeMedium
+	CardSizeLarge = components.CardSizeLarge
+	CardSizeFull = components.CardSizeFull
+	
+	// Shadows
+	ShadowNone = components.ShadowNone
+	ShadowSmall = components.ShadowSmall
+	ShadowMedium = components.ShadowMedium
+	ShadowLarge = components.ShadowLarge
+	
+	// Border radius
+	RadiusNone = components.RadiusNone
+	RadiusSmall = components.RadiusSmall
+	RadiusMedium = components.RadiusMedium
+	RadiusLarge = components.RadiusLarge
+	
+	// Error variants
+	ErrorVariantDanger = components.ErrorVariantDanger
+	ErrorVariantWarning = components.ErrorVariantWarning
+	ErrorVariantInfo = components.ErrorVariantInfo
+	ErrorVariantSuccess = components.ErrorVariantSuccess
+	
+	// Error sizes
+	ErrorSizeSmall = components.ErrorSizeSmall
+	ErrorSizeMedium = components.ErrorSizeMedium
+	ErrorSizeLarge = components.ErrorSizeLarge
+	
+	// Input variants
+	InputVariantDefault = components.InputVariantDefault
+	InputVariantError = components.InputVariantError
+	InputVariantSuccess = components.InputVariantSuccess
+	
+	// Input sizes
+	InputSizeSmall = components.InputSizeSmall
+	InputSizeMedium = components.InputSizeMedium
+	InputSizeLarge = components.InputSizeLarge
+	
+	// Pagination variants
+	PaginationVariantPrimary = components.PaginationVariantPrimary
+	PaginationVariantSecondary = components.PaginationVariantSecondary
+	
+	// Pagination sizes
+	PaginationSizeSmall = components.PaginationSizeSmall
+	PaginationSizeMedium = components.PaginationSizeMedium
+	PaginationSizeLarge = components.PaginationSizeLarge
+	
+	// Tab variants
+	TabVariantPrimary = components.TabVariantPrimary
+	TabVariantSecondary = components.TabVariantSecondary
+	
+	// Tab sizes
+	TabSizeSmall = components.TabSizeSmall
+	TabSizeMedium = components.TabSizeMedium
+	TabSizeLarge = components.TabSizeLarge
+	
+	// Modal sizes
+	ModalSizeSmall = components.ModalSizeSmall
+	ModalSizeMedium = components.ModalSizeMedium
+	ModalSizeLarge = components.ModalSizeLarge
+)
+
 templ TestLayout() {
 	<!DOCTYPE html>
 	<html lang="pl">
