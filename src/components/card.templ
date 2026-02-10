@@ -1,5 +1,9 @@
 package components
-import "fmt"
+
+import (
+    "context"
+    "fmt"
+)
 
 type CardVariant string
 type CardSize string
@@ -40,9 +44,20 @@ type CardProps struct {
     Shadow       CardShadow
     BorderRadius CardBorderRadius
     ClassName    string
+    Header       templ.Component  // Custom header content
+    Footer       templ.Component  // Custom footer content
+    Image        string           // Image URL
+    ImageAlt     string           // Image alt text
 }
 
-func getCardClasses(props CardProps) string {
+func getCardClasses(ctx context.Context, props CardProps) string {
+    // Sprawdzenie czy kontekst nie został anulowany
+    select {
+    case <-ctx.Done():
+        return "opacity-50" // Fallback dla anulowanego kontekstu
+    default:
+    }
+    
     // Defaults
     if props.Variant == "" {
         props.Variant = CardVariantWhite
@@ -123,17 +138,133 @@ func getCardClasses(props CardProps) string {
     )
 }
 
-templ Card(props CardProps) {
-    <div class={ getCardClasses(props) }>
+templ Card(ctx context.Context, props CardProps) {
+    <div class={ getCardClasses(ctx, props) }>
+        // Image (jeśli podany)
+        if props.Image != "" {
+            <img 
+                src={ props.Image } 
+                alt={ props.ImageAlt }
+                class="w-full h-48 object-cover -mt-6 -mx-6 mb-4 rounded-t-lg"
+            />
+        }
+        
+        // Custom Header
+        if props.Header != nil {
+            <div class="mb-4">
+                @props.Header
+            </div>
+        }
+        
+        // Title
         if props.Title != "" {
             <h3 class="text-xl font-bold mb-3 text-gray-800">
                 { props.Title }
             </h3>
         }
+        
+        // Content
         if props.Content != "" {
             <p class="text-gray-600">
                 { props.Content }
             </p>
         }
+        
+        // Children content
+        { children... }
+        
+        // Custom Footer
+        if props.Footer != nil {
+            <div class="mt-4 pt-4 border-t border-gray-200">
+                @props.Footer
+            </div>
+        }
+    </div>
+}
+
+// Card Header - pomocniczy komponent
+templ CardHeader(ctx context.Context) {
+    <div class="flex justify-between items-start mb-4">
+        { children... }
+    </div>
+}
+
+// Card Body - pomocniczy komponent
+templ CardBody(ctx context.Context) {
+    <div class="flex-1">
+        { children... }
+    </div>
+}
+
+// Card Footer - pomocniczy komponent
+templ CardFooter(ctx context.Context) {
+    <div class="mt-4 pt-4 border-t border-gray-200 flex justify-between items-center">
+        { children... }
+    </div>
+}
+
+// Card Title - pomocniczy komponent
+templ CardTitle(ctx context.Context, title string) {
+    <h3 class="text-xl font-bold text-gray-800">
+        { title }
+    </h3>
+}
+
+// Card Description - pomocniczy komponent
+templ CardDescription(ctx context.Context, description string) {
+    <p class="text-gray-600 mt-2">
+        { description }
+    </p>
+}
+
+// Card Image - pomocniczy komponent
+templ CardImage(ctx context.Context, src, alt string) {
+    <img 
+        src={ src } 
+        alt={ alt }
+        class="w-full h-48 object-cover rounded-t-lg"
+    />
+}
+
+// Card Actions - pomocniczy komponent do przycisków
+templ CardActions(ctx context.Context) {
+    <div class="flex gap-2 mt-4">
+        { children... }
+    </div>
+}
+
+// Clickable Card - karta która jest linkiem
+templ ClickableCard(ctx context.Context, props CardProps, href string) {
+    <a href={ templ.SafeURL(href) } class="block hover:scale-105 transition-transform">
+        @Card(ctx, props) {
+            { children... }
+        }
+    </a>
+}
+
+// Horizontal Card - karta z obrazem po lewej
+templ HorizontalCard(ctx context.Context, props CardProps) {
+    <div class={ getCardClasses(ctx, props) + " flex flex-row items-center gap-4" }>
+        if props.Image != "" {
+            <img 
+                src={ props.Image } 
+                alt={ props.ImageAlt }
+                class="w-32 h-32 object-cover rounded-lg flex-shrink-0"
+            />
+        }
+        
+        <div class="flex-1">
+            if props.Title != "" {
+                <h3 class="text-xl font-bold mb-2 text-gray-800">
+                    { props.Title }
+                </h3>
+            }
+            if props.Content != "" {
+                <p class="text-gray-600">
+                    { props.Content }
+                </p>
+            }
+            { children... }
+        </div>
     </div>
 }
