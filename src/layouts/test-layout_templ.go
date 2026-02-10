@@ -9,60 +9,66 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
+	"context"
 	"templ-ui-kit/src/components"
 )
 
 // Aliasy dla ułatwienia - używamy nazw z pakietu components
 type (
-	ButtonProps         = components.ButtonProps
-	ButtonVariant       = components.ButtonVariant
-	ButtonSize          = components.ButtonSize
-	ButtonWidth         = components.ButtonWidth
-	IconPosition        = components.IconPosition
-	CardProps           = components.CardProps
-	CardVariant         = components.CardVariant
-	CardSize            = components.CardSize
-	CardShadow          = components.CardShadow
-	CardBorderRadius    = components.CardBorderRadius
-	ErrorProps          = components.ErrorProps
-	ErrorVariant        = components.ErrorVariant
-	ErrorSize           = components.ErrorSize
-	GenericErrorProps   = components.GenericErrorProps
-	GenericSuccessProps = components.GenericSuccessProps
-	FormInputProps      = components.FormInputProps
-	InputSize           = components.InputSize
-	InputVariant        = components.InputVariant
-	FormSelectProps     = components.FormSelectProps
-	SelectOption        = components.SelectOption
-	PaginationProps     = components.PaginationProps
-	PaginationVariant   = components.PaginationVariant
-	PaginationSize      = components.PaginationSize
-	TabProps            = components.TabProps
-	TabVariant          = components.TabVariant
-	TabSize             = components.TabSize
-	ModalProps          = components.ModalProps
-	ModalSize           = components.ModalSize
-	ModalPosition       = components.ModalPosition
-	ModalTriggerProps   = components.ModalTriggerProps
+	ButtonProps          = components.ButtonProps
+	ButtonVariant        = components.ButtonVariant
+	ButtonSize           = components.ButtonSize
+	ButtonWidth          = components.ButtonWidth
+	IconPosition         = components.IconPosition
+	CardProps            = components.CardProps
+	CardVariant          = components.CardVariant
+	CardSize             = components.CardSize
+	CardShadow           = components.CardShadow
+	CardBorderRadius     = components.CardBorderRadius
+	ErrorProps           = components.ErrorProps
+	ErrorVariant         = components.ErrorVariant
+	ErrorSize            = components.ErrorSize
+	GenericErrorProps    = components.GenericErrorProps
+	GenericSuccessProps  = components.GenericSuccessProps
+	FormInputProps       = components.FormInputProps
+	InputSize            = components.InputSize
+	InputVariant         = components.InputVariant
+	FormSelectProps      = components.FormSelectProps
+	SelectOption         = components.SelectOption
+	PaginationProps      = components.PaginationProps
+	PaginationVariant    = components.PaginationVariant
+	PaginationSize       = components.PaginationSize
+	TabProps             = components.TabProps
+	TabVariant           = components.TabVariant
+	TabSize              = components.TabSize
+	ModalProps           = components.ModalProps
+	ModalSize            = components.ModalSize
+	ModalPosition        = components.ModalPosition
+	ModalTriggerProps    = components.ModalTriggerProps
+	NotificationProps    = components.NotificationProps
+	NotificationType     = components.NotificationType
+	NotificationPosition = components.NotificationPosition
 )
 
 // Aliasy dla funkcji komponentów
 var (
-	Button         = components.Button
-	Card           = components.Card
-	Error          = components.Error
-	GenericError   = components.GenericError
-	GenericSuccess = components.GenericSuccess
-	FormInput      = components.FormInput
-	FormSelect     = components.FormSelect
-	Pagination     = components.Pagination
-	Tab            = components.Tab
-	Modal          = components.Modal
-	ModalTrigger   = components.ModalTrigger
-	IconPlus       = components.IconPlus
-	IconTrash      = components.IconTrash
-	IconDownload   = components.IconDownload
-	IconCheck      = components.IconCheck
+	Button             = components.Button
+	Card               = components.Card
+	Error              = components.Error
+	GenericError       = components.GenericError
+	GenericSuccess     = components.GenericSuccess
+	FormInput          = components.FormInput
+	FormSelect         = components.FormSelect
+	Pagination         = components.Pagination
+	Tab                = components.Tab
+	Modal              = components.Modal
+	ModalTrigger       = components.ModalTrigger
+	Notification       = components.Notification
+	InlineNotification = components.InlineNotification
+	IconPlus           = components.IconPlus
+	IconTrash          = components.IconTrash
+	IconDownload       = components.IconDownload
+	IconCheck          = components.IconCheck
 )
 
 // Aliasy dla stałych
@@ -155,9 +161,23 @@ const (
 	ModalSizeSmall  = components.ModalSizeSmall
 	ModalSizeMedium = components.ModalSizeMedium
 	ModalSizeLarge  = components.ModalSizeLarge
+
+	// Notification types
+	NotificationSuccess = components.NotificationSuccess
+	NotificationError   = components.NotificationError
+	NotificationWarning = components.NotificationWarning
+	NotificationInfo    = components.NotificationInfo
+
+	// Notification positions
+	PositionTopRight     = components.PositionTopRight
+	PositionTopLeft      = components.PositionTopLeft
+	PositionTopCenter    = components.PositionTopCenter
+	PositionBottomRight  = components.PositionBottomRight
+	PositionBottomLeft   = components.PositionBottomLeft
+	PositionBottomCenter = components.PositionBottomCenter
 )
 
-func TestLayout() templ.Component {
+func TestLayout(ctx context.Context) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -178,23 +198,23 @@ func TestLayout() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html lang=\"pl\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Templ Components - Test Layout</title><script src=\"https://cdn.tailwindcss.com\"></script><style>\r\n\t\t\t\t.component-section {\r\n\t\t\t\t\tmargin-bottom: 3rem;\r\n\t\t\t\t\tpadding: 2rem;\r\n\t\t\t\t\tbackground: #f9fafb;\r\n\t\t\t\t\tborder-radius: 0.5rem;\r\n\t\t\t\t}\r\n\t\t\t\t.component-title {\r\n\t\t\t\t\tfont-size: 1.5rem;\r\n\t\t\t\t\tfont-weight: bold;\r\n\t\t\t\t\tmargin-bottom: 1.5rem;\r\n\t\t\t\t\tcolor: #1f2937;\r\n\t\t\t\t\tborder-bottom: 2px solid #3b82f6;\r\n\t\t\t\t\tpadding-bottom: 0.5rem;\r\n\t\t\t\t}\r\n\t\t\t\t.demo-grid {\r\n\t\t\t\t\tdisplay: grid;\r\n\t\t\t\t\tgap: 1.5rem;\r\n\t\t\t\t\tmargin-top: 1rem;\r\n\t\t\t\t}\r\n\t\t\t\t.demo-item {\r\n\t\t\t\t\tpadding: 1rem;\r\n\t\t\t\t\tbackground: white;\r\n\t\t\t\t\tborder-radius: 0.375rem;\r\n\t\t\t\t\tborder: 1px solid #e5e7eb;\r\n\t\t\t\t}\r\n\t\t\t\t.demo-label {\r\n\t\t\t\t\tfont-size: 0.875rem;\r\n\t\t\t\t\tfont-weight: 600;\r\n\t\t\t\t\tcolor: #6b7280;\r\n\t\t\t\t\tmargin-bottom: 0.5rem;\r\n\t\t\t\t}\r\n\t\t\t</style></head><body class=\"bg-gray-100 p-8\"><div class=\"max-w-7xl mx-auto\"><header class=\"mb-8\"><h1 class=\"text-4xl font-bold text-gray-900 mb-2\">Templ Components Test Layout</h1><p class=\"text-gray-600\">Wszystkie komponenty w jednym miejscu do testowania</p></header><section class=\"component-section\"><h2 class=\"component-title\">🔘 Buttons</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">Variants</div><div class=\"flex gap-2 flex-wrap\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html lang=\"pl\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Templ Components - Test Layout</title><script src=\"https://cdn.tailwindcss.com\"></script><script defer src=\"https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js\"></script><style>\r\n\t\t\t\t.component-section {\r\n\t\t\t\t\tmargin-bottom: 3rem;\r\n\t\t\t\t\tpadding: 2rem;\r\n\t\t\t\t\tbackground: #f9fafb;\r\n\t\t\t\t\tborder-radius: 0.5rem;\r\n\t\t\t\t}\r\n\t\t\t\t.component-title {\r\n\t\t\t\t\tfont-size: 1.5rem;\r\n\t\t\t\t\tfont-weight: bold;\r\n\t\t\t\t\tmargin-bottom: 1.5rem;\r\n\t\t\t\t\tcolor: #1f2937;\r\n\t\t\t\t\tborder-bottom: 2px solid #3b82f6;\r\n\t\t\t\t\tpadding-bottom: 0.5rem;\r\n\t\t\t\t}\r\n\t\t\t\t.demo-grid {\r\n\t\t\t\t\tdisplay: grid;\r\n\t\t\t\t\tgap: 1.5rem;\r\n\t\t\t\t\tmargin-top: 1rem;\r\n\t\t\t\t}\r\n\t\t\t\t.demo-item {\r\n\t\t\t\t\tpadding: 1rem;\r\n\t\t\t\t\tbackground: white;\r\n\t\t\t\t\tborder-radius: 0.375rem;\r\n\t\t\t\t\tborder: 1px solid #e5e7eb;\r\n\t\t\t\t}\r\n\t\t\t\t.demo-label {\r\n\t\t\t\t\tfont-size: 0.875rem;\r\n\t\t\t\t\tfont-weight: 600;\r\n\t\t\t\t\tcolor: #6b7280;\r\n\t\t\t\t\tmargin-bottom: 0.5rem;\r\n\t\t\t\t}\r\n\t\t\t\t[x-cloak] {\r\n\t\t\t\t\tdisplay: none !important;\r\n\t\t\t\t}\r\n\t\t\t</style></head><body class=\"bg-gray-100 p-8\"><div class=\"max-w-7xl mx-auto\"><header class=\"mb-8\"><h1 class=\"text-4xl font-bold text-gray-900 mb-2\">Templ Components Test Layout</h1><p class=\"text-gray-600\">Wszystkie komponenty w jednym miejscu do testowania</p></header><section class=\"component-section\"><h2 class=\"component-title\">🔘 Buttons</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">Variants</div><div class=\"flex gap-2 flex-wrap\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{Text: "Primary Button", Variant: VariantPrimary}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ctx, ButtonProps{Text: "Primary Button", Variant: VariantPrimary}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{Text: "Secondary Button", Variant: VariantSecondary}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ctx, ButtonProps{Text: "Secondary Button", Variant: VariantSecondary}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{Text: "Danger Button", Variant: VariantDanger}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ctx, ButtonProps{Text: "Danger Button", Variant: VariantDanger}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{Text: "Buy Button", Variant: VariantBuy}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ctx, ButtonProps{Text: "Buy Button", Variant: VariantBuy}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -202,19 +222,19 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{Text: "Small", Size: SizeSmall}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ctx, ButtonProps{Text: "Small", Size: SizeSmall}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{Text: "Medium", Size: SizeMedium}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ctx, ButtonProps{Text: "Medium", Size: SizeMedium}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{Text: "Large", Size: SizeLarge}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ctx, ButtonProps{Text: "Large", Size: SizeLarge}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{Text: "XLarge", Size: SizeXLarge}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ctx, ButtonProps{Text: "XLarge", Size: SizeXLarge}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -222,15 +242,15 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{Text: "Add Item", Icon: IconPlus(), IconPosition: IconLeft}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ctx, ButtonProps{Text: "Add Item", Icon: IconPlus(ctx), IconPosition: IconLeft}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{Text: "Delete", Icon: IconTrash(), Variant: VariantDanger}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ctx, ButtonProps{Text: "Delete", Icon: IconTrash(ctx), Variant: VariantDanger}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{Text: "Download", Icon: IconDownload(), IconPosition: IconRight, Variant: VariantBuy}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ctx, ButtonProps{Text: "Download", Icon: IconDownload(ctx), IconPosition: IconRight, Variant: VariantBuy}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -238,11 +258,11 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{Text: "Loading...", Loading: true}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ctx, ButtonProps{Text: "Loading...", Loading: true}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{Text: "Disabled", Disabled: true}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ctx, ButtonProps{Text: "Disabled", Disabled: true}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -250,23 +270,23 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{Text: "XSmall Width", Width: WidthXSmall}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ctx, ButtonProps{Text: "XSmall Width", Width: WidthXSmall}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{Text: "Small Width", Width: WidthSmall}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ctx, ButtonProps{Text: "Small Width", Width: WidthSmall}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{Text: "Medium Width", Width: WidthMedium}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ctx, ButtonProps{Text: "Medium Width", Width: WidthMedium}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{Text: "Large Width", Width: WidthLarge}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ctx, ButtonProps{Text: "Large Width", Width: WidthLarge}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{Text: "Full Width (default)"}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ctx, ButtonProps{Text: "Full Width (default)"}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -414,7 +434,72 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div></section><section class=\"component-section\"><h2 class=\"component-title\">📝 Form Inputs</h2><div class=\"demo-grid grid-cols-1 md:grid-cols-2\"><div class=\"demo-item\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div></section><section class=\"component-section\"><h2 class=\"component-title\">🔔 Notifications</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">Inline Notifications (All Types)</div><div class=\"space-y-3\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = InlineNotification(ctx, NotificationProps{
+			Title:       "Success!",
+			Message:     "Your changes have been saved successfully.",
+			Type:        NotificationSuccess,
+			Dismissible: true,
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = InlineNotification(ctx, NotificationProps{
+			Title:       "Error!",
+			Message:     "Failed to connect to the server.",
+			Type:        NotificationError,
+			Dismissible: true,
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = InlineNotification(ctx, NotificationProps{
+			Title:       "Warning!",
+			Message:     "Your session will expire in 5 minutes.",
+			Type:        NotificationWarning,
+			Dismissible: true,
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = InlineNotification(ctx, NotificationProps{
+			Title:       "Info",
+			Message:     "New features are available in this update.",
+			Type:        NotificationInfo,
+			Dismissible: true,
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">Without Title</div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = InlineNotification(ctx, NotificationProps{
+			Message:     "This is a notification without a title.",
+			Type:        NotificationInfo,
+			Dismissible: true,
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</div><div class=\"demo-item\"><div class=\"demo-label\">Non-dismissible</div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = InlineNotification(ctx, NotificationProps{
+			Title:       "Important",
+			Message:     "This notification cannot be dismissed.",
+			Type:        NotificationWarning,
+			Dismissible: false,
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</div><div class=\"demo-item\"><div class=\"demo-label\">Floating Notifications (Click to show)</div><div class=\"flex gap-2 flex-wrap\"><button onclick=\"document.getElementById('notif-success').classList.remove('hidden')\" class=\"px-4 py-2 bg-green-500 text-white rounded\">Show Success</button> <button onclick=\"document.getElementById('notif-error').classList.remove('hidden')\" class=\"px-4 py-2 bg-red-500 text-white rounded\">Show Error</button> <button onclick=\"document.getElementById('notif-warning').classList.remove('hidden')\" class=\"px-4 py-2 bg-yellow-500 text-white rounded\">Show Warning</button> <button onclick=\"document.getElementById('notif-info').classList.remove('hidden')\" class=\"px-4 py-2 bg-blue-500 text-white rounded\">Show Info</button></div></div></div></section><section class=\"component-section\"><h2 class=\"component-title\">📝 Form Inputs</h2><div class=\"demo-grid grid-cols-1 md:grid-cols-2\"><div class=\"demo-item\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -427,7 +512,7 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</div><div class=\"demo-item\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</div><div class=\"demo-item\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -441,7 +526,7 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</div><div class=\"demo-item\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</div><div class=\"demo-item\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -455,7 +540,7 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</div><div class=\"demo-item\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div><div class=\"demo-item\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -468,7 +553,7 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</div><div class=\"demo-item\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</div><div class=\"demo-item\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -481,7 +566,7 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</div><div class=\"demo-item\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</div><div class=\"demo-item\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -494,7 +579,7 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div></div></section><section class=\"component-section\"><h2 class=\"component-title\">🔽 Form Selects</h2><div class=\"demo-grid grid-cols-1 md:grid-cols-2\"><div class=\"demo-item\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</div></div></section><section class=\"component-section\"><h2 class=\"component-title\">🔽 Form Selects</h2><div class=\"demo-grid grid-cols-1 md:grid-cols-2\"><div class=\"demo-item\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -513,7 +598,7 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</div><div class=\"demo-item\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</div><div class=\"demo-item\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -531,7 +616,7 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</div><div class=\"demo-item\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</div><div class=\"demo-item\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -548,7 +633,7 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</div><div class=\"demo-item\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</div><div class=\"demo-item\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -564,7 +649,7 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</div></div></section><section class=\"component-section\"><h2 class=\"component-title\">📄 Pagination</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">Primary Pagination (Page 1 of 5)</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</div></div></section><section class=\"component-section\"><h2 class=\"component-title\">📄 Pagination</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">Primary Pagination (Page 1 of 5)</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -577,7 +662,7 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</div><div class=\"demo-item\"><div class=\"demo-label\">Secondary Pagination (Page 3 of 5)</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</div><div class=\"demo-item\"><div class=\"demo-label\">Secondary Pagination (Page 3 of 5)</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -590,7 +675,7 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</div><div class=\"demo-item\"><div class=\"demo-label\">Small Pagination</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</div><div class=\"demo-item\"><div class=\"demo-label\">Small Pagination</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -603,7 +688,7 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</div><div class=\"demo-item\"><div class=\"demo-label\">Large Pagination</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</div><div class=\"demo-item\"><div class=\"demo-label\">Large Pagination</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -616,7 +701,7 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</div></div></section><section class=\"component-section\"><h2 class=\"component-title\">📑 Tabs</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">Primary Tabs</div><div class=\"flex gap-1 border-b\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</div></div></section><section class=\"component-section\"><h2 class=\"component-title\">📑 Tabs</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">Primary Tabs</div><div class=\"flex gap-1 border-b\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -636,7 +721,7 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">Secondary Tabs</div><div class=\"flex gap-1 border-b\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">Secondary Tabs</div><div class=\"flex gap-1 border-b\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -652,7 +737,7 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">Large Tabs</div><div class=\"flex gap-1 border-b\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">Large Tabs</div><div class=\"flex gap-1 border-b\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -668,7 +753,7 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">Small Tabs</div><div class=\"flex gap-1 border-b\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">Small Tabs</div><div class=\"flex gap-1 border-b\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -684,66 +769,126 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "</div></div></div></section><section></section><section class=\"component-section\"><h2 class=\"component-title\">🪟 Modals</h2><div class=\"demo-item\"><div class=\"demo-label\">Modal Triggers</div><div class=\"flex gap-2 flex-wrap\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</div></div></div></section><section class=\"component-section\"><h2 class=\"component-title\">🪟 Modals</h2><div class=\"demo-item\"><div class=\"demo-label\">Modal Triggers</div><div class=\"flex gap-2 flex-wrap\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = ModalTrigger(ModalTriggerProps{
+		templ_7745c5c3_Err = ModalTrigger(ctx, ModalTriggerProps{
 			ModalID: "modal-small",
 			Text:    "Open Small Modal",
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = ModalTrigger(ModalTriggerProps{
+		templ_7745c5c3_Err = ModalTrigger(ctx, ModalTriggerProps{
 			ModalID: "modal-medium",
 			Text:    "Open Medium Modal",
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = ModalTrigger(ModalTriggerProps{
+		templ_7745c5c3_Err = ModalTrigger(ctx, ModalTriggerProps{
 			ModalID: "modal-large",
 			Text:    "Open Large Modal",
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "</div></div></section>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "</div></div></section>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Modal(ModalProps{
+		templ_7745c5c3_Err = Modal(ctx, ModalProps{
 			ID:        "modal-small",
 			Title:     "Small Modal",
 			Size:      ModalSizeSmall,
 			ShowClose: true,
-			Content:   modalSmallContent(),
+			Content:   modalSmallContent(ctx),
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Modal(ModalProps{
+		templ_7745c5c3_Err = Modal(ctx, ModalProps{
 			ID:        "modal-medium",
 			Title:     "Medium Modal",
 			Size:      ModalSizeMedium,
 			ShowClose: true,
-			Content:   modalMediumContent(),
+			Content:   modalMediumContent(ctx),
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Modal(ModalProps{
+		templ_7745c5c3_Err = Modal(ctx, ModalProps{
 			ID:        "modal-large",
 			Title:     "Large Modal",
 			Size:      ModalSizeLarge,
 			ShowClose: true,
-			Content:   modalLargeContent(),
+			Content:   modalLargeContent(ctx),
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "<section class=\"component-section\"><h2 class=\"component-title\">🎨 Combined Example - User Profile Form</h2><div class=\"demo-item\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "<div id=\"notif-success\" class=\"hidden\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = Notification(ctx, NotificationProps{
+			Title:       "Success!",
+			Message:     "Operation completed successfully.",
+			Type:        NotificationSuccess,
+			Position:    PositionTopRight,
+			Dismissible: true,
+			OnClose:     templ.ComponentScript{Call: "document.getElementById('notif-success').classList.add('hidden')"},
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</div><div id=\"notif-error\" class=\"hidden\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = Notification(ctx, NotificationProps{
+			Title:       "Error!",
+			Message:     "Something went wrong. Please try again.",
+			Type:        NotificationError,
+			Position:    PositionTopRight,
+			Dismissible: true,
+			OnClose:     templ.ComponentScript{Call: "document.getElementById('notif-error').classList.add('hidden')"},
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "</div><div id=\"notif-warning\" class=\"hidden\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = Notification(ctx, NotificationProps{
+			Title:       "Warning!",
+			Message:     "Please check your input before proceeding.",
+			Type:        NotificationWarning,
+			Position:    PositionTopRight,
+			Dismissible: true,
+			OnClose:     templ.ComponentScript{Call: "document.getElementById('notif-warning').classList.add('hidden')"},
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "</div><div id=\"notif-info\" class=\"hidden\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = Notification(ctx, NotificationProps{
+			Title:       "Info",
+			Message:     "New updates are available.",
+			Type:        NotificationInfo,
+			Position:    PositionTopRight,
+			Dismissible: true,
+			OnClose:     templ.ComponentScript{Call: "document.getElementById('notif-info').classList.add('hidden')"},
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "</div><section class=\"component-section\"><h2 class=\"component-title\">🎨 Combined Example - User Profile Form</h2><div class=\"demo-item\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -754,7 +899,7 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "<form class=\"space-y-4 mt-4\"><div class=\"grid grid-cols-2 gap-4\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "<form class=\"space-y-4 mt-4\"><div class=\"grid grid-cols-2 gap-4\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -776,7 +921,7 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -803,7 +948,7 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "<div id=\"success-profile\" class=\"hidden\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "<div id=\"success-profile\" class=\"hidden\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -813,27 +958,27 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</div><div class=\"flex gap-2 mt-6\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "</div><div class=\"flex gap-2 mt-6\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{
+		templ_7745c5c3_Err = Button(ctx, ButtonProps{
 			Text:    "Cancel",
 			Variant: VariantSecondary,
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{
+		templ_7745c5c3_Err = Button(ctx, ButtonProps{
 			Text:    "Save Changes",
-			Icon:    IconCheck(),
+			Icon:    IconCheck(ctx),
 			Type:    "submit",
 			OnClick: templ.ComponentScript{Call: "event.preventDefault(); document.getElementById('success-profile').classList.remove('hidden')"},
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "</div></form></div></section><footer class=\"mt-8 text-center text-gray-600 pb-8\"><p>Test Layout dla komponentów Templ • Wszystkie komponenty w jednym miejscu</p></footer></div></body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "</div></form></div></section><footer class=\"mt-8 text-center text-gray-600 pb-8\"><p>Test Layout dla komponentów Templ • Wszystkie komponenty w jednym miejscu</p></footer></div></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -842,7 +987,7 @@ func TestLayout() templ.Component {
 }
 
 // Modal content components
-func modalSmallContent() templ.Component {
+func modalSmallContent(ctx context.Context) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -863,18 +1008,18 @@ func modalSmallContent() templ.Component {
 			templ_7745c5c3_Var2 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "<p class=\"text-gray-600\">This is a small modal window. Perfect for simple confirmations or alerts.</p><div class=\"mt-4 flex gap-2\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "<p class=\"text-gray-600\">This is a small modal window. Perfect for simple confirmations or alerts.</p><div class=\"mt-4 flex gap-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{
+		templ_7745c5c3_Err = Button(ctx, ButtonProps{
 			Text:    "OK",
 			OnClick: templ.ComponentScript{Call: "document.getElementById('modal-small').classList.add('hidden')"},
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -882,7 +1027,7 @@ func modalSmallContent() templ.Component {
 	})
 }
 
-func modalMediumContent() templ.Component {
+func modalMediumContent(ctx context.Context) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -903,7 +1048,7 @@ func modalMediumContent() templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "<p class=\"text-gray-600 mb-4\">This is a medium-sized modal. It has more space for content and forms.</p>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 46, "<p class=\"text-gray-600 mb-4\">This is a medium-sized modal. It has more space for content and forms.</p>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -915,11 +1060,11 @@ func modalMediumContent() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "<div class=\"mt-4 flex gap-2\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "<div class=\"mt-4 flex gap-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{
+		templ_7745c5c3_Err = Button(ctx, ButtonProps{
 			Text:    "Cancel",
 			Variant: VariantSecondary,
 			OnClick: templ.ComponentScript{Call: "document.getElementById('modal-medium').classList.add('hidden')"},
@@ -927,13 +1072,13 @@ func modalMediumContent() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{
+		templ_7745c5c3_Err = Button(ctx, ButtonProps{
 			Text: "Submit",
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 48, "</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -941,7 +1086,7 @@ func modalMediumContent() templ.Component {
 	})
 }
 
-func modalLargeContent() templ.Component {
+func modalLargeContent(ctx context.Context) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -962,7 +1107,7 @@ func modalLargeContent() templ.Component {
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "<p class=\"text-gray-600 mb-4\">This is a large modal with plenty of space for complex forms and detailed content.</p><div class=\"grid grid-cols-2 gap-4 mb-4\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 49, "<p class=\"text-gray-600 mb-4\">This is a large modal with plenty of space for complex forms and detailed content.</p><div class=\"grid grid-cols-2 gap-4 mb-4\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -980,7 +1125,7 @@ func modalLargeContent() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 50, "</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -992,11 +1137,11 @@ func modalLargeContent() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "<div class=\"mb-4\"><label class=\"block text-gray-700 font-medium mb-2\">Message</label> <textarea rows=\"4\" class=\"w-full border rounded-lg focus:outline-none focus:ring-2 transition-colors px-4 py-2 text-base border-gray-300 focus:ring-blue-500\"></textarea></div><div class=\"mt-4 flex gap-2 justify-end\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 51, "<div class=\"mb-4\"><label class=\"block text-gray-700 font-medium mb-2\">Message</label> <textarea rows=\"4\" class=\"w-full border rounded-lg focus:outline-none focus:ring-2 transition-colors px-4 py-2 text-base border-gray-300 focus:ring-blue-500\"></textarea></div><div class=\"mt-4 flex gap-2 justify-end\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{
+		templ_7745c5c3_Err = Button(ctx, ButtonProps{
 			Text:    "Cancel",
 			Variant: VariantSecondary,
 			OnClick: templ.ComponentScript{Call: "document.getElementById('modal-large').classList.add('hidden')"},
@@ -1004,13 +1149,13 @@ func modalLargeContent() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{
+		templ_7745c5c3_Err = Button(ctx, ButtonProps{
 			Text: "Send Message",
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 52, "</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

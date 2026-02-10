@@ -1,6 +1,7 @@
 package layouts
 
 import (
+	"context"
 	"templ-ui-kit/src/components"
 )
 
@@ -36,6 +37,9 @@ type (
 	ModalSize = components.ModalSize
 	ModalPosition = components.ModalPosition
 	ModalTriggerProps = components.ModalTriggerProps
+	NotificationProps = components.NotificationProps
+	NotificationType = components.NotificationType
+	NotificationPosition = components.NotificationPosition
 )
 
 // Aliasy dla funkcji komponentów
@@ -51,6 +55,8 @@ var (
 	Tab = components.Tab
 	Modal = components.Modal
 	ModalTrigger = components.ModalTrigger
+	Notification = components.Notification
+	InlineNotification = components.InlineNotification
 	IconPlus = components.IconPlus
 	IconTrash = components.IconTrash
 	IconDownload = components.IconDownload
@@ -147,9 +153,23 @@ const (
 	ModalSizeSmall = components.ModalSizeSmall
 	ModalSizeMedium = components.ModalSizeMedium
 	ModalSizeLarge = components.ModalSizeLarge
+	
+	// Notification types
+	NotificationSuccess = components.NotificationSuccess
+	NotificationError = components.NotificationError
+	NotificationWarning = components.NotificationWarning
+	NotificationInfo = components.NotificationInfo
+	
+	// Notification positions
+	PositionTopRight = components.PositionTopRight
+	PositionTopLeft = components.PositionTopLeft
+	PositionTopCenter = components.PositionTopCenter
+	PositionBottomRight = components.PositionBottomRight
+	PositionBottomLeft = components.PositionBottomLeft
+	PositionBottomCenter = components.PositionBottomCenter
 )
 
-templ TestLayout() {
+templ TestLayout(ctx context.Context) {
 	<!DOCTYPE html>
 	<html lang="pl">
 		<head>
@@ -157,6 +177,7 @@ templ TestLayout() {
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<title>Templ Components - Test Layout</title>
 			<script src="https://cdn.tailwindcss.com"></script>
+			<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 			<style>
 				.component-section {
 					margin-bottom: 3rem;
@@ -189,6 +210,9 @@ templ TestLayout() {
 					color: #6b7280;
 					margin-bottom: 0.5rem;
 				}
+				[x-cloak] {
+					display: none !important;
+				}
 			</style>
 		</head>
 		<body class="bg-gray-100 p-8">
@@ -204,44 +228,44 @@ templ TestLayout() {
 						<div class="demo-item">
 							<div class="demo-label">Variants</div>
 							<div class="flex gap-2 flex-wrap">
-								@Button(ButtonProps{Text: "Primary Button", Variant: VariantPrimary})
-								@Button(ButtonProps{Text: "Secondary Button", Variant: VariantSecondary})
-								@Button(ButtonProps{Text: "Danger Button", Variant: VariantDanger})
-								@Button(ButtonProps{Text: "Buy Button", Variant: VariantBuy})
+								@Button(ctx, ButtonProps{Text: "Primary Button", Variant: VariantPrimary})
+								@Button(ctx, ButtonProps{Text: "Secondary Button", Variant: VariantSecondary})
+								@Button(ctx, ButtonProps{Text: "Danger Button", Variant: VariantDanger})
+								@Button(ctx, ButtonProps{Text: "Buy Button", Variant: VariantBuy})
 							</div>
 						</div>
 						<div class="demo-item">
 							<div class="demo-label">Sizes</div>
 							<div class="flex gap-2 items-center flex-wrap">
-								@Button(ButtonProps{Text: "Small", Size: SizeSmall})
-								@Button(ButtonProps{Text: "Medium", Size: SizeMedium})
-								@Button(ButtonProps{Text: "Large", Size: SizeLarge})
-								@Button(ButtonProps{Text: "XLarge", Size: SizeXLarge})
+								@Button(ctx, ButtonProps{Text: "Small", Size: SizeSmall})
+								@Button(ctx, ButtonProps{Text: "Medium", Size: SizeMedium})
+								@Button(ctx, ButtonProps{Text: "Large", Size: SizeLarge})
+								@Button(ctx, ButtonProps{Text: "XLarge", Size: SizeXLarge})
 							</div>
 						</div>
 						<div class="demo-item">
 							<div class="demo-label">With Icons</div>
 							<div class="flex gap-2 flex-wrap">
-								@Button(ButtonProps{Text: "Add Item", Icon: IconPlus(), IconPosition: IconLeft})
-								@Button(ButtonProps{Text: "Delete", Icon: IconTrash(), Variant: VariantDanger})
-								@Button(ButtonProps{Text: "Download", Icon: IconDownload(), IconPosition: IconRight, Variant: VariantBuy})
+								@Button(ctx, ButtonProps{Text: "Add Item", Icon: IconPlus(ctx), IconPosition: IconLeft})
+								@Button(ctx, ButtonProps{Text: "Delete", Icon: IconTrash(ctx), Variant: VariantDanger})
+								@Button(ctx, ButtonProps{Text: "Download", Icon: IconDownload(ctx), IconPosition: IconRight, Variant: VariantBuy})
 							</div>
 						</div>
 						<div class="demo-item">
 							<div class="demo-label">States</div>
 							<div class="flex gap-2 flex-wrap">
-								@Button(ButtonProps{Text: "Loading...", Loading: true})
-								@Button(ButtonProps{Text: "Disabled", Disabled: true})
+								@Button(ctx, ButtonProps{Text: "Loading...", Loading: true})
+								@Button(ctx, ButtonProps{Text: "Disabled", Disabled: true})
 							</div>
 						</div>
 						<div class="demo-item">
 							<div class="demo-label">Widths</div>
 							<div class="space-y-2">
-								@Button(ButtonProps{Text: "XSmall Width", Width: WidthXSmall})
-								@Button(ButtonProps{Text: "Small Width", Width: WidthSmall})
-								@Button(ButtonProps{Text: "Medium Width", Width: WidthMedium})
-								@Button(ButtonProps{Text: "Large Width", Width: WidthLarge})
-								@Button(ButtonProps{Text: "Full Width (default)"})
+								@Button(ctx, ButtonProps{Text: "XSmall Width", Width: WidthXSmall})
+								@Button(ctx, ButtonProps{Text: "Small Width", Width: WidthSmall})
+								@Button(ctx, ButtonProps{Text: "Medium Width", Width: WidthMedium})
+								@Button(ctx, ButtonProps{Text: "Large Width", Width: WidthLarge})
+								@Button(ctx, ButtonProps{Text: "Full Width (default)"})
 							</div>
 						</div>
 					</div>
@@ -346,6 +370,75 @@ templ TestLayout() {
 							Closeable: false,
 							ID:        "error-msg-2",
 						})
+					</div>
+				</section>
+				// NOTIFICATIONS
+				<section class="component-section">
+					<h2 class="component-title">🔔 Notifications</h2>
+					<div class="demo-grid">
+						<div class="demo-item">
+							<div class="demo-label">Inline Notifications (All Types)</div>
+							<div class="space-y-3">
+								@InlineNotification(ctx, NotificationProps{
+									Title:       "Success!",
+									Message:     "Your changes have been saved successfully.",
+									Type:        NotificationSuccess,
+									Dismissible: true,
+								})
+								@InlineNotification(ctx, NotificationProps{
+									Title:       "Error!",
+									Message:     "Failed to connect to the server.",
+									Type:        NotificationError,
+									Dismissible: true,
+								})
+								@InlineNotification(ctx, NotificationProps{
+									Title:       "Warning!",
+									Message:     "Your session will expire in 5 minutes.",
+									Type:        NotificationWarning,
+									Dismissible: true,
+								})
+								@InlineNotification(ctx, NotificationProps{
+									Title:       "Info",
+									Message:     "New features are available in this update.",
+									Type:        NotificationInfo,
+									Dismissible: true,
+								})
+							</div>
+						</div>
+						<div class="demo-item">
+							<div class="demo-label">Without Title</div>
+							@InlineNotification(ctx, NotificationProps{
+								Message:     "This is a notification without a title.",
+								Type:        NotificationInfo,
+								Dismissible: true,
+							})
+						</div>
+						<div class="demo-item">
+							<div class="demo-label">Non-dismissible</div>
+							@InlineNotification(ctx, NotificationProps{
+								Title:       "Important",
+								Message:     "This notification cannot be dismissed.",
+								Type:        NotificationWarning,
+								Dismissible: false,
+							})
+						</div>
+						<div class="demo-item">
+							<div class="demo-label">Floating Notifications (Click to show)</div>
+							<div class="flex gap-2 flex-wrap">
+								<button onclick="document.getElementById('notif-success').classList.remove('hidden')" class="px-4 py-2 bg-green-500 text-white rounded">
+									Show Success
+								</button>
+								<button onclick="document.getElementById('notif-error').classList.remove('hidden')" class="px-4 py-2 bg-red-500 text-white rounded">
+									Show Error
+								</button>
+								<button onclick="document.getElementById('notif-warning').classList.remove('hidden')" class="px-4 py-2 bg-yellow-500 text-white rounded">
+									Show Warning
+								</button>
+								<button onclick="document.getElementById('notif-info').classList.remove('hidden')" class="px-4 py-2 bg-blue-500 text-white rounded">
+									Show Info
+								</button>
+							</div>
+						</div>
 					</div>
 				</section>
 				// FORM INPUTS
@@ -541,25 +634,21 @@ templ TestLayout() {
 						</div>
 					</div>
 				</section>
-				// NOTIFICATION
-				<section>
-				
-				</section>
 				// MODALS
 				<section class="component-section">
 					<h2 class="component-title">🪟 Modals</h2>
 					<div class="demo-item">
 						<div class="demo-label">Modal Triggers</div>
 						<div class="flex gap-2 flex-wrap">
-							@ModalTrigger(ModalTriggerProps{
+							@ModalTrigger(ctx, ModalTriggerProps{
 								ModalID: "modal-small",
 								Text:    "Open Small Modal",
 							})
-							@ModalTrigger(ModalTriggerProps{
+							@ModalTrigger(ctx, ModalTriggerProps{
 								ModalID: "modal-medium",
 								Text:    "Open Medium Modal",
 							})
-							@ModalTrigger(ModalTriggerProps{
+							@ModalTrigger(ctx, ModalTriggerProps{
 								ModalID: "modal-large",
 								Text:    "Open Large Modal",
 							})
@@ -567,27 +656,68 @@ templ TestLayout() {
 					</div>
 				</section>
 				// Modal Definitions
-				@Modal(ModalProps{
+				@Modal(ctx, ModalProps{
 					ID:        "modal-small",
 					Title:     "Small Modal",
 					Size:      ModalSizeSmall,
 					ShowClose: true,
-					Content: modalSmallContent(),
+					Content: modalSmallContent(ctx),
 				})
-				@Modal(ModalProps{
+				@Modal(ctx, ModalProps{
 					ID:        "modal-medium",
 					Title:     "Medium Modal",
 					Size:      ModalSizeMedium,
 					ShowClose: true,
-					Content: modalMediumContent(),
+					Content: modalMediumContent(ctx),
 				})
-				@Modal(ModalProps{
+				@Modal(ctx, ModalProps{
 					ID:        "modal-large",
 					Title:     "Large Modal",
 					Size:      ModalSizeLarge,
 					ShowClose: true,
-					Content: modalLargeContent(),
+					Content: modalLargeContent(ctx),
 				})
+				// Floating Notifications (hidden by default)
+				<div id="notif-success" class="hidden">
+					@Notification(ctx, NotificationProps{
+						Title:       "Success!",
+						Message:     "Operation completed successfully.",
+						Type:        NotificationSuccess,
+						Position:    PositionTopRight,
+						Dismissible: true,
+						OnClose:     templ.ComponentScript{Call: "document.getElementById('notif-success').classList.add('hidden')"},
+					})
+				</div>
+				<div id="notif-error" class="hidden">
+					@Notification(ctx, NotificationProps{
+						Title:       "Error!",
+						Message:     "Something went wrong. Please try again.",
+						Type:        NotificationError,
+						Position:    PositionTopRight,
+						Dismissible: true,
+						OnClose:     templ.ComponentScript{Call: "document.getElementById('notif-error').classList.add('hidden')"},
+					})
+				</div>
+				<div id="notif-warning" class="hidden">
+					@Notification(ctx, NotificationProps{
+						Title:       "Warning!",
+						Message:     "Please check your input before proceeding.",
+						Type:        NotificationWarning,
+						Position:    PositionTopRight,
+						Dismissible: true,
+						OnClose:     templ.ComponentScript{Call: "document.getElementById('notif-warning').classList.add('hidden')"},
+					})
+				</div>
+				<div id="notif-info" class="hidden">
+					@Notification(ctx, NotificationProps{
+						Title:       "Info",
+						Message:     "New updates are available.",
+						Type:        NotificationInfo,
+						Position:    PositionTopRight,
+						Dismissible: true,
+						OnClose:     templ.ComponentScript{Call: "document.getElementById('notif-info').classList.add('hidden')"},
+					})
+				</div>
 				// COMBINED EXAMPLE
 				<section class="component-section">
 					<h2 class="component-title">🎨 Combined Example - User Profile Form</h2>
@@ -634,13 +764,13 @@ templ TestLayout() {
 								})
 							</div>
 							<div class="flex gap-2 mt-6">
-								@Button(ButtonProps{
+								@Button(ctx, ButtonProps{
 									Text:    "Cancel",
 									Variant: VariantSecondary,
 								})
-								@Button(ButtonProps{
+								@Button(ctx, ButtonProps{
 									Text:    "Save Changes",
-									Icon:    IconCheck(),
+									Icon:    IconCheck(ctx),
 									Type:    "submit",
 									OnClick: templ.ComponentScript{Call: "event.preventDefault(); document.getElementById('success-profile').classList.remove('hidden')"},
 								})
@@ -657,17 +787,17 @@ templ TestLayout() {
 }
 
 // Modal content components
-templ modalSmallContent() {
+templ modalSmallContent(ctx context.Context) {
 	<p class="text-gray-600">This is a small modal window. Perfect for simple confirmations or alerts.</p>
 	<div class="mt-4 flex gap-2">
-		@Button(ButtonProps{
+		@Button(ctx, ButtonProps{
 			Text:    "OK",
 			OnClick: templ.ComponentScript{Call: "document.getElementById('modal-small').classList.add('hidden')"},
 		})
 	</div>
 }
 
-templ modalMediumContent() {
+templ modalMediumContent(ctx context.Context) {
 	<p class="text-gray-600 mb-4">This is a medium-sized modal. It has more space for content and forms.</p>
 	@FormInput(FormInputProps{
 		Name:        "modal-name",
@@ -675,18 +805,18 @@ templ modalMediumContent() {
 		Placeholder: "Enter your name",
 	})
 	<div class="mt-4 flex gap-2">
-		@Button(ButtonProps{
+		@Button(ctx, ButtonProps{
 			Text:    "Cancel",
 			Variant: VariantSecondary,
 			OnClick: templ.ComponentScript{Call: "document.getElementById('modal-medium').classList.add('hidden')"},
 		})
-		@Button(ButtonProps{
+		@Button(ctx, ButtonProps{
 			Text: "Submit",
 		})
 	</div>
 }
 
-templ modalLargeContent() {
+templ modalLargeContent(ctx context.Context) {
 	<p class="text-gray-600 mb-4">This is a large modal with plenty of space for complex forms and detailed content.</p>
 	<div class="grid grid-cols-2 gap-4 mb-4">
 		@FormInput(FormInputProps{
@@ -708,14 +838,13 @@ templ modalLargeContent() {
 		<textarea rows="4" class="w-full border rounded-lg focus:outline-none focus:ring-2 transition-colors px-4 py-2 text-base border-gray-300 focus:ring-blue-500"></textarea>
 	</div>
 	<div class="mt-4 flex gap-2 justify-end">
-		@Button(ButtonProps{
+		@Button(ctx, ButtonProps{
 			Text:    "Cancel",
 			Variant: VariantSecondary,
 			OnClick: templ.ComponentScript{Call: "document.getElementById('modal-large').classList.add('hidden')"},
 		})
-		@Button(ButtonProps{
+		@Button(ctx, ButtonProps{
 			Text: "Send Message",
 		})
 	</div>
-	
 }
