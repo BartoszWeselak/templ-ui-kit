@@ -684,7 +684,7 @@ func TestLayout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "</div></div></div></section><section class=\"component-section\"><h2 class=\"component-title\">🪟 Modals</h2><div class=\"demo-item\"><div class=\"demo-label\">Modal Triggers</div><div class=\"flex gap-2 flex-wrap\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "</div></div></div></section><section></section><section class=\"component-section\"><h2 class=\"component-title\">🪟 Modals</h2><div class=\"demo-item\"><div class=\"demo-label\">Modal Triggers</div><div class=\"flex gap-2 flex-wrap\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

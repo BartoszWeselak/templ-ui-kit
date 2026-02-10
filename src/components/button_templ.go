@@ -8,7 +8,10 @@ package components
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "fmt"
+import (
+	"context"
+	"fmt"
+)
 
 type ButtonVariant string
 type ButtonSize string
@@ -55,7 +58,14 @@ type ButtonProps struct {
 	Type         string // "button", "submit", "reset"
 }
 
-func getButtonClasses(props ButtonProps) string {
+func getButtonClasses(ctx context.Context, props ButtonProps) string {
+	// Sprawdzenie czy kontekst nie został anulowany
+	select {
+	case <-ctx.Done():
+		return "opacity-50 cursor-not-allowed" // Fallback dla anulowanego kontekstu
+	default:
+	}
+
 	// Base classes
 	baseClasses := "hover:opacity-80 transition-opacity inline-flex items-center justify-center gap-2"
 
@@ -148,7 +158,7 @@ func getSpinnerSize(size ButtonSize) string {
 	}
 }
 
-func LoadingSpinner(size ButtonSize) templ.Component {
+func LoadingSpinner(ctx context.Context, size ButtonSize) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -195,7 +205,7 @@ func LoadingSpinner(size ButtonSize) templ.Component {
 	})
 }
 
-func Button(props ButtonProps) templ.Component {
+func Button(ctx context.Context, props ButtonProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -216,7 +226,7 @@ func Button(props ButtonProps) templ.Component {
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var5 = []any{getButtonClasses(props)}
+		var templ_7745c5c3_Var5 = []any{getButtonClasses(ctx, props)}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var5...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -237,7 +247,7 @@ func Button(props ButtonProps) templ.Component {
 			return "button"
 		}())
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/button.templ`, Line: 158, Col: 15}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/button.templ`, Line: 168, Col: 15}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -281,7 +291,7 @@ func Button(props ButtonProps) templ.Component {
 		}
 		if props.IconPosition == IconLeft || props.IconPosition == "" {
 			if props.Loading {
-				templ_7745c5c3_Err = LoadingSpinner(props.Size).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = LoadingSpinner(ctx, props.Size).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -300,7 +310,7 @@ func Button(props ButtonProps) templ.Component {
 			var templ_7745c5c3_Var9 string
 			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(props.Text)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/button.templ`, Line: 177, Col: 30}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/button.templ`, Line: 187, Col: 30}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 			if templ_7745c5c3_Err != nil {
@@ -313,7 +323,7 @@ func Button(props ButtonProps) templ.Component {
 		}
 		if props.IconPosition == IconRight {
 			if props.Loading {
-				templ_7745c5c3_Err = LoadingSpinner(props.Size).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = LoadingSpinner(ctx, props.Size).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -333,7 +343,7 @@ func Button(props ButtonProps) templ.Component {
 }
 
 // Przykładowe ikony do użycia z buttonem
-func IconPlus() templ.Component {
+func IconPlus(ctx context.Context) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -362,7 +372,7 @@ func IconPlus() templ.Component {
 	})
 }
 
-func IconTrash() templ.Component {
+func IconTrash(ctx context.Context) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -391,7 +401,7 @@ func IconTrash() templ.Component {
 	})
 }
 
-func IconCheck() templ.Component {
+func IconCheck(ctx context.Context) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -420,7 +430,7 @@ func IconCheck() templ.Component {
 	})
 }
 
-func IconX() templ.Component {
+func IconX(ctx context.Context) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -449,7 +459,7 @@ func IconX() templ.Component {
 	})
 }
 
-func IconArrowRight() templ.Component {
+func IconArrowRight(ctx context.Context) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -478,7 +488,7 @@ func IconArrowRight() templ.Component {
 	})
 }
 
-func IconDownload() templ.Component {
+func IconDownload(ctx context.Context) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
