@@ -174,7 +174,6 @@
 .text-warning-dark   { color: var(--warning-800); }
 .text-danger-dark    { color: var(--danger-800); }
 
-
 .border-primary   { border-color: var(--primary-500); }
 .border-secondary { border-color: var(--secondary-500); }
 .border-success   { border-color: var(--success-500); }
@@ -186,6 +185,7 @@
 .border-success-light   { border-color: var(--success-200); }
 .border-warning-light   { border-color: var(--warning-200); }
 .border-danger-light    { border-color: var(--danger-200); }
+
 
 .btn-sm {
   padding: var(--spacing-xs) var(--spacing-sm);
@@ -209,3 +209,18 @@
 
 
 .text-white { color: #ffffff; }
+
+
+.card-padding { padding: var(--spacing-lg); }
+
+.shadow-none { box-shadow: none; }
+.shadow-sm   { box-shadow: var(--shadow-sm); }
+.shadow-md   { box-shadow: var(--shadow-md); }
+.shadow-lg   { box-shadow: var(--shadow-lg); }
+
+.rounded-none { border-radius: 0; }
+.rounded-sm   { border-radius: var(--radius-sm); }
+.rounded-md   { border-radius: var(--radius-md); }
+.rounded-lg   { border-radius: var(--radius-lg); }
+
+.border-primary { border-color: var(--primary-border); }

@@ -1,8 +1,8 @@
 package components
 
 import (
-    "context"
-    "fmt"
+	"context"
+	"fmt"
 )
 
 type CardVariant string
@@ -11,260 +11,247 @@ type CardShadow string
 type CardBorderRadius string
 
 const (
-    // Variants (colors)
-    CardVariantGray   CardVariant = "gray"
-    CardVariantWhite  CardVariant = "white"
-    CardVariantBlue   CardVariant = "blue"
-    
-    // Sizes
-    CardSizeSmall  CardSize = "small"
-    CardSizeMedium CardSize = "medium"
-    CardSizeLarge  CardSize = "large"
-    CardSizeFull   CardSize = "full"
-    CardSizeHalf   CardSize = "half"
-    
-    // Shadows
-    ShadowNone   CardShadow = "none"
-    ShadowSmall  CardShadow = "small"
-    ShadowMedium CardShadow = "medium"
-    ShadowLarge  CardShadow = "large"
-    
-    // Border Radius
-    RadiusNone   CardBorderRadius = "none"
-    RadiusSmall  CardBorderRadius = "small"
-    RadiusMedium CardBorderRadius = "medium"
-    RadiusLarge  CardBorderRadius = "large"
+	// Variants (colors)
+	CardVariantGray  CardVariant = "gray"
+	CardVariantWhite CardVariant = "white"
+	CardVariantBlue  CardVariant = "blue"
+
+	// Sizes
+	CardSizeSmall  CardSize = "small"
+	CardSizeMedium CardSize = "medium"
+	CardSizeLarge  CardSize = "large"
+	CardSizeFull   CardSize = "full"
+	CardSizeHalf   CardSize = "half"
+
+	// Shadows
+	ShadowNone   CardShadow = "none"
+	ShadowSmall  CardShadow = "small"
+	ShadowMedium CardShadow = "medium"
+	ShadowLarge  CardShadow = "large"
+
+	// Border Radius
+	RadiusNone   CardBorderRadius = "none"
+	RadiusSmall  CardBorderRadius = "small"
+	RadiusMedium CardBorderRadius = "medium"
+	RadiusLarge  CardBorderRadius = "large"
 )
 
 type CardProps struct {
-    Title        string
-    Content      string
-    Variant      CardVariant
-    Size         CardSize
-    Shadow       CardShadow
-    BorderRadius CardBorderRadius
-    ClassName    string
-    Header       templ.Component  // Custom header content
-    Footer       templ.Component  // Custom footer content
-    Image        string           // Image URL
-    ImageAlt     string           // Image alt text
+	Title        string
+	Content      string
+	Variant      CardVariant
+	Size         CardSize
+	Shadow       CardShadow
+	BorderRadius CardBorderRadius
+	ClassName    string
+	Header       templ.Component // Custom header content
+	Footer       templ.Component // Custom footer content
+	Image        string          // Image URL
+	ImageAlt     string          // Image alt text
+}
+
+func getCardVariantClasses(variant CardVariant) string {
+	// Klasy z theme.css
+	switch variant {
+	case CardVariantGray:
+		return "bg-secondary-light"
+	case CardVariantWhite:
+		return "bg-white"
+	case CardVariantBlue:
+		return "bg-primary-light"
+	default:
+		return "bg-white"
+	}
+}
+
+func getCardShadowClasses(shadow CardShadow) string {
+	switch shadow {
+	case ShadowNone:
+		return "shadow-none"
+	case ShadowSmall:
+		return "shadow-sm"
+	case ShadowMedium:
+		return "shadow-md"
+	case ShadowLarge:
+		return "shadow-lg"
+	default:
+		return "shadow-md"
+	}
+}
+
+func getCardRadiusClasses(radius CardBorderRadius) string {
+	// Klasy z theme.css
+	switch radius {
+	case RadiusNone:
+		return "rounded-none"
+	case RadiusSmall:
+		return "rounded-sm"
+	case RadiusMedium:
+		return "rounded-md"
+	case RadiusLarge:
+		return "rounded-lg"
+	default:
+		return "rounded-lg"
+	}
 }
 
 func getCardClasses(ctx context.Context, props CardProps) string {
-    // Sprawdzenie czy kontekst nie został anulowany
-    select {
-    case <-ctx.Done():
-        return "opacity-50" // Fallback dla anulowanego kontekstu
-    default:
-    }
-    
-    // Defaults
-    if props.Variant == "" {
-        props.Variant = CardVariantWhite
-    }
-    if props.Size == "" {
-        props.Size = CardSizeMedium
-    }
-    if props.Shadow == "" {
-        props.Shadow = ShadowMedium
-    }
-    if props.BorderRadius == "" {
-        props.BorderRadius = RadiusLarge
-    }
-    
-    // Base classes
-    baseClasses := "p-6 hover:shadow-lg transition-shadow border ring-2 ring-black/5"
-    
-    // Variant classes (background colors)
-    variantClasses := ""
-    switch props.Variant {
-    case CardVariantGray:
-        variantClasses = "bg-gray-200"
-    case CardVariantWhite:
-        variantClasses = "bg-white"
-    case CardVariantBlue:
-        variantClasses = "bg-blue-50"
-    }
-    
-    // Size classes
-    sizeClasses := ""
-    switch props.Size {
-    case CardSizeSmall:
-        sizeClasses = "w-48 h-48"
-    case CardSizeMedium:
-        sizeClasses = "w-96 h-96"
-    case CardSizeLarge:
-        sizeClasses = "w-full h-auto"
-    case CardSizeFull:
-        sizeClasses = "w-full"
-    case CardSizeHalf:
-        sizeClasses = "w-1/2"
-    }
-    
-    // Shadow classes
-    shadowClasses := ""
-    switch props.Shadow {
-    case ShadowNone:
-        shadowClasses = "shadow-none"
-    case ShadowSmall:
-        shadowClasses = "shadow-sm"
-    case ShadowMedium:
-        shadowClasses = "shadow-md"
-    case ShadowLarge:
-        shadowClasses = "shadow-lg"
-    }
-    
-    // Border radius classes
-    radiusClasses := ""
-    switch props.BorderRadius {
-    case RadiusNone:
-        radiusClasses = "rounded-none"
-    case RadiusSmall:
-        radiusClasses = "rounded-sm"
-    case RadiusMedium:
-        radiusClasses = "rounded-md"
-    case RadiusLarge:
-        radiusClasses = "rounded-lg"
-    }
-    
-    // Combine all classes
-    return fmt.Sprintf("%s %s %s %s %s %s",
-        baseClasses,
-        variantClasses,
-        sizeClasses,
-        shadowClasses,
-        radiusClasses,
-        props.ClassName,
-    )
+	select {
+	case <-ctx.Done():
+		return "opacity-50"
+	default:
+	}
+
+	if props.Variant == "" {
+		props.Variant = CardVariantWhite
+	}
+	if props.Size == "" {
+		props.Size = CardSizeMedium
+	}
+	if props.Shadow == "" {
+		props.Shadow = ShadowMedium
+	}
+	if props.BorderRadius == "" {
+		props.BorderRadius = RadiusLarge
+	}
+
+	// Klasy z theme.css
+	baseClasses := "card-padding border-primary hover:shadow-lg transition-shadow border"
+
+	variantClasses := getCardVariantClasses(props.Variant)
+	shadowClasses := getCardShadowClasses(props.Shadow)
+	radiusClasses := getCardRadiusClasses(props.BorderRadius)
+
+	sizeClasses := ""
+	switch props.Size {
+	case CardSizeSmall:
+		sizeClasses = "w-48 h-48"
+	case CardSizeMedium:
+		sizeClasses = "w-96 h-96"
+	case CardSizeLarge:
+		sizeClasses = "w-full h-auto"
+	case CardSizeFull:
+		sizeClasses = "w-full"
+	case CardSizeHalf:
+		sizeClasses = "w-1/2"
+	}
+
+	return fmt.Sprintf("%s %s %s %s %s %s",
+		baseClasses,
+		variantClasses,
+		sizeClasses,
+		shadowClasses,
+		radiusClasses,
+		props.ClassName,
+	)
 }
 
 templ Card(ctx context.Context, props CardProps) {
-    <div class={ getCardClasses(ctx, props) }>
-        // Image (jeśli podany)
-        if props.Image != "" {
-            <img 
-                src={ props.Image } 
-                alt={ props.ImageAlt }
-                class="w-full h-48 object-cover -mt-6 -mx-6 mb-4 rounded-t-lg"
-            />
-        }
-        
-        // Custom Header
-        if props.Header != nil {
-            <div class="mb-4">
-                @props.Header
-            </div>
-        }
-        
-        // Title
-        if props.Title != "" {
-            <h3 class="text-xl font-bold mb-3 text-gray-800">
-                { props.Title }
-            </h3>
-        }
-        
-        // Content
-        if props.Content != "" {
-            <p class="text-gray-600">
-                { props.Content }
-            </p>
-        }
-        
-        // Children content
-        { children... }
-        
-        // Custom Footer
-        if props.Footer != nil {
-            <div class="mt-4 pt-4 border-t border-gray-200">
-                @props.Footer
-            </div>
-        }
-    </div>
+	<div class={ getCardClasses(ctx, props) }>
+		if props.Image != "" {
+			<img
+				src={ props.Image }
+				alt={ props.ImageAlt }
+				class="w-full h-48 object-cover -mt-6 -mx-6 mb-4 rounded-t-lg"
+			/>
+		}
+		if props.Header != nil {
+			<div class="mb-4">
+				@props.Header
+			</div>
+		}
+		if props.Title != "" {
+			<h3 class="text-xl font-bold mb-3 text-primary-dark">
+				{ props.Title }
+			</h3>
+		}
+		if props.Content != "" {
+			<p class="text-secondary">
+				{ props.Content }
+			</p>
+		}
+		{ children... }
+		if props.Footer != nil {
+			<div class="mt-4 pt-4 border-t border-secondary-light">
+				@props.Footer
+			</div>
+		}
+	</div>
 }
 
-// Card Header - pomocniczy komponent
 templ CardHeader(ctx context.Context) {
-    <div class="flex justify-between items-start mb-4">
-        { children... }
-    </div>
+	<div class="flex justify-between items-start mb-4">
+		{ children... }
+	</div>
 }
 
-// Card Body - pomocniczy komponent
 templ CardBody(ctx context.Context) {
-    <div class="flex-1">
-        { children... }
-    </div>
+	<div class="flex-1">
+		{ children... }
+	</div>
 }
 
-// Card Footer - pomocniczy komponent
 templ CardFooter(ctx context.Context) {
-    <div class="mt-4 pt-4 border-t border-gray-200 flex justify-between items-center">
-        { children... }
-    </div>
+	<div class="mt-4 pt-4 border-t border-secondary-light flex justify-between items-center">
+		{ children... }
+	</div>
 }
 
-// Card Title - pomocniczy komponent
 templ CardTitle(ctx context.Context, title string) {
-    <h3 class="text-xl font-bold text-gray-800">
-        { title }
-    </h3>
+	<h3 class="text-xl font-bold text-primary-dark">
+		{ title }
+	</h3>
 }
 
-// Card Description - pomocniczy komponent
 templ CardDescription(ctx context.Context, description string) {
-    <p class="text-gray-600 mt-2">
-        { description }
-    </p>
+	<p class="text-secondary mt-2">
+		{ description }
+	</p>
 }
 
-// Card Image - pomocniczy komponent
 templ CardImage(ctx context.Context, src, alt string) {
-    <img 
-        src={ src } 
-        alt={ alt }
-        class="w-full h-48 object-cover rounded-t-lg"
-    />
+	<img
+		src={ src }
+		alt={ alt }
+		class="w-full h-48 object-cover rounded-t-lg"
+	/>
 }
 
-// Card Actions - pomocniczy komponent do przycisków
 templ CardActions(ctx context.Context) {
-    <div class="flex gap-2 mt-4">
-        { children... }
-    </div>
+	<div class="flex gap-2 mt-4">
+		{ children... }
+	</div>
 }
 
-// Clickable Card - karta która jest linkiem
 templ ClickableCard(ctx context.Context, props CardProps, href string) {
-    <a href={ templ.SafeURL(href) } class="block hover:scale-105 transition-transform">
-        @Card(ctx, props) {
-            { children... }
-        }
-    </a>
+	<a href={ templ.SafeURL(href) } class="block hover:scale-105 transition-transform">
+		@Card(ctx, props) {
+			{ children... }
+		}
+	</a>
 }
 
-// Horizontal Card - karta z obrazem po lewej
 templ HorizontalCard(ctx context.Context, props CardProps) {
-    <div class={ getCardClasses(ctx, props) + " flex flex-row items-center gap-4" }>
-        if props.Image != "" {
-            <img 
-                src={ props.Image } 
-                alt={ props.ImageAlt }
-                class="w-32 h-32 object-cover rounded-lg flex-shrink-0"
-            />
-        }
-        
-        <div class="flex-1">
-            if props.Title != "" {
-                <h3 class="text-xl font-bold mb-2 text-gray-800">
-                    { props.Title }
-                </h3>
-            }
-            if props.Content != "" {
-                <p class="text-gray-600">
-                    { props.Content }
-                </p>
-            }
-            { children... }
-        </div>
-    </div>
+	<div class={ getCardClasses(ctx, props) + " flex flex-row items-center gap-4" }>
+		if props.Image != "" {
+			<img
+				src={ props.Image }
+				alt={ props.ImageAlt }
+				class="w-32 h-32 object-cover rounded-lg flex-shrink-0"
+			/>
+		}
+		<div class="flex-1">
+			if props.Title != "" {
+				<h3 class="text-xl font-bold mb-2 text-primary-dark">
+					{ props.Title }
+				</h3>
+			}
+			if props.Content != "" {
+				<p class="text-secondary">
+					{ props.Content }
+				</p>
+			}
+			{ children... }
+		</div>
+	</div>
 }
