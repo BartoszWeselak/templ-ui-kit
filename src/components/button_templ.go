@@ -58,16 +58,32 @@ type ButtonProps struct {
 	Type         string // "button", "submit", "reset"
 }
 
+func getButtonVariantClasses(variant ButtonVariant) string {
+	// Klasy z theme.css
+	switch variant {
+	case VariantPrimary:
+		return "bg-primary text-white"
+	case VariantSecondary:
+		return "bg-secondary text-white"
+	case VariantDanger:
+		return "bg-danger text-white"
+	case VariantTab:
+		return "bg-secondary-light text-primary"
+	case VariantBuy:
+		return "bg-success text-white"
+	case VariantNone:
+		return ""
+	default:
+		return "bg-primary text-white"
+	}
+}
+
 func getButtonClasses(ctx context.Context, props ButtonProps) string {
-	// Sprawdzenie czy kontekst nie został anulowany
 	select {
 	case <-ctx.Done():
-		return "opacity-50 cursor-not-allowed" // Fallback dla anulowanego kontekstu
+		return "opacity-50 cursor-not-allowed"
 	default:
 	}
-
-	// Base classes
-	baseClasses := "hover:opacity-80 transition-opacity inline-flex items-center justify-center gap-2"
 
 	if props.Variant == "" {
 		props.Variant = VariantPrimary
@@ -79,40 +95,25 @@ func getButtonClasses(ctx context.Context, props ButtonProps) string {
 		props.IconPosition = IconLeft
 	}
 
-	// Variant classes
-	variantClasses := ""
-	switch props.Variant {
-	case VariantPrimary:
-		variantClasses = "bg-blue-500 text-white rounded-lg"
-	case VariantSecondary:
-		variantClasses = "bg-gray-500 text-white rounded-lg"
-	case VariantDanger:
-		variantClasses = "bg-red-500 text-white rounded-lg"
-	case VariantTab:
-		variantClasses = "bg-white text-black"
-	case VariantBuy:
-		variantClasses = "bg-green-500 text-white rounded-lg"
-	case VariantNone:
-		variantClasses = ""
-	default:
-		variantClasses = "bg-blue-500 text-white rounded-lg"
-	}
+	baseClasses := "hover:opacity-80 transition-opacity inline-flex items-center justify-center gap-2 rounded-md border-0 cursor-pointer"
+
+	variantClasses := getButtonVariantClasses(props.Variant)
 
 	// Size classes
 	sizeClasses := ""
 	switch props.Size {
 	case SizeSmall:
-		sizeClasses = "px-2 py-1 text-sm"
+		sizeClasses = "btn-sm"
 	case SizeMedium:
-		sizeClasses = "px-4 py-2 text-base"
+		sizeClasses = "btn-md"
 	case SizeLarge:
-		sizeClasses = "px-6 py-3 text-lg"
+		sizeClasses = "btn-lg"
 	case SizeXLarge:
-		sizeClasses = "py-4 text-lg"
+		sizeClasses = "btn-xl"
 	}
 
 	// Width classes
-	widthClasses := "w-full" // default
+	widthClasses := "w-full"
 	switch props.Width {
 	case WidthXSmall:
 		widthClasses = "w-[4%]"
@@ -124,14 +125,12 @@ func getButtonClasses(ctx context.Context, props ButtonProps) string {
 		widthClasses = "w-1/2"
 	}
 
-	// Loading/Disabled state
 	stateClasses := ""
 	if props.Loading || props.Disabled {
 		stateClasses = "opacity-60 cursor-not-allowed"
 	}
 
-	// Combine all classes
-	classes := fmt.Sprintf("%s %s %s %s %s %s",
+	return fmt.Sprintf("%s %s %s %s %s %s",
 		baseClasses,
 		variantClasses,
 		sizeClasses,
@@ -139,8 +138,6 @@ func getButtonClasses(ctx context.Context, props ButtonProps) string {
 		stateClasses,
 		props.ClassName,
 	)
-
-	return classes
 }
 
 func getSpinnerSize(size ButtonSize) string {
@@ -247,7 +244,7 @@ func Button(ctx context.Context, props ButtonProps) templ.Component {
 			return "button"
 		}())
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/button.templ`, Line: 168, Col: 15}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/button.templ`, Line: 165, Col: 6}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -310,13 +307,13 @@ func Button(ctx context.Context, props ButtonProps) templ.Component {
 			var templ_7745c5c3_Var9 string
 			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(props.Text)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/button.templ`, Line: 187, Col: 30}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/button.templ`, Line: 181, Col: 21}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</span> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -342,7 +339,6 @@ func Button(ctx context.Context, props ButtonProps) templ.Component {
 	})
 }
 
-// Przykładowe ikony do użycia z buttonem
 func IconPlus(ctx context.Context) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context

@@ -15,21 +15,20 @@ import (
 
 // Aliasy dla ułatwienia - używamy nazw z pakietu components
 type (
-	ButtonProps          = components.ButtonProps
-	ButtonVariant        = components.ButtonVariant
-	ButtonSize           = components.ButtonSize
-	ButtonWidth          = components.ButtonWidth
-	IconPosition         = components.IconPosition
-	CardProps            = components.CardProps
-	CardVariant          = components.CardVariant
-	CardSize             = components.CardSize
-	CardShadow           = components.CardShadow
-	CardBorderRadius     = components.CardBorderRadius
-	ErrorProps           = components.ErrorProps
-	ErrorVariant         = components.ErrorVariant
-	ErrorSize            = components.ErrorSize
-	GenericErrorProps    = components.GenericErrorProps
-	GenericSuccessProps  = components.GenericSuccessProps
+	ButtonProps      = components.ButtonProps
+	ButtonVariant    = components.ButtonVariant
+	ButtonSize       = components.ButtonSize
+	ButtonWidth      = components.ButtonWidth
+	IconPosition     = components.IconPosition
+	CardProps        = components.CardProps
+	CardVariant      = components.CardVariant
+	CardSize         = components.CardSize
+	CardShadow       = components.CardShadow
+	CardBorderRadius = components.CardBorderRadius
+	ErrorProps       = components.ErrorProps
+	ErrorVariant     = components.ErrorVariant
+	ErrorSize        = components.ErrorSize
+
 	FormInputProps       = components.FormInputProps
 	InputSize            = components.InputSize
 	InputVariant         = components.InputVariant
@@ -55,8 +54,6 @@ var (
 	Button             = components.Button
 	Card               = components.Card
 	Error              = components.Error
-	GenericError       = components.GenericError
-	GenericSuccess     = components.GenericSuccess
 	FormInput          = components.FormInput
 	FormSelect         = components.FormSelect
 	Pagination         = components.Pagination
@@ -198,7 +195,7 @@ func TestLayout(ctx context.Context) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html lang=\"pl\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Templ Components - Test Layout</title><script src=\"https://cdn.tailwindcss.com\"></script><script defer src=\"https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js\"></script><style>\r\n\t\t\t\t.component-section {\r\n\t\t\t\t\tmargin-bottom: 3rem;\r\n\t\t\t\t\tpadding: 2rem;\r\n\t\t\t\t\tbackground: #f9fafb;\r\n\t\t\t\t\tborder-radius: 0.5rem;\r\n\t\t\t\t}\r\n\t\t\t\t.component-title {\r\n\t\t\t\t\tfont-size: 1.5rem;\r\n\t\t\t\t\tfont-weight: bold;\r\n\t\t\t\t\tmargin-bottom: 1.5rem;\r\n\t\t\t\t\tcolor: #1f2937;\r\n\t\t\t\t\tborder-bottom: 2px solid #3b82f6;\r\n\t\t\t\t\tpadding-bottom: 0.5rem;\r\n\t\t\t\t}\r\n\t\t\t\t.demo-grid {\r\n\t\t\t\t\tdisplay: grid;\r\n\t\t\t\t\tgap: 1.5rem;\r\n\t\t\t\t\tmargin-top: 1rem;\r\n\t\t\t\t}\r\n\t\t\t\t.demo-item {\r\n\t\t\t\t\tpadding: 1rem;\r\n\t\t\t\t\tbackground: white;\r\n\t\t\t\t\tborder-radius: 0.375rem;\r\n\t\t\t\t\tborder: 1px solid #e5e7eb;\r\n\t\t\t\t}\r\n\t\t\t\t.demo-label {\r\n\t\t\t\t\tfont-size: 0.875rem;\r\n\t\t\t\t\tfont-weight: 600;\r\n\t\t\t\t\tcolor: #6b7280;\r\n\t\t\t\t\tmargin-bottom: 0.5rem;\r\n\t\t\t\t}\r\n\t\t\t\t[x-cloak] {\r\n\t\t\t\t\tdisplay: none !important;\r\n\t\t\t\t}\r\n\t\t\t</style></head><body class=\"bg-gray-100 p-8\"><div class=\"max-w-7xl mx-auto\"><header class=\"mb-8\"><h1 class=\"text-4xl font-bold text-gray-900 mb-2\">Templ Components Test Layout</h1><p class=\"text-gray-600\">Wszystkie komponenty w jednym miejscu do testowania</p></header><section class=\"component-section\"><h2 class=\"component-title\">🔘 Buttons</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">Variants</div><div class=\"flex gap-2 flex-wrap\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html lang=\"pl\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Templ Components - Test Layout</title><script src=\"https://cdn.tailwindcss.com\"></script><script defer src=\"https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js\"></script><link rel=\"stylesheet\" href=\"/static/theme.css\"><style>\r\n\t\t\t\t.component-section {\r\n\t\t\t\t\tmargin-bottom: 3rem;\r\n\t\t\t\t\tpadding: 2rem;\r\n\t\t\t\t\tbackground: #f9fafb;\r\n\t\t\t\t\tborder-radius: 0.5rem;\r\n\t\t\t\t}\r\n\t\t\t\t.component-title {\r\n\t\t\t\t\tfont-size: 1.5rem;\r\n\t\t\t\t\tfont-weight: bold;\r\n\t\t\t\t\tmargin-bottom: 1.5rem;\r\n\t\t\t\t\tcolor: #1f2937;\r\n\t\t\t\t\tborder-bottom: 2px solid #3b82f6;\r\n\t\t\t\t\tpadding-bottom: 0.5rem;\r\n\t\t\t\t}\r\n\t\t\t\t.demo-grid {\r\n\t\t\t\t\tdisplay: grid;\r\n\t\t\t\t\tgap: 1.5rem;\r\n\t\t\t\t\tmargin-top: 1rem;\r\n\t\t\t\t}\r\n\t\t\t\t.demo-item {\r\n\t\t\t\t\tpadding: 1rem;\r\n\t\t\t\t\tbackground: white;\r\n\t\t\t\t\tborder-radius: 0.375rem;\r\n\t\t\t\t\tborder: 1px solid #e5e7eb;\r\n\t\t\t\t}\r\n\t\t\t\t.demo-label {\r\n\t\t\t\t\tfont-size: 0.875rem;\r\n\t\t\t\t\tfont-weight: 600;\r\n\t\t\t\t\tcolor: #6b7280;\r\n\t\t\t\t\tmargin-bottom: 0.5rem;\r\n\t\t\t\t}\r\n\t\t\t\t[x-cloak] {\r\n\t\t\t\t\tdisplay: none !important;\r\n\t\t\t\t}\r\n\t\t\t</style></head><body class=\"bg-gray-100 p-8\"><div class=\"max-w-7xl mx-auto\"><header class=\"mb-8\"><h1 class=\"text-4xl font-bold text-gray-900 mb-2\">Templ Components Test Layout</h1><p class=\"text-gray-600\">Wszystkie komponenty w jednym miejscu do testowania</p></header><section class=\"component-section\"><h2 class=\"component-title\">🔘 Buttons</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">Variants</div><div class=\"flex gap-2 flex-wrap\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -294,7 +291,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Card(CardProps{
+		templ_7745c5c3_Err = Card(ctx, CardProps{
 			Title:   "Card White",
 			Content: "This is a white card with medium shadow and large border radius.",
 			Variant: CardVariantWhite,
@@ -303,7 +300,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Card(CardProps{
+		templ_7745c5c3_Err = Card(ctx, CardProps{
 			Title:   "Card Gray",
 			Content: "This is a gray card variant.",
 			Variant: CardVariantGray,
@@ -312,7 +309,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Card(CardProps{
+		templ_7745c5c3_Err = Card(ctx, CardProps{
 			Title:   "Card Blue",
 			Content: "This is a blue card variant.",
 			Variant: CardVariantBlue,
@@ -325,7 +322,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Card(CardProps{
+		templ_7745c5c3_Err = Card(ctx, CardProps{
 			Title:   "Full Width Card",
 			Content: "This card takes the full width of its container.",
 			Size:    CardSizeFull,
@@ -333,7 +330,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Card(CardProps{
+		templ_7745c5c3_Err = Card(ctx, CardProps{
 			Title:        "Small Shadow Card",
 			Content:      "This card has a small shadow.",
 			Shadow:       ShadowSmall,
@@ -406,35 +403,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</div></div></section><section class=\"component-section\"><h2 class=\"component-title\">💬 Messages</h2><div class=\"demo-grid\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = GenericError(GenericErrorProps{
-			Message:   "Failed to save your changes. Please try again.",
-			Closeable: true,
-			ID:        "error-msg-1",
-		}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = GenericSuccess(GenericSuccessProps{
-			Message:   "Your profile has been updated successfully!",
-			Closeable: true,
-			ID:        "success-msg-1",
-		}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = GenericError(GenericErrorProps{
-			Message:   "This is a non-closeable error message",
-			Closeable: false,
-			ID:        "error-msg-2",
-		}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div></section><section class=\"component-section\"><h2 class=\"component-title\">🔔 Notifications</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">Inline Notifications (All Types)</div><div class=\"space-y-3\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</div></div></section><section class=\"component-section\"><h2 class=\"component-title\">🔔 Notifications</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">Inline Notifications (All Types)</div><div class=\"space-y-3\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -474,7 +443,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">Without Title</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">Without Title</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -486,7 +455,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</div><div class=\"demo-item\"><div class=\"demo-label\">Non-dismissible</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</div><div class=\"demo-item\"><div class=\"demo-label\">Non-dismissible</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -499,7 +468,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</div><div class=\"demo-item\"><div class=\"demo-label\">Floating Notifications (Click to show)</div><div class=\"flex gap-2 flex-wrap\"><button onclick=\"document.getElementById('notif-success').classList.remove('hidden')\" class=\"px-4 py-2 bg-green-500 text-white rounded\">Show Success</button> <button onclick=\"document.getElementById('notif-error').classList.remove('hidden')\" class=\"px-4 py-2 bg-red-500 text-white rounded\">Show Error</button> <button onclick=\"document.getElementById('notif-warning').classList.remove('hidden')\" class=\"px-4 py-2 bg-yellow-500 text-white rounded\">Show Warning</button> <button onclick=\"document.getElementById('notif-info').classList.remove('hidden')\" class=\"px-4 py-2 bg-blue-500 text-white rounded\">Show Info</button></div></div></div></section><section class=\"component-section\"><h2 class=\"component-title\">📝 Form Inputs</h2><div class=\"demo-grid grid-cols-1 md:grid-cols-2\"><div class=\"demo-item\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</div><div class=\"demo-item\"><div class=\"demo-label\">Floating Notifications (Click to show)</div><div class=\"flex gap-2 flex-wrap\"><button onclick=\"document.getElementById('notif-success').classList.remove('hidden')\" class=\"px-4 py-2 bg-green-500 text-white rounded\">Show Success</button> <button onclick=\"document.getElementById('notif-error').classList.remove('hidden')\" class=\"px-4 py-2 bg-red-500 text-white rounded\">Show Error</button> <button onclick=\"document.getElementById('notif-warning').classList.remove('hidden')\" class=\"px-4 py-2 bg-yellow-500 text-white rounded\">Show Warning</button> <button onclick=\"document.getElementById('notif-info').classList.remove('hidden')\" class=\"px-4 py-2 bg-blue-500 text-white rounded\">Show Info</button></div></div></div></section><section class=\"component-section\"><h2 class=\"component-title\">📝 Form Inputs</h2><div class=\"demo-grid grid-cols-1 md:grid-cols-2\"><div class=\"demo-item\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -512,7 +481,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</div><div class=\"demo-item\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</div><div class=\"demo-item\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -526,7 +495,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</div><div class=\"demo-item\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</div><div class=\"demo-item\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -540,7 +509,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div><div class=\"demo-item\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</div><div class=\"demo-item\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -553,7 +522,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</div><div class=\"demo-item\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div><div class=\"demo-item\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -566,7 +535,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</div><div class=\"demo-item\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</div><div class=\"demo-item\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -579,7 +548,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</div></div></section><section class=\"component-section\"><h2 class=\"component-title\">🔽 Form Selects</h2><div class=\"demo-grid grid-cols-1 md:grid-cols-2\"><div class=\"demo-item\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</div></div></section><section class=\"component-section\"><h2 class=\"component-title\">🔽 Form Selects</h2><div class=\"demo-grid grid-cols-1 md:grid-cols-2\"><div class=\"demo-item\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -598,7 +567,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</div><div class=\"demo-item\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</div><div class=\"demo-item\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -616,7 +585,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</div><div class=\"demo-item\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</div><div class=\"demo-item\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -633,7 +602,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</div><div class=\"demo-item\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</div><div class=\"demo-item\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -649,7 +618,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</div></div></section><section class=\"component-section\"><h2 class=\"component-title\">📄 Pagination</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">Primary Pagination (Page 1 of 5)</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</div></div></section><section class=\"component-section\"><h2 class=\"component-title\">📄 Pagination</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">Primary Pagination (Page 1 of 5)</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -662,7 +631,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</div><div class=\"demo-item\"><div class=\"demo-label\">Secondary Pagination (Page 3 of 5)</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</div><div class=\"demo-item\"><div class=\"demo-label\">Secondary Pagination (Page 3 of 5)</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -675,7 +644,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</div><div class=\"demo-item\"><div class=\"demo-label\">Small Pagination</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</div><div class=\"demo-item\"><div class=\"demo-label\">Small Pagination</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -688,7 +657,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</div><div class=\"demo-item\"><div class=\"demo-label\">Large Pagination</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</div><div class=\"demo-item\"><div class=\"demo-label\">Large Pagination</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -701,7 +670,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</div></div></section><section class=\"component-section\"><h2 class=\"component-title\">📑 Tabs</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">Primary Tabs</div><div class=\"flex gap-1 border-b\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</div></div></section><section class=\"component-section\"><h2 class=\"component-title\">📑 Tabs</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">Primary Tabs</div><div class=\"flex gap-1 border-b\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -721,7 +690,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">Secondary Tabs</div><div class=\"flex gap-1 border-b\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">Secondary Tabs</div><div class=\"flex gap-1 border-b\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -737,7 +706,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">Large Tabs</div><div class=\"flex gap-1 border-b\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">Large Tabs</div><div class=\"flex gap-1 border-b\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -753,7 +722,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">Small Tabs</div><div class=\"flex gap-1 border-b\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">Small Tabs</div><div class=\"flex gap-1 border-b\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -769,7 +738,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</div></div></div></section><section class=\"component-section\"><h2 class=\"component-title\">🪟 Modals</h2><div class=\"demo-item\"><div class=\"demo-label\">Modal Triggers</div><div class=\"flex gap-2 flex-wrap\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</div></div></div></section><section class=\"component-section\"><h2 class=\"component-title\">🪟 Modals</h2><div class=\"demo-item\"><div class=\"demo-label\">Modal Triggers</div><div class=\"flex gap-2 flex-wrap\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -794,7 +763,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "</div></div></section>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</div></div></section>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -828,7 +797,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "<div id=\"notif-success\" class=\"hidden\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "<div id=\"notif-success\" class=\"hidden\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -843,7 +812,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</div><div id=\"notif-error\" class=\"hidden\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "</div><div id=\"notif-error\" class=\"hidden\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -858,7 +827,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "</div><div id=\"notif-warning\" class=\"hidden\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</div><div id=\"notif-warning\" class=\"hidden\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -873,7 +842,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "</div><div id=\"notif-info\" class=\"hidden\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "</div><div id=\"notif-info\" class=\"hidden\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -888,18 +857,18 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "</div><section class=\"component-section\"><h2 class=\"component-title\">🎨 Combined Example - User Profile Form</h2><div class=\"demo-item\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "</div><section class=\"component-section\"><h2 class=\"component-title\">🎨 Combined Example - User Profile Form</h2><div class=\"demo-item\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Card(CardProps{
+		templ_7745c5c3_Err = Card(ctx, CardProps{
 			Title: "Edit Profile",
 			Size:  CardSizeFull,
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "<form class=\"space-y-4 mt-4\"><div class=\"grid grid-cols-2 gap-4\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "<form class=\"space-y-4 mt-4\"><div class=\"grid grid-cols-2 gap-4\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -921,7 +890,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -948,17 +917,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "<div id=\"success-profile\" class=\"hidden\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = GenericSuccess(GenericSuccessProps{
-			Message: "Profile updated successfully!",
-		}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "</div><div class=\"flex gap-2 mt-6\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "<div id=\"success-profile\" class=\"hidden\"></div><div class=\"flex gap-2 mt-6\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -978,7 +937,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "</div></form></div></section><footer class=\"mt-8 text-center text-gray-600 pb-8\"><p>Test Layout dla komponentów Templ • Wszystkie komponenty w jednym miejscu</p></footer></div></body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "</div></form></div></section><footer class=\"mt-8 text-center text-gray-600 pb-8\"><p>Test Layout dla komponentów Templ • Wszystkie komponenty w jednym miejscu</p></footer></div></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -1008,7 +967,7 @@ func modalSmallContent(ctx context.Context) templ.Component {
 			templ_7745c5c3_Var2 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "<p class=\"text-gray-600\">This is a small modal window. Perfect for simple confirmations or alerts.</p><div class=\"mt-4 flex gap-2\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "<p class=\"text-gray-600\">This is a small modal window. Perfect for simple confirmations or alerts.</p><div class=\"mt-4 flex gap-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -1019,7 +978,7 @@ func modalSmallContent(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -1048,7 +1007,7 @@ func modalMediumContent(ctx context.Context) templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 46, "<p class=\"text-gray-600 mb-4\">This is a medium-sized modal. It has more space for content and forms.</p>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "<p class=\"text-gray-600 mb-4\">This is a medium-sized modal. It has more space for content and forms.</p>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -1060,7 +1019,7 @@ func modalMediumContent(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "<div class=\"mt-4 flex gap-2\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "<div class=\"mt-4 flex gap-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -1078,7 +1037,7 @@ func modalMediumContent(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 48, "</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 46, "</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -1107,7 +1066,7 @@ func modalLargeContent(ctx context.Context) templ.Component {
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 49, "<p class=\"text-gray-600 mb-4\">This is a large modal with plenty of space for complex forms and detailed content.</p><div class=\"grid grid-cols-2 gap-4 mb-4\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "<p class=\"text-gray-600 mb-4\">This is a large modal with plenty of space for complex forms and detailed content.</p><div class=\"grid grid-cols-2 gap-4 mb-4\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -1125,7 +1084,7 @@ func modalLargeContent(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 50, "</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 48, "</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -1137,7 +1096,7 @@ func modalLargeContent(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 51, "<div class=\"mb-4\"><label class=\"block text-gray-700 font-medium mb-2\">Message</label> <textarea rows=\"4\" class=\"w-full border rounded-lg focus:outline-none focus:ring-2 transition-colors px-4 py-2 text-base border-gray-300 focus:ring-blue-500\"></textarea></div><div class=\"mt-4 flex gap-2 justify-end\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 49, "<div class=\"mb-4\"><label class=\"block text-gray-700 font-medium mb-2\">Message</label> <textarea rows=\"4\" class=\"w-full border rounded-lg focus:outline-none focus:ring-2 transition-colors px-4 py-2 text-base border-gray-300 focus:ring-blue-500\"></textarea></div><div class=\"mt-4 flex gap-2 justify-end\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -1155,7 +1114,7 @@ func modalLargeContent(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 52, "</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 50, "</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

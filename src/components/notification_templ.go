@@ -44,43 +44,35 @@ type NotificationProps struct {
 }
 
 func getNotificationClasses(ctx context.Context, props NotificationProps) string {
-	// Sprawdzenie czy kontekst nie został anulowany
 	select {
 	case <-ctx.Done():
-		return "opacity-50" // Fallback dla anulowanego kontekstu
+		return "opacity-50"
 	default:
 	}
-
-	// Base classes
-	baseClasses := "flex items-start gap-3 p-4 rounded-lg shadow-lg border max-w-md w-full transition-all duration-300"
 
 	if props.Type == "" {
 		props.Type = NotificationInfo
 	}
 
-	// Type classes (kolory tła i obramowania)
-	typeClasses := ""
+	// Klasy z theme.css: bg-*-light, border-*-light, text-*-dark
+	colorClasses := ""
 	switch props.Type {
 	case NotificationSuccess:
-		typeClasses = "bg-green-50 border-green-200 text-green-800"
+		colorClasses = "bg-success-light border-success-light text-success-dark"
 	case NotificationError:
-		typeClasses = "bg-red-50 border-red-200 text-red-800"
+		colorClasses = "bg-danger-light border-danger-light text-danger-dark"
 	case NotificationWarning:
-		typeClasses = "bg-yellow-50 border-yellow-200 text-yellow-800"
+		colorClasses = "bg-warning-light border-warning-light text-warning-dark"
 	case NotificationInfo:
-		typeClasses = "bg-blue-50 border-blue-200 text-blue-800"
+		colorClasses = "bg-primary-light border-primary-light text-primary-dark"
 	default:
-		typeClasses = "bg-blue-50 border-blue-200 text-blue-800"
+		colorClasses = "bg-primary-light border-primary-light text-primary-dark"
 	}
 
-	// Combine all classes
-	classes := fmt.Sprintf("%s %s %s",
-		baseClasses,
-		typeClasses,
+	return fmt.Sprintf("flex items-start gap-3 p-4 rounded-lg shadow-lg border max-w-md w-full transition-all duration-300 %s %s",
+		colorClasses,
 		props.ClassName,
 	)
-
-	return classes
 }
 
 func getNotificationPositionClasses(position NotificationPosition) string {
@@ -106,18 +98,19 @@ func getNotificationPositionClasses(position NotificationPosition) string {
 	}
 }
 
-func getNotificationIcon(notifType NotificationType) string {
+func getNotificationIconClass(notifType NotificationType) string {
+	// Klasy z theme.css: text-success, text-danger, text-warning, text-primary
 	switch notifType {
 	case NotificationSuccess:
-		return "text-green-500"
+		return "text-success"
 	case NotificationError:
-		return "text-red-500"
+		return "text-danger"
 	case NotificationWarning:
-		return "text-yellow-500"
+		return "text-warning"
 	case NotificationInfo:
-		return "text-blue-500"
+		return "text-primary"
 	default:
-		return "text-blue-500"
+		return "text-primary"
 	}
 }
 
@@ -142,7 +135,7 @@ func NotificationIcon(ctx context.Context, notifType NotificationType) templ.Com
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var2 = []any{fmt.Sprintf("flex-shrink-0 %s", getNotificationIcon(notifType))}
+		var templ_7745c5c3_Var2 = []any{fmt.Sprintf("flex-shrink-0 %s", getNotificationIconClass(notifType))}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -218,7 +211,7 @@ func NotificationCloseButton(ctx context.Context, onClick templ.ComponentScript)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<button type=\"button\" class=\"flex-shrink-0 ml-auto text-gray-400 hover:text-gray-600 transition-colors\" onclick=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<button type=\"button\" class=\"flex-shrink-0 ml-auto text-secondary hover:text-secondary-dark transition-colors\" onclick=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -308,7 +301,7 @@ func Notification(ctx context.Context, props NotificationProps) templ.Component 
 			var templ_7745c5c3_Var11 string
 			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("{ show: true }"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/notification.templ`, Line: 156, Col: 54}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/notification.templ`, Line: 149, Col: 42}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 			if templ_7745c5c3_Err != nil {
@@ -321,7 +314,7 @@ func Notification(ctx context.Context, props NotificationProps) templ.Component 
 			var templ_7745c5c3_Var12 string
 			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("setTimeout(() => show = false, %d)", props.Duration*1000))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/notification.templ`, Line: 158, Col: 97}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/notification.templ`, Line: 151, Col: 83}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 			if templ_7745c5c3_Err != nil {
@@ -352,7 +345,7 @@ func Notification(ctx context.Context, props NotificationProps) templ.Component 
 			var templ_7745c5c3_Var13 string
 			templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(props.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/notification.templ`, Line: 173, Col: 72}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/notification.templ`, Line: 163, Col: 57}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 			if templ_7745c5c3_Err != nil {
@@ -371,7 +364,7 @@ func Notification(ctx context.Context, props NotificationProps) templ.Component 
 			var templ_7745c5c3_Var14 string
 			templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(props.Message)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/notification.templ`, Line: 176, Col: 54}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/notification.templ`, Line: 166, Col: 39}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 			if templ_7745c5c3_Err != nil {
@@ -400,7 +393,6 @@ func Notification(ctx context.Context, props NotificationProps) templ.Component 
 	})
 }
 
-// Notification container dla wielu powiadomień
 func NotificationContainer(ctx context.Context, position NotificationPosition) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -456,7 +448,6 @@ func NotificationContainer(ctx context.Context, position NotificationPosition) t
 	})
 }
 
-// Inline notification (nie floating, do umieszczenia w kontenerze)
 func InlineNotification(ctx context.Context, props NotificationProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -508,7 +499,7 @@ func InlineNotification(ctx context.Context, props NotificationProps) templ.Comp
 			var templ_7745c5c3_Var21 string
 			templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("{ show: true }"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/notification.templ`, Line: 202, Col: 50}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/notification.templ`, Line: 188, Col: 41}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 			if templ_7745c5c3_Err != nil {
@@ -521,7 +512,7 @@ func InlineNotification(ctx context.Context, props NotificationProps) templ.Comp
 			var templ_7745c5c3_Var22 string
 			templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("setTimeout(() => show = false, %d)", props.Duration*1000))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/notification.templ`, Line: 204, Col: 93}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/notification.templ`, Line: 190, Col: 82}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 			if templ_7745c5c3_Err != nil {
@@ -552,7 +543,7 @@ func InlineNotification(ctx context.Context, props NotificationProps) templ.Comp
 			var templ_7745c5c3_Var23 string
 			templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(props.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/notification.templ`, Line: 213, Col: 68}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/notification.templ`, Line: 196, Col: 56}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 			if templ_7745c5c3_Err != nil {
@@ -571,7 +562,7 @@ func InlineNotification(ctx context.Context, props NotificationProps) templ.Comp
 			var templ_7745c5c3_Var24 string
 			templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(props.Message)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/notification.templ`, Line: 216, Col: 50}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/notification.templ`, Line: 199, Col: 38}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
 			if templ_7745c5c3_Err != nil {

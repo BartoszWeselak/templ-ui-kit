@@ -1,225 +1,206 @@
 package components
 
 import (
-    "context"
-    "fmt"
+	"context"
+	"fmt"
 )
 
 type NotificationType string
 type NotificationPosition string
 
 const (
-    // Types
-    NotificationSuccess NotificationType = "success"
-    NotificationError   NotificationType = "error"
-    NotificationWarning NotificationType = "warning"
-    NotificationInfo    NotificationType = "info"
-    
-    // Positions
-    PositionTopRight    NotificationPosition = "top-right"
-    PositionTopLeft     NotificationPosition = "top-left"
-    PositionTopCenter   NotificationPosition = "top-center"
-    PositionBottomRight NotificationPosition = "bottom-right"
-    PositionBottomLeft  NotificationPosition = "bottom-left"
-    PositionBottomCenter NotificationPosition = "bottom-center"
+	// Types
+	NotificationSuccess NotificationType = "success"
+	NotificationError   NotificationType = "error"
+	NotificationWarning NotificationType = "warning"
+	NotificationInfo    NotificationType = "info"
+
+	// Positions
+	PositionTopRight     NotificationPosition = "top-right"
+	PositionTopLeft      NotificationPosition = "top-left"
+	PositionTopCenter    NotificationPosition = "top-center"
+	PositionBottomRight  NotificationPosition = "bottom-right"
+	PositionBottomLeft   NotificationPosition = "bottom-left"
+	PositionBottomCenter NotificationPosition = "bottom-center"
 )
 
 type NotificationProps struct {
-    Title       string
-    Message     string
-    Type        NotificationType
-    Position    NotificationPosition
-    Dismissible bool
-    Duration    int  // w sekundach, 0 = nie znika automatycznie
-    OnClose     templ.ComponentScript
-    ClassName   string
+	Title       string
+	Message     string
+	Type        NotificationType
+	Position    NotificationPosition
+	Dismissible bool
+	Duration    int // w sekundach, 0 = nie znika automatycznie
+	OnClose     templ.ComponentScript
+	ClassName   string
 }
 
 func getNotificationClasses(ctx context.Context, props NotificationProps) string {
-    // Sprawdzenie czy kontekst nie został anulowany
-    select {
-    case <-ctx.Done():
-        return "opacity-50" // Fallback dla anulowanego kontekstu
-    default:
-    }
-    
-    // Base classes
-    baseClasses := "flex items-start gap-3 p-4 rounded-lg shadow-lg border max-w-md w-full transition-all duration-300"
-    
-    if props.Type == "" {
-        props.Type = NotificationInfo
-    }
-    
-    // Type classes (kolory tła i obramowania)
-    typeClasses := ""
-    switch props.Type {
-    case NotificationSuccess:
-        typeClasses = "bg-green-50 border-green-200 text-green-800"
-    case NotificationError:
-        typeClasses = "bg-red-50 border-red-200 text-red-800"
-    case NotificationWarning:
-        typeClasses = "bg-yellow-50 border-yellow-200 text-yellow-800"
-    case NotificationInfo:
-        typeClasses = "bg-blue-50 border-blue-200 text-blue-800"
-    default:
-        typeClasses = "bg-blue-50 border-blue-200 text-blue-800"
-    }
-    
-    // Combine all classes
-    classes := fmt.Sprintf("%s %s %s", 
-        baseClasses, 
-        typeClasses,
-        props.ClassName,
-    )
-    
-    return classes
+	select {
+	case <-ctx.Done():
+		return "opacity-50"
+	default:
+	}
+
+	if props.Type == "" {
+		props.Type = NotificationInfo
+	}
+
+	// Klasy z theme.css: bg-*-light, border-*-light, text-*-dark
+	colorClasses := ""
+	switch props.Type {
+	case NotificationSuccess:
+		colorClasses = "bg-success-light border-success-light text-success-dark"
+	case NotificationError:
+		colorClasses = "bg-danger-light border-danger-light text-danger-dark"
+	case NotificationWarning:
+		colorClasses = "bg-warning-light border-warning-light text-warning-dark"
+	case NotificationInfo:
+		colorClasses = "bg-primary-light border-primary-light text-primary-dark"
+	default:
+		colorClasses = "bg-primary-light border-primary-light text-primary-dark"
+	}
+
+	return fmt.Sprintf("flex items-start gap-3 p-4 rounded-lg shadow-lg border max-w-md w-full transition-all duration-300 %s %s",
+		colorClasses,
+		props.ClassName,
+	)
 }
 
 func getNotificationPositionClasses(position NotificationPosition) string {
-    if position == "" {
-        position = PositionTopRight
-    }
-    
-    switch position {
-    case PositionTopRight:
-        return "fixed top-4 right-4 z-50"
-    case PositionTopLeft:
-        return "fixed top-4 left-4 z-50"
-    case PositionTopCenter:
-        return "fixed top-4 left-1/2 transform -translate-x-1/2 z-50"
-    case PositionBottomRight:
-        return "fixed bottom-4 right-4 z-50"
-    case PositionBottomLeft:
-        return "fixed bottom-4 left-4 z-50"
-    case PositionBottomCenter:
-        return "fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50"
-    default:
-        return "fixed top-4 right-4 z-50"
-    }
+	if position == "" {
+		position = PositionTopRight
+	}
+
+	switch position {
+	case PositionTopRight:
+		return "fixed top-4 right-4 z-50"
+	case PositionTopLeft:
+		return "fixed top-4 left-4 z-50"
+	case PositionTopCenter:
+		return "fixed top-4 left-1/2 transform -translate-x-1/2 z-50"
+	case PositionBottomRight:
+		return "fixed bottom-4 right-4 z-50"
+	case PositionBottomLeft:
+		return "fixed bottom-4 left-4 z-50"
+	case PositionBottomCenter:
+		return "fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50"
+	default:
+		return "fixed top-4 right-4 z-50"
+	}
 }
 
-func getNotificationIcon(notifType NotificationType) string {
-    switch notifType {
-    case NotificationSuccess:
-        return "text-green-500"
-    case NotificationError:
-        return "text-red-500"
-    case NotificationWarning:
-        return "text-yellow-500"
-    case NotificationInfo:
-        return "text-blue-500"
-    default:
-        return "text-blue-500"
-    }
+func getNotificationIconClass(notifType NotificationType) string {
+	// Klasy z theme.css: text-success, text-danger, text-warning, text-primary
+	switch notifType {
+	case NotificationSuccess:
+		return "text-success"
+	case NotificationError:
+		return "text-danger"
+	case NotificationWarning:
+		return "text-warning"
+	case NotificationInfo:
+		return "text-primary"
+	default:
+		return "text-primary"
+	}
 }
 
 templ NotificationIcon(ctx context.Context, notifType NotificationType) {
-    <div class={ fmt.Sprintf("flex-shrink-0 %s", getNotificationIcon(notifType)) }>
-        if notifType == NotificationSuccess {
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-        } else if notifType == NotificationError {
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-        } else if notifType == NotificationWarning {
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-            </svg>
-        } else {
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-        }
-    </div>
+	<div class={ fmt.Sprintf("flex-shrink-0 %s", getNotificationIconClass(notifType)) }>
+		if notifType == NotificationSuccess {
+			<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+			</svg>
+		} else if notifType == NotificationError {
+			<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+			</svg>
+		} else if notifType == NotificationWarning {
+			<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+			</svg>
+		} else {
+			<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+			</svg>
+		}
+	</div>
 }
 
 templ NotificationCloseButton(ctx context.Context, onClick templ.ComponentScript) {
-    <button
-        type="button"
-        class="flex-shrink-0 ml-auto text-gray-400 hover:text-gray-600 transition-colors"
-        onclick={ onClick }
-        aria-label="Close notification"
-    >
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-        </svg>
-    </button>
+	<button
+		type="button"
+		class="flex-shrink-0 ml-auto text-secondary hover:text-secondary-dark transition-colors"
+		onclick={ onClick }
+		aria-label="Close notification"
+	>
+		<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+		</svg>
+	</button>
 }
 
 templ Notification(ctx context.Context, props NotificationProps) {
-    <div class={ getNotificationPositionClasses(props.Position) }>
-        <div 
-            class={ getNotificationClasses(ctx, props) }
-            if props.Duration > 0 {
-                x-data={ fmt.Sprintf("{ show: true }") }
-                x-show="show"
-                x-init={ fmt.Sprintf("setTimeout(() => show = false, %d)", props.Duration * 1000) }
-                x-transition:enter="transition ease-out duration-300"
-                x-transition:enter-start="opacity-0 transform scale-90"
-                x-transition:enter-end="opacity-100 transform scale-100"
-                x-transition:leave="transition ease-in duration-200"
-                x-transition:leave-start="opacity-100 transform scale-100"
-                x-transition:leave-end="opacity-0 transform scale-90"
-            }
-        >
-            // Icon
-            @NotificationIcon(ctx, props.Type)
-            
-            // Content
-            <div class="flex-1 min-w-0">
-                if props.Title != "" {
-                    <h4 class="font-semibold text-sm mb-1">{ props.Title }</h4>
-                }
-                if props.Message != "" {
-                    <p class="text-sm">{ props.Message }</p>
-                }
-            </div>
-            
-            // Close button
-            if props.Dismissible {
-                @NotificationCloseButton(ctx, props.OnClose)
-            }
-        </div>
-    </div>
+	<div class={ getNotificationPositionClasses(props.Position) }>
+		<div
+			class={ getNotificationClasses(ctx, props) }
+			if props.Duration > 0 {
+				x-data={ fmt.Sprintf("{ show: true }") }
+				x-show="show"
+				x-init={ fmt.Sprintf("setTimeout(() => show = false, %d)", props.Duration*1000) }
+				x-transition:enter="transition ease-out duration-300"
+				x-transition:enter-start="opacity-0 transform scale-90"
+				x-transition:enter-end="opacity-100 transform scale-100"
+				x-transition:leave="transition ease-in duration-200"
+				x-transition:leave-start="opacity-100 transform scale-100"
+				x-transition:leave-end="opacity-0 transform scale-90"
+			}
+		>
+			@NotificationIcon(ctx, props.Type)
+			<div class="flex-1 min-w-0">
+				if props.Title != "" {
+					<h4 class="font-semibold text-sm mb-1">{ props.Title }</h4>
+				}
+				if props.Message != "" {
+					<p class="text-sm">{ props.Message }</p>
+				}
+			</div>
+			if props.Dismissible {
+				@NotificationCloseButton(ctx, props.OnClose)
+			}
+		</div>
+	</div>
 }
 
-// Notification container dla wielu powiadomień
 templ NotificationContainer(ctx context.Context, position NotificationPosition) {
-    <div class={ getNotificationPositionClasses(position) }>
-        <div class="flex flex-col gap-2">
-            { children... }
-        </div>
-    </div>
+	<div class={ getNotificationPositionClasses(position) }>
+		<div class="flex flex-col gap-2">
+			{ children... }
+		</div>
+	</div>
 }
 
-// Inline notification (nie floating, do umieszczenia w kontenerze)
 templ InlineNotification(ctx context.Context, props NotificationProps) {
-    <div 
-        class={ getNotificationClasses(ctx, props) }
-        if props.Duration > 0 {
-            x-data={ fmt.Sprintf("{ show: true }") }
-            x-show="show"
-            x-init={ fmt.Sprintf("setTimeout(() => show = false, %d)", props.Duration * 1000) }
-        }
-    >
-        // Icon
-        @NotificationIcon(ctx, props.Type)
-        
-        // Content
-        <div class="flex-1 min-w-0">
-            if props.Title != "" {
-                <h4 class="font-semibold text-sm mb-1">{ props.Title }</h4>
-            }
-            if props.Message != "" {
-                <p class="text-sm">{ props.Message }</p>
-            }
-        </div>
-        
-        // Close button
-        if props.Dismissible {
-            @NotificationCloseButton(ctx, props.OnClose)
-        }
-    </div>
+	<div
+		class={ getNotificationClasses(ctx, props) }
+		if props.Duration > 0 {
+			x-data={ fmt.Sprintf("{ show: true }") }
+			x-show="show"
+			x-init={ fmt.Sprintf("setTimeout(() => show = false, %d)", props.Duration*1000) }
+		}
+	>
+		@NotificationIcon(ctx, props.Type)
+		<div class="flex-1 min-w-0">
+			if props.Title != "" {
+				<h4 class="font-semibold text-sm mb-1">{ props.Title }</h4>
+			}
+			if props.Message != "" {
+				<p class="text-sm">{ props.Message }</p>
+			}
+		</div>
+		if props.Dismissible {
+			@NotificationCloseButton(ctx, props.OnClose)
+		}
+	</div>
 }

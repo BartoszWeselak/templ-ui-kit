@@ -20,8 +20,7 @@ type (
 	ErrorProps = components.ErrorProps
 	ErrorVariant = components.ErrorVariant
 	ErrorSize = components.ErrorSize
-	GenericErrorProps = components.GenericErrorProps
-	GenericSuccessProps = components.GenericSuccessProps
+	
 	FormInputProps = components.FormInputProps
 	InputSize = components.InputSize
 	InputVariant = components.InputVariant
@@ -47,8 +46,6 @@ var (
 	Button = components.Button
 	Card = components.Card
 	Error = components.Error
-	GenericError = components.GenericError
-	GenericSuccess = components.GenericSuccess
 	FormInput = components.FormInput
 	FormSelect = components.FormSelect
 	Pagination = components.Pagination
@@ -178,6 +175,8 @@ templ TestLayout(ctx context.Context) {
 			<title>Templ Components - Test Layout</title>
 			<script src="https://cdn.tailwindcss.com"></script>
 			<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+			<link rel="stylesheet" href="/static/theme.css"/>  
+
 			<style>
 				.component-section {
 					margin-bottom: 3rem;
@@ -274,19 +273,19 @@ templ TestLayout(ctx context.Context) {
 				<section class="component-section">
 					<h2 class="component-title">🃏 Cards</h2>
 					<div class="demo-grid grid-cols-1 md:grid-cols-3">
-						@Card(CardProps{
+						@Card(ctx,CardProps{
 							Title:   "Card White",
 							Content: "This is a white card with medium shadow and large border radius.",
 							Variant: CardVariantWhite,
 							Size:    CardSizeMedium,
 						})
-						@Card(CardProps{
+						@Card(ctx,CardProps{
 							Title:   "Card Gray",
 							Content: "This is a gray card variant.",
 							Variant: CardVariantGray,
 							Size:    CardSizeMedium,
 						})
-						@Card(CardProps{
+						@Card(ctx,CardProps{
 							Title:   "Card Blue",
 							Content: "This is a blue card variant.",
 							Variant: CardVariantBlue,
@@ -294,12 +293,12 @@ templ TestLayout(ctx context.Context) {
 						})
 					</div>
 					<div class="demo-grid grid-cols-1 mt-4">
-						@Card(CardProps{
+						@Card(ctx,CardProps{
 							Title:   "Full Width Card",
 							Content: "This card takes the full width of its container.",
 							Size:    CardSizeFull,
 						})
-						@Card(CardProps{
+						@Card(ctx,CardProps{
 							Title:        "Small Shadow Card",
 							Content:      "This card has a small shadow.",
 							Shadow:       ShadowSmall,
@@ -351,27 +350,8 @@ templ TestLayout(ctx context.Context) {
 						</div>
 					</div>
 				</section>
-				// MESSAGES
-				<section class="component-section">
-					<h2 class="component-title">💬 Messages</h2>
-					<div class="demo-grid">
-						@GenericError(GenericErrorProps{
-							Message:   "Failed to save your changes. Please try again.",
-							Closeable: true,
-							ID:        "error-msg-1",
-						})
-						@GenericSuccess(GenericSuccessProps{
-							Message:   "Your profile has been updated successfully!",
-							Closeable: true,
-							ID:        "success-msg-1",
-						})
-						@GenericError(GenericErrorProps{
-							Message:   "This is a non-closeable error message",
-							Closeable: false,
-							ID:        "error-msg-2",
-						})
-					</div>
-				</section>
+				
+			
 				// NOTIFICATIONS
 				<section class="component-section">
 					<h2 class="component-title">🔔 Notifications</h2>
@@ -722,7 +702,7 @@ templ TestLayout(ctx context.Context) {
 				<section class="component-section">
 					<h2 class="component-title">🎨 Combined Example - User Profile Form</h2>
 					<div class="demo-item">
-						@Card(CardProps{
+						@Card(ctx,CardProps{
 							Title: "Edit Profile",
 							Size:  CardSizeFull,
 						})
@@ -759,9 +739,7 @@ templ TestLayout(ctx context.Context) {
 								},
 							})
 							<div id="success-profile" class="hidden">
-								@GenericSuccess(GenericSuccessProps{
-									Message: "Profile updated successfully!",
-								})
+								
 							</div>
 							<div class="flex gap-2 mt-6">
 								@Button(ctx, ButtonProps{

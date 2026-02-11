@@ -148,27 +148,64 @@
   animation: spin 1s linear infinite;
 }
 
-/* Utility classes using CSS variables */
-.bg-primary {
-  background-color: var(--primary-500);
+
+.bg-primary   { background-color: var(--primary-500); }
+.bg-secondary { background-color: var(--secondary-500); }
+.bg-success   { background-color: var(--success-500); }
+.bg-warning   { background-color: var(--warning-500); }
+.bg-danger    { background-color: var(--danger-500); }
+
+.bg-primary-light   { background-color: var(--primary-50); }
+.bg-secondary-light { background-color: var(--secondary-50); }
+.bg-success-light   { background-color: var(--success-50); }
+.bg-warning-light   { background-color: var(--warning-50); }
+.bg-danger-light    { background-color: var(--danger-50); }
+
+
+.text-primary   { color: var(--primary-500); }
+.text-secondary { color: var(--secondary-500); }
+.text-success   { color: var(--success-500); }
+.text-warning   { color: var(--warning-500); }
+.text-danger    { color: var(--danger-500); }
+
+.text-primary-dark   { color: var(--primary-800); }
+.text-secondary-dark { color: var(--secondary-800); }
+.text-success-dark   { color: var(--success-800); }
+.text-warning-dark   { color: var(--warning-800); }
+.text-danger-dark    { color: var(--danger-800); }
+
+
+.border-primary   { border-color: var(--primary-500); }
+.border-secondary { border-color: var(--secondary-500); }
+.border-success   { border-color: var(--success-500); }
+.border-warning   { border-color: var(--warning-500); }
+.border-danger    { border-color: var(--danger-500); }
+
+.border-primary-light   { border-color: var(--primary-200); }
+.border-secondary-light { border-color: var(--secondary-200); }
+.border-success-light   { border-color: var(--success-200); }
+.border-warning-light   { border-color: var(--warning-200); }
+.border-danger-light    { border-color: var(--danger-200); }
+
+.btn-sm {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--text-sm);
 }
 
-.bg-secondary {
-  background-color: var(--secondary-500);
+.btn-md {
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--text-base);
 }
 
-.text-primary {
-  color: var(--primary-500);
+.btn-lg {
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: var(--text-lg);
 }
 
-.text-secondary {
-  color: var(--secondary-500);
+.btn-xl {
+  padding: var(--spacing-lg) var(--spacing-xl);
+  font-size: var(--text-lg);
 }
 
-.border-primary {
-  border-color: var(--primary-500);
-}
 
-.border-secondary {
-  border-color: var(--secondary-500);
-}
+.text-white { color: #ffffff; }
