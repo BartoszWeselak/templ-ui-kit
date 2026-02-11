@@ -111,7 +111,6 @@ const (
 	ErrorVariantDanger = components.ErrorVariantDanger
 	ErrorVariantWarning = components.ErrorVariantWarning
 	ErrorVariantInfo = components.ErrorVariantInfo
-	ErrorVariantSuccess = components.ErrorVariantSuccess
 	
 	// Error sizes
 	ErrorSizeSmall = components.ErrorSizeSmall
@@ -310,39 +309,35 @@ templ TestLayout(ctx context.Context) {
 				<section class="component-section">
 					<h2 class="component-title">⚠️ Errors & Alerts</h2>
 					<div class="demo-grid">
-						@Error(ErrorProps{
+						@Error(ctx,ErrorProps{
 							Message:  "Error: Something went wrong!",
 							Variant:  ErrorVariantDanger,
 							ShowIcon: true,
 						})
-						@Error(ErrorProps{
+						@Error(ctx,ErrorProps{
 							Message:  "Warning: Please check your input",
 							Variant:  ErrorVariantWarning,
 							ShowIcon: true,
 						})
-						@Error(ErrorProps{
+						@Error(ctx,ErrorProps{
 							Message:  "Info: New updates available",
 							Variant:  ErrorVariantInfo,
 							ShowIcon: true,
 						})
-						@Error(ErrorProps{
-							Message:  "Success: Operation completed successfully!",
-							Variant:  ErrorVariantSuccess,
-							ShowIcon: true,
-						})
+						
 						<div class="demo-item">
 							<div class="demo-label">Different Sizes</div>
-							@Error(ErrorProps{
+							@Error(ctx,ErrorProps{
 								Message:  "Small error message",
 								Size:     ErrorSizeSmall,
 								ShowIcon: true,
 							})
-							@Error(ErrorProps{
+							@Error(ctx,ErrorProps{
 								Message:  "Medium error message",
 								Size:     ErrorSizeMedium,
 								ShowIcon: true,
 							})
-							@Error(ErrorProps{
+							@Error(ctx,ErrorProps{
 								Message:  "Large error message",
 								Size:     ErrorSizeLarge,
 								ShowIcon: true,

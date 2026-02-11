@@ -1,95 +1,142 @@
 package components
 
-import "fmt"
+import (
+	"context"
+	"fmt"
+)
 
 type ErrorVariant string
 type ErrorSize string
 
 const (
-    // Variants
-    ErrorVariantDanger  ErrorVariant = "danger"
-    ErrorVariantWarning ErrorVariant = "warning"
-    ErrorVariantInfo    ErrorVariant = "info"
-    ErrorVariantSuccess ErrorVariant = "success"
-    
-    // Sizes
-    ErrorSizeSmall  ErrorSize = "small"
-    ErrorSizeMedium ErrorSize = "medium"
-    ErrorSizeLarge  ErrorSize = "large"
+	// Variants
+	ErrorVariantDanger  ErrorVariant = "danger"
+	ErrorVariantWarning ErrorVariant = "warning"
+	ErrorVariantInfo    ErrorVariant = "info"
+
+	// Sizes
+	ErrorSizeSmall  ErrorSize = "small"
+	ErrorSizeMedium ErrorSize = "medium"
+	ErrorSizeLarge  ErrorSize = "large"
 )
 
 type ErrorProps struct {
-    Message   string
-    Variant   ErrorVariant
-    Size      ErrorSize
-    ClassName string
-    ShowIcon  bool
+	Message   string
+	Variant   ErrorVariant
+	Size      ErrorSize
+	ClassName string
+	ShowIcon  bool
 }
 
 func getErrorClasses(props ErrorProps) string {
-    // Defaults
-    if props.Variant == "" {
-        props.Variant = ErrorVariantDanger
-    }
-    if props.Size == "" {
-        props.Size = ErrorSizeMedium
-    }
-    
-    // Base classes
-    baseClasses := "border rounded relative flex items-center"
-    
-    // Variant classes
-    variantClasses := ""
-    switch props.Variant {
-    case ErrorVariantDanger:
-        variantClasses = "bg-red-100 border-red-400 text-red-700"
-    case ErrorVariantWarning:
-        variantClasses = "bg-yellow-100 border-yellow-400 text-yellow-700"
-    case ErrorVariantInfo:
-        variantClasses = "bg-blue-100 border-blue-400 text-blue-700"
-    case ErrorVariantSuccess:
-        variantClasses = "bg-green-100 border-green-400 text-green-700"
-    }
-    
-    // Size classes
-    sizeClasses := ""
-    switch props.Size {
-    case ErrorSizeSmall:
-        sizeClasses = "px-2 py-1 text-sm"
-    case ErrorSizeMedium:
-        sizeClasses = "px-4 py-3 text-base"
-    case ErrorSizeLarge:
-        sizeClasses = "px-6 py-4 text-lg"
-    }
-    
-    return fmt.Sprintf("%s %s %s %s",
-        baseClasses,
-        variantClasses,
-        sizeClasses,
-        props.ClassName,
-    )
+	// Defaults
+	if props.Variant == "" {
+		props.Variant = ErrorVariantDanger
+	}
+	if props.Size == "" {
+		props.Size = ErrorSizeMedium
+	}
+
+	baseClasses := "border rounded-md relative flex items-center"
+
+	// Variant classes - używamy theme.css
+	variantClasses := ""
+	switch props.Variant {
+	case ErrorVariantDanger:
+		variantClasses = "bg-danger-light border-danger-light text-danger-dark"
+	case ErrorVariantWarning:
+		variantClasses = "bg-warning-light border-warning-light text-warning-dark"
+	case ErrorVariantInfo:
+		variantClasses = "bg-primary-light border-primary-light text-primary-dark"
+	default:
+		variantClasses = "bg-danger-light border-danger-light text-danger-dark"
+	}
+
+	// Size classes
+	sizeClasses := ""
+	switch props.Size {
+	case ErrorSizeSmall:
+		sizeClasses = "px-2 py-1 text-sm"
+	case ErrorSizeMedium:
+		sizeClasses = "px-4 py-3 text-base"
+	case ErrorSizeLarge:
+		sizeClasses = "px-6 py-4 text-lg"
+	default:
+		sizeClasses = "px-4 py-3 text-base"
+	}
+
+	return fmt.Sprintf("%s %s %s %s",
+		baseClasses,
+		variantClasses,
+		sizeClasses,
+		props.ClassName,
+	)
 }
 
-func getIconSize(size ErrorSize) string {
-    switch size {
-    case ErrorSizeSmall:
-        return "w-4 h-4"
-    case ErrorSizeMedium:
-        return "w-5 h-5"
-    case ErrorSizeLarge:
-        return "w-6 h-6"
-    default:
-        return "w-5 h-5"
-    }
+func getErrorIconSize(size ErrorSize) string {
+	switch size {
+	case ErrorSizeSmall:
+		return "w-4 h-4"
+	case ErrorSizeMedium:
+		return "w-5 h-5"
+	case ErrorSizeLarge:
+		return "w-6 h-6"
+	default:
+		return "w-5 h-5"
+	}
 }
 
-templ Error(props ErrorProps) {
-    <div class={ getErrorClasses(props) } role="alert">
-        if props.ShowIcon {
-            <svg class={ fmt.Sprintf("inline mr-2 %s", getIconSize(props.Size)) } fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
-            </svg>
-        }
-        <span class="font-medium">{ props.Message }</span>
-    </div>
+func getErrorIconClass(variant ErrorVariant) string {
+	// Klasy z theme.css: text-danger, text-warning, text-primary
+	switch variant {
+	case ErrorVariantDanger:
+		return "text-danger"
+	case ErrorVariantWarning:
+		return "text-warning"
+	case ErrorVariantInfo:
+		return "text-primary"
+	default:
+		return "text-danger"
+	}
+}
+
+templ ErrorIcon(ctx context.Context, props ErrorProps) {
+	<div class={ fmt.Sprintf("inline-flex flex-shrink-0 mr-2 %s", getErrorIconClass(props.Variant)) }>
+		if props.Variant == ErrorVariantDanger {
+			<svg class={ getErrorIconSize(props.Size) } fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+				<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+			</svg>
+		} else if props.Variant == ErrorVariantWarning {
+			<svg class={ getErrorIconSize(props.Size) } fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+				<path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+			</svg>
+		} else {
+			<svg class={ getErrorIconSize(props.Size) } fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+				<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+			</svg>
+		}
+	</div>
+}
+
+templ Error(ctx context.Context, props ErrorProps) {
+	// Wyświetl tylko gdy Message nie jest pusty
+	if props.Message != "" {
+		<div class={ getErrorClasses(props) } role="alert">
+			if props.ShowIcon {
+				@ErrorIcon(ctx, props)
+			}
+			<span class="font-medium">{ props.Message }</span>
+		</div>
+	}
+}
+
+templ InlineError(ctx context.Context, props ErrorProps) {
+	if props.Message != "" {
+		<div class={ getErrorClasses(props) } role="alert">
+			if props.ShowIcon {
+				@ErrorIcon(ctx, props)
+			}
+			<span class="font-medium">{ props.Message }</span>
+		</div>
+	}
 }

@@ -1,99 +1,127 @@
 package components
 
-import "fmt"
+import (
+	"context"
+	"fmt"
+)
 
 type TabVariant string
 type TabSize string
 
 const (
-    // Variants
-    TabVariantPrimary   TabVariant = "primary"
-    TabVariantSecondary TabVariant = "secondary"
-    TabVariantNone      TabVariant = "none"
+	// Variants
+	TabVariantPrimary   TabVariant = "primary"
+	TabVariantSecondary TabVariant = "secondary"
+	TabVariantNone      TabVariant = "none"
 
-    // Sizes
-    TabSizeSmall  TabSize = "small"
-    TabSizeMedium TabSize = "medium"
-    TabSizeLarge  TabSize = "large"
+	// Sizes
+	TabSizeSmall  TabSize = "small"
+	TabSizeMedium TabSize = "medium"
+	TabSizeLarge  TabSize = "large"
 )
 
 type TabProps struct {
-    Label     string
-    OnClick   templ.ComponentScript
-    Variant   TabVariant
-    Size      TabSize
-    Active    bool
-    ClassName string
-    Disabled  bool
+	Label     string
+	OnClick   templ.ComponentScript
+	Variant   TabVariant
+	Size      TabSize
+	Active    bool
+	ClassName string
+	Disabled  bool
 }
 
 func getTabClasses(props TabProps) string {
-    baseClasses := "cursor-pointer transition-all duration-200"
+	// Defaults
+	if props.Variant == "" {
+		props.Variant = TabVariantPrimary
+	}
+	if props.Size == "" {
+		props.Size = TabSizeMedium
+	}
 
-    if props.Variant == "" {
-        props.Variant = TabVariantPrimary
-    }
-    if props.Size == "" {
-        props.Size = TabSizeMedium
-    }
+	baseClasses := "cursor-pointer transition-all duration-200 border-b-2"
 
-    // Variant classes
-    variantClasses := ""
-    switch props.Variant {
-    case TabVariantPrimary:
-        if props.Active {
-            variantClasses = "bg-blue-500 text-white border-b-2 border-blue-700"
-        } else {
-            variantClasses = "bg-white text-blue-500 hover:bg-blue-100"
-        }
-    case TabVariantSecondary:
-        if props.Active {
-            variantClasses = "bg-gray-500 text-white border-b-2 border-gray-700"
-        } else {
-            variantClasses = "bg-white text-gray-500 hover:bg-gray-100"
-        }
-    case TabVariantNone:
-        variantClasses = ""
-    default:
-        variantClasses = "bg-white text-blue-500 hover:bg-blue-100"
-    }
+	// Variant classes - używamy theme.css
+	variantClasses := ""
+	switch props.Variant {
+	case TabVariantPrimary:
+		if props.Active {
+			variantClasses = "bg-primary text-white border-primary-dark"
+		} else {
+			variantClasses = "bg-white text-primary hover:bg-primary-light border-transparent"
+		}
+	case TabVariantSecondary:
+		if props.Active {
+			variantClasses = "bg-secondary text-white border-secondary-dark"
+		} else {
+			variantClasses = "bg-white text-secondary hover:bg-secondary-light border-transparent"
+		}
+	case TabVariantNone:
+		if props.Active {
+			variantClasses = "border-primary"
+		} else {
+			variantClasses = "border-transparent hover:border-gray-300"
+		}
+	default:
+		if props.Active {
+			variantClasses = "bg-primary text-white border-primary-dark"
+		} else {
+			variantClasses = "bg-white text-primary hover:bg-primary-light border-transparent"
+		}
+	}
 
-    // Size classes
-    sizeClasses := ""
-    switch props.Size {
-    case TabSizeSmall:
-        sizeClasses = "px-3 py-1 text-sm"
-    case TabSizeMedium:
-        sizeClasses = "px-4 py-2 text-base"
-    case TabSizeLarge:
-        sizeClasses = "px-6 py-3 text-lg"
-    }
+	// Size classes
+	sizeClasses := ""
+	switch props.Size {
+	case TabSizeSmall:
+		sizeClasses = "px-3 py-1 text-sm"
+	case TabSizeMedium:
+		sizeClasses = "px-4 py-2 text-base"
+	case TabSizeLarge:
+		sizeClasses = "px-6 py-3 text-lg"
+	default:
+		sizeClasses = "px-4 py-2 text-base"
+	}
 
-    // Disabled
-    disabledClasses := ""
-    if props.Disabled {
-        disabledClasses = "opacity-50 cursor-not-allowed"
-    }
+	// Disabled state
+	stateClasses := ""
+	if props.Disabled {
+		stateClasses = "opacity-50 cursor-not-allowed"
+	}
 
-    classes := fmt.Sprintf("%s %s %s %s %s",
-        baseClasses,
-        variantClasses,
-        sizeClasses,
-        disabledClasses,
-        props.ClassName,
-    )
-
-    return classes
+	return fmt.Sprintf("%s %s %s %s %s",
+		baseClasses,
+		variantClasses,
+		sizeClasses,
+		stateClasses,
+		props.ClassName,
+	)
 }
 
-templ Tab(props TabProps) {
-    <div
-        class={ getTabClasses(props) }
-        onclick={ props.OnClick }
-        if props.Disabled {
-            disabled
-        }
-    >
-        { props.Label }
-    </div>
+templ Tab(ctx context.Context, props TabProps) {
+	<div
+		class={ getTabClasses(props) }
+		onclick={ props.OnClick }
+		if props.Disabled {
+			aria-disabled="true"
+		}
+		role="tab"
+		aria-selected={ fmt.Sprintf("%t", props.Active) }
+	>
+		{ props.Label }
+	</div>
+}
+
+templ TabGroup(ctx context.Context, className string) {
+	<div class={ fmt.Sprintf("flex border-b border-gray-200 %s", className) } role="tablist">
+		{ children... }
+	</div>
+}
+
+templ TabPanel(ctx context.Context, active bool, className string) {
+	if active {
+		<div class={ fmt.Sprintf("p-4 %s", className) } role="tabpanel">
+			{ children... }
+		</div>
+	}
 }

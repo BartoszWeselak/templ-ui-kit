@@ -119,7 +119,6 @@ const (
 	ErrorVariantDanger  = components.ErrorVariantDanger
 	ErrorVariantWarning = components.ErrorVariantWarning
 	ErrorVariantInfo    = components.ErrorVariantInfo
-	ErrorVariantSuccess = components.ErrorVariantSuccess
 
 	// Error sizes
 	ErrorSizeSmall  = components.ErrorSizeSmall
@@ -343,7 +342,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Error(ErrorProps{
+		templ_7745c5c3_Err = Error(ctx, ErrorProps{
 			Message:  "Error: Something went wrong!",
 			Variant:  ErrorVariantDanger,
 			ShowIcon: true,
@@ -351,7 +350,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Error(ErrorProps{
+		templ_7745c5c3_Err = Error(ctx, ErrorProps{
 			Message:  "Warning: Please check your input",
 			Variant:  ErrorVariantWarning,
 			ShowIcon: true,
@@ -359,17 +358,9 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Error(ErrorProps{
+		templ_7745c5c3_Err = Error(ctx, ErrorProps{
 			Message:  "Info: New updates available",
 			Variant:  ErrorVariantInfo,
-			ShowIcon: true,
-		}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Error(ErrorProps{
-			Message:  "Success: Operation completed successfully!",
-			Variant:  ErrorVariantSuccess,
 			ShowIcon: true,
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
@@ -379,7 +370,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Error(ErrorProps{
+		templ_7745c5c3_Err = Error(ctx, ErrorProps{
 			Message:  "Small error message",
 			Size:     ErrorSizeSmall,
 			ShowIcon: true,
@@ -387,7 +378,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Error(ErrorProps{
+		templ_7745c5c3_Err = Error(ctx, ErrorProps{
 			Message:  "Medium error message",
 			Size:     ErrorSizeMedium,
 			ShowIcon: true,
@@ -395,7 +386,7 @@ func TestLayout(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Error(ErrorProps{
+		templ_7745c5c3_Err = Error(ctx, ErrorProps{
 			Message:  "Large error message",
 			Size:     ErrorSizeLarge,
 			ShowIcon: true,

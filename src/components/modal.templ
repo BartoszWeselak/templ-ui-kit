@@ -128,61 +128,6 @@ templ ModalTrigger(ctx context.Context, props ModalTriggerProps) {
     })
 }
 
-// Modal z Alpine.js (opcjonalnie, bardziej zaawansowany)
-templ ModalAlpine(ctx context.Context, props ModalProps) {
-    <div 
-        x-data="{ open: false }"
-        x-show="open"
-        x-cloak
-        @keydown.escape.window="open = false"
-        class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
-        @click.self="open = false"
-        x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0"
-        x-transition:enter-end="opacity-100"
-        x-transition:leave="transition ease-in duration-200"
-        x-transition:leave-start="opacity-100"
-        x-transition:leave-end="opacity-0"
-    >
-        <div 
-            class={ getModalClasses(ctx, props) }
-            x-transition:enter="transition ease-out duration-300"
-            x-transition:enter-start="opacity-0 transform scale-90"
-            x-transition:enter-end="opacity-100 transform scale-100"
-            x-transition:leave="transition ease-in duration-200"
-            x-transition:leave-start="opacity-100 transform scale-100"
-            x-transition:leave-end="opacity-0 transform scale-90"
-        >
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-bold text-gray-900">{ props.Title }</h3>
-                if props.ShowClose {
-                    <button 
-                        @click="open = false"
-                        class="text-gray-400 hover:text-gray-600 transition-colors"
-                        aria-label="Close modal"
-                    >
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                }
-            </div>
-            <div class="mt-2">
-                @props.Content
-            </div>
-        </div>
-    </div>
-}
-
-templ ModalTriggerAlpine(ctx context.Context, props ModalTriggerProps) {
-    @Button(ctx, ButtonProps{
-        Text: props.Text,
-        OnClick: templ.ComponentScript{Call: "open = true"},
-        Variant: props.Variant,
-        Size: props.Size,
-        ClassName: props.ClassName,
-    })
-}
 
 // Modal Footer - pomocniczy komponent do stopki modala
 templ ModalFooter(ctx context.Context) {
