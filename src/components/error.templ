@@ -1,7 +1,6 @@
 package components
 
 import (
-	"context"
 	"fmt"
 )
 
@@ -100,7 +99,7 @@ func getErrorIconClass(variant ErrorVariant) string {
 	}
 }
 
-templ ErrorIcon(ctx context.Context, props ErrorProps) {
+templ ErrorIcon(props ErrorProps) {
 	<div class={ fmt.Sprintf("inline-flex flex-shrink-0 mr-2 %s", getErrorIconClass(props.Variant)) }>
 		if props.Variant == ErrorVariantDanger {
 			<svg class={ getErrorIconSize(props.Size) } fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -118,23 +117,23 @@ templ ErrorIcon(ctx context.Context, props ErrorProps) {
 	</div>
 }
 
-templ Error(ctx context.Context, props ErrorProps) {
+templ Error(props ErrorProps) {
 	// Wyświetl tylko gdy Message nie jest pusty
 	if props.Message != "" {
 		<div class={ getErrorClasses(props) } role="alert">
 			if props.ShowIcon {
-				@ErrorIcon(ctx, props)
+				@ErrorIcon(props)
 			}
 			<span class="font-medium">{ props.Message }</span>
 		</div>
 	}
 }
 
-templ InlineError(ctx context.Context, props ErrorProps) {
+templ InlineError(props ErrorProps) {
 	if props.Message != "" {
 		<div class={ getErrorClasses(props) } role="alert">
 			if props.ShowIcon {
-				@ErrorIcon(ctx, props)
+				@ErrorIcon(props)
 			}
 			<span class="font-medium">{ props.Message }</span>
 		</div>

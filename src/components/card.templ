@@ -1,7 +1,6 @@
 package components
 
 import (
-	"context"
 	"fmt"
 )
 
@@ -95,13 +94,7 @@ func getCardRadiusClasses(radius CardBorderRadius) string {
 	}
 }
 
-func getCardClasses(ctx context.Context, props CardProps) string {
-	select {
-	case <-ctx.Done():
-		return "opacity-50"
-	default:
-	}
-
+func getCardClasses(props CardProps) string {
 	if props.Variant == "" {
 		props.Variant = CardVariantWhite
 	}
@@ -146,8 +139,8 @@ func getCardClasses(ctx context.Context, props CardProps) string {
 	)
 }
 
-templ Card(ctx context.Context, props CardProps) {
-	<div class={ getCardClasses(ctx, props) }>
+templ Card(props CardProps) {
+	<div class={ getCardClasses(props) }>
 		if props.Image != "" {
 			<img
 				src={ props.Image }
@@ -179,37 +172,37 @@ templ Card(ctx context.Context, props CardProps) {
 	</div>
 }
 
-templ CardHeader(ctx context.Context) {
+templ CardHeader() {
 	<div class="flex justify-between items-start mb-4">
 		{ children... }
 	</div>
 }
 
-templ CardBody(ctx context.Context) {
+templ CardBody() {
 	<div class="flex-1">
 		{ children... }
 	</div>
 }
 
-templ CardFooter(ctx context.Context) {
+templ CardFooter() {
 	<div class="mt-4 pt-4 border-t border-secondary-light flex justify-between items-center">
 		{ children... }
 	</div>
 }
 
-templ CardTitle(ctx context.Context, title string) {
+templ CardTitle(title string) {
 	<h3 class="text-xl font-bold text-primary-dark">
 		{ title }
 	</h3>
 }
 
-templ CardDescription(ctx context.Context, description string) {
+templ CardDescription(description string) {
 	<p class="text-secondary mt-2">
 		{ description }
 	</p>
 }
 
-templ CardImage(ctx context.Context, src, alt string) {
+templ CardImage(src, alt string) {
 	<img
 		src={ src }
 		alt={ alt }
@@ -217,22 +210,22 @@ templ CardImage(ctx context.Context, src, alt string) {
 	/>
 }
 
-templ CardActions(ctx context.Context) {
+templ CardActions() {
 	<div class="flex gap-2 mt-4">
 		{ children... }
 	</div>
 }
 
-templ ClickableCard(ctx context.Context, props CardProps, href string) {
+templ ClickableCard(props CardProps, href string) {
 	<a href={ templ.SafeURL(href) } class="block hover:scale-105 transition-transform">
-		@Card(ctx, props) {
+		@Card(props) {
 			{ children... }
 		}
 	</a>
 }
 
-templ HorizontalCard(ctx context.Context, props CardProps) {
-	<div class={ getCardClasses(ctx, props) + " flex flex-row items-center gap-4" }>
+templ HorizontalCard(props CardProps) {
+	<div class={ getCardClasses(props) + " flex flex-row items-center gap-4" }>
 		if props.Image != "" {
 			<img
 				src={ props.Image }

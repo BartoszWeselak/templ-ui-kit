@@ -1,7 +1,6 @@
 package components
 
 import (
-	"context"
 	"fmt"
 )
 
@@ -35,13 +34,7 @@ type NotificationProps struct {
 	ClassName   string
 }
 
-func getNotificationClasses(ctx context.Context, props NotificationProps) string {
-	select {
-	case <-ctx.Done():
-		return "opacity-50"
-	default:
-	}
-
+func getNotificationClasses(props NotificationProps) string {
 	if props.Type == "" {
 		props.Type = NotificationInfo
 	}
@@ -106,7 +99,7 @@ func getNotificationIconClass(notifType NotificationType) string {
 	}
 }
 
-templ NotificationIcon(ctx context.Context, notifType NotificationType) {
+templ NotificationIcon(notifType NotificationType) {
 	<div class={ fmt.Sprintf("flex-shrink-0 %s", getNotificationIconClass(notifType)) }>
 		if notifType == NotificationSuccess {
 			<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -128,7 +121,7 @@ templ NotificationIcon(ctx context.Context, notifType NotificationType) {
 	</div>
 }
 
-templ NotificationCloseButton(ctx context.Context, onClick templ.ComponentScript) {
+templ NotificationCloseButton(onClick templ.ComponentScript) {
 	<button
 		type="button"
 		class="flex-shrink-0 ml-auto text-secondary hover:text-secondary-dark transition-colors"
@@ -141,10 +134,10 @@ templ NotificationCloseButton(ctx context.Context, onClick templ.ComponentScript
 	</button>
 }
 
-templ Notification(ctx context.Context, props NotificationProps) {
+templ Notification(props NotificationProps) {
 	<div class={ getNotificationPositionClasses(props.Position) }>
 		<div
-			class={ getNotificationClasses(ctx, props) }
+			class={ getNotificationClasses(props) }
 			if props.Duration > 0 {
 				x-data={ fmt.Sprintf("{ show: true }") }
 				x-show="show"
@@ -157,7 +150,7 @@ templ Notification(ctx context.Context, props NotificationProps) {
 				x-transition:leave-end="opacity-0 transform scale-90"
 			}
 		>
-			@NotificationIcon(ctx, props.Type)
+			@NotificationIcon(props.Type)
 			<div class="flex-1 min-w-0">
 				if props.Title != "" {
 					<h4 class="font-semibold text-sm mb-1">{ props.Title }</h4>
@@ -167,13 +160,13 @@ templ Notification(ctx context.Context, props NotificationProps) {
 				}
 			</div>
 			if props.Dismissible {
-				@NotificationCloseButton(ctx, props.OnClose)
+				@NotificationCloseButton(props.OnClose)
 			}
 		</div>
 	</div>
 }
 
-templ NotificationContainer(ctx context.Context, position NotificationPosition) {
+templ NotificationContainer(position NotificationPosition) {
 	<div class={ getNotificationPositionClasses(position) }>
 		<div class="flex flex-col gap-2">
 			{ children... }
@@ -181,16 +174,16 @@ templ NotificationContainer(ctx context.Context, position NotificationPosition) 
 	</div>
 }
 
-templ InlineNotification(ctx context.Context, props NotificationProps) {
+templ InlineNotification(props NotificationProps) {
 	<div
-		class={ getNotificationClasses(ctx, props) }
+		class={ getNotificationClasses(props) }
 		if props.Duration > 0 {
 			x-data={ fmt.Sprintf("{ show: true }") }
 			x-show="show"
 			x-init={ fmt.Sprintf("setTimeout(() => show = false, %d)", props.Duration*1000) }
 		}
 	>
-		@NotificationIcon(ctx, props.Type)
+		@NotificationIcon(props.Type)
 		<div class="flex-1 min-w-0">
 			if props.Title != "" {
 				<h4 class="font-semibold text-sm mb-1">{ props.Title }</h4>
@@ -200,7 +193,7 @@ templ InlineNotification(ctx context.Context, props NotificationProps) {
 			}
 		</div>
 		if props.Dismissible {
-			@NotificationCloseButton(ctx, props.OnClose)
+			@NotificationCloseButton(props.OnClose)
 		}
 	</div>
 }

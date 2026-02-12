@@ -1,7 +1,6 @@
 package components
 
 import (
-	"context"
 	"fmt"
 )
 
@@ -70,13 +69,7 @@ func getButtonVariantClasses(variant ButtonVariant) string {
 	}
 }
 
-func getButtonClasses(ctx context.Context, props ButtonProps) string {
-	select {
-	case <-ctx.Done():
-		return "opacity-50 cursor-not-allowed"
-	default:
-	}
-
+func getButtonClasses(props ButtonProps) string {
 	if props.Variant == "" {
 		props.Variant = VariantPrimary
 	}
@@ -147,14 +140,14 @@ func getSpinnerSize(size ButtonSize) string {
 	}
 }
 
-templ LoadingSpinner(ctx context.Context, size ButtonSize) {
+templ LoadingSpinner(size ButtonSize) {
 	<svg class={ fmt.Sprintf("%s animate-spin", getSpinnerSize(size)) } xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
 		<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
 		<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
 	</svg>
 }
 
-templ Button(ctx context.Context, props ButtonProps) {
+templ Button(props ButtonProps) {
 	<button
 		type={
 			func() string {
@@ -164,7 +157,7 @@ templ Button(ctx context.Context, props ButtonProps) {
 				return "button"
 			}()
 		}
-		class={ getButtonClasses(ctx, props) }
+		class={ getButtonClasses(props) }
 		onclick={ props.OnClick }
 		if props.Disabled || props.Loading {
 			disabled
@@ -172,7 +165,7 @@ templ Button(ctx context.Context, props ButtonProps) {
 	>
 		if props.IconPosition == IconLeft || props.IconPosition == "" {
 			if props.Loading {
-				@LoadingSpinner(ctx, props.Size)
+				@LoadingSpinner(props.Size)
 			} else if props.Icon != nil {
 				@props.Icon
 			}
@@ -182,7 +175,7 @@ templ Button(ctx context.Context, props ButtonProps) {
 		}
 		if props.IconPosition == IconRight {
 			if props.Loading {
-				@LoadingSpinner(ctx, props.Size)
+				@LoadingSpinner(props.Size)
 			} else if props.Icon != nil {
 				@props.Icon
 			}
@@ -190,37 +183,37 @@ templ Button(ctx context.Context, props ButtonProps) {
 	</button>
 }
 
-templ IconPlus(ctx context.Context) {
+templ IconPlus() {
 	<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
 	</svg>
 }
 
-templ IconTrash(ctx context.Context) {
+templ IconTrash() {
 	<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
 	</svg>
 }
 
-templ IconCheck(ctx context.Context) {
+templ IconCheck() {
 	<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
 	</svg>
 }
 
-templ IconX(ctx context.Context) {
+templ IconX() {
 	<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
 	</svg>
 }
 
-templ IconArrowRight(ctx context.Context) {
+templ IconArrowRight() {
 	<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
 	</svg>
 }
 
-templ IconDownload(ctx context.Context) {
+templ IconDownload() {
 	<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
 	</svg>

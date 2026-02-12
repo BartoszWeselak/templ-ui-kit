@@ -1,137 +1,188 @@
 package components
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type InputSize string
 type InputVariant string
 
 const (
-    // Sizes
-    InputSizeSmall  InputSize = "small"
-    InputSizeMedium InputSize = "medium"
-    InputSizeLarge  InputSize = "large"
-    
-    // Variants
-    InputVariantDefault InputVariant = "default"
-    InputVariantError   InputVariant = "error"
-    InputVariantSuccess InputVariant = "success"
+	// Sizes
+	InputSizeSmall  InputSize = "small"
+	InputSizeMedium InputSize = "medium"
+	InputSizeLarge  InputSize = "large"
+
+	// Variants
+	InputVariantDefault InputVariant = "default"
+	InputVariantError   InputVariant = "error"
+	InputVariantSuccess InputVariant = "success"
 )
 
 type FormInputProps struct {
-    Name        string
-    Type        string
-    Placeholder string
-    Label       string
-    Value       string
-    Required    bool
-    Disabled    bool
-    Size        InputSize
-    Variant     InputVariant
-    ClassName   string
-    ErrorMsg    string
-    HelpText    string
+	Name         string
+	Type         string
+	Placeholder  string
+	Label        string
+	Value        string
+	Required     bool
+	Disabled     bool
+	Readonly     bool
+	Size         InputSize
+	Variant      InputVariant
+	ClassName    string
+	ErrorMsg     string
+	HelpText     string
+	Autocomplete string
+	Pattern      string
+	MinLength    int
+	MaxLength    int
+	Min          string
+	Max          string
+	Step         string
 }
 
-func getInputClasses(props FormInputProps) string {
-    // Defaults
-    if props.Size == "" {
-        props.Size = InputSizeMedium
-    }
-    if props.Variant == "" {
-        props.Variant = InputVariantDefault
-    }
-    if props.Type == "" {
-        props.Type = "text"
-    }
-    
-    // Base classes
-    baseClasses := "w-full border rounded-lg focus:outline-none focus:ring-2 transition-colors"
-    
-    // Size classes
-    sizeClasses := ""
-    switch props.Size {
-    case InputSizeSmall:
-        sizeClasses = "px-3 py-1 text-sm"
-    case InputSizeMedium:
-        sizeClasses = "px-4 py-2 text-base"
-    case InputSizeLarge:
-        sizeClasses = "px-5 py-3 text-lg"
-    }
-    
-    // Variant classes
-    variantClasses := ""
-    switch props.Variant {
-    case InputVariantDefault:
-        variantClasses = "border-gray-300 focus:ring-blue-500 focus:border-transparent"
-    case InputVariantError:
-        variantClasses = "border-red-500 focus:ring-red-500 focus:border-red-500"
-    case InputVariantSuccess:
-        variantClasses = "border-green-500 focus:ring-green-500 focus:border-green-500"
-    }
-    
-    // Disabled state
-    disabledClasses := ""
-    if props.Disabled {
-        disabledClasses = "bg-gray-100 cursor-not-allowed opacity-60"
-    }
-    
-    return fmt.Sprintf("%s %s %s %s %s",
-        baseClasses,
-        sizeClasses,
-        variantClasses,
-        disabledClasses,
-        props.ClassName,
-    )
+func getFormInputClasses(props FormInputProps) string {
+	// Defaults
+	if props.Size == "" {
+		props.Size = InputSizeMedium
+	}
+	if props.Variant == "" {
+		props.Variant = InputVariantDefault
+	}
+	if props.Type == "" {
+		props.Type = "text"
+	}
+
+	baseClasses := "w-full border rounded-md focus:outline-none focus:ring-2 transition-colors"
+
+	// Size classes
+	sizeClasses := ""
+	switch props.Size {
+	case InputSizeSmall:
+		sizeClasses = "px-3 py-1 text-sm"
+	case InputSizeMedium:
+		sizeClasses = "px-4 py-2 text-base"
+	case InputSizeLarge:
+		sizeClasses = "px-5 py-3 text-lg"
+	default:
+		sizeClasses = "px-4 py-2 text-base"
+	}
+
+	// Variant classes - używamy theme.css
+	variantClasses := ""
+	switch props.Variant {
+	case InputVariantDefault:
+		variantClasses = "border-gray-300 focus:ring-primary focus:border-primary"
+	case InputVariantError:
+		variantClasses = "border-danger focus:ring-danger focus:border-danger"
+	case InputVariantSuccess:
+		variantClasses = "border-success focus:ring-success focus:border-success"
+	default:
+		variantClasses = "border-gray-300 focus:ring-primary focus:border-primary"
+	}
+
+	// State classes
+	stateClasses := ""
+	if props.Disabled {
+		stateClasses = "bg-gray-100 cursor-not-allowed opacity-60"
+	} else if props.Readonly {
+		stateClasses = "bg-gray-50 cursor-default"
+	}
+
+	return fmt.Sprintf("%s %s %s %s %s",
+		baseClasses,
+		sizeClasses,
+		variantClasses,
+		stateClasses,
+		props.ClassName,
+	)
 }
 
-func getLabelClasses(size InputSize) string {
-    baseClasses := "block text-gray-700 font-medium mb-2"
-    
-    switch size {
-    case InputSizeSmall:
-        return fmt.Sprintf("%s text-sm", baseClasses)
-    case InputSizeMedium:
-        return baseClasses
-    case InputSizeLarge:
-        return fmt.Sprintf("%s text-lg", baseClasses)
-    default:
-        return baseClasses
-    }
+func getFormInputLabelClasses(size InputSize) string {
+	baseClasses := "block text-gray-700 font-medium mb-2"
+
+	switch size {
+	case InputSizeSmall:
+		return fmt.Sprintf("%s text-sm", baseClasses)
+	case InputSizeMedium:
+		return baseClasses
+	case InputSizeLarge:
+		return fmt.Sprintf("%s text-lg", baseClasses)
+	default:
+		return baseClasses
+	}
 }
 
 templ FormInput(props FormInputProps) {
-    <div class="mb-4">
-        if props.Label != "" {
-            <label for={ props.Name } class={ getLabelClasses(props.Size) }>
-                { props.Label }
-                if props.Required {
-                    <span class="text-red-500">*</span>
-                }
-            </label>
-        }
-        <input
-            type={ props.Type }
-            id={ props.Name }
-            name={ props.Name }
-            placeholder={ props.Placeholder }
-            value={ props.Value }
-            class={ getInputClasses(props) }
-            if props.Required {
-                required
-            }
-            if props.Disabled {
-                disabled
-            }
-        />
-        if props.ErrorMsg != "" {
-            <p class="mt-1 text-sm text-red-600">
-                { props.ErrorMsg }
-            </p>
-        }
-        if props.HelpText != "" && props.ErrorMsg == "" {
-            <p class="mt-1 text-sm text-gray-500">
-                { props.HelpText }
-            </p>
-        }
-    </div>
+	<div class="mb-4">
+		if props.Label != "" {
+			<label for={ props.Name } class={ getFormInputLabelClasses(props.Size) }>
+				{ props.Label }
+				if props.Required {
+					<span class="text-danger">*</span>
+				}
+			</label>
+		}
+		<input
+			type={
+				func() string {
+					if props.Type != "" {
+						return props.Type
+					}
+					return "text"
+				}()
+			}
+			id={ props.Name }
+			name={ props.Name }
+			placeholder={ props.Placeholder }
+			value={ props.Value }
+			class={ getFormInputClasses(props) }
+			autocomplete={
+				func() string {
+					if props.Autocomplete != "" {
+						return props.Autocomplete
+					}
+					return "off"
+				}()
+			}
+			if props.Pattern != "" {
+				pattern={ props.Pattern }
+			}
+			if props.MinLength > 0 {
+				minlength={ fmt.Sprintf("%d", props.MinLength) }
+			}
+			if props.MaxLength > 0 {
+				maxlength={ fmt.Sprintf("%d", props.MaxLength) }
+			}
+			if props.Min != "" {
+				min={ props.Min }
+			}
+			if props.Max != "" {
+				max={ props.Max }
+			}
+			if props.Step != "" {
+				step={ props.Step }
+			}
+			if props.Required {
+				required
+			}
+			if props.Disabled {
+				disabled
+			}
+			if props.Readonly {
+				readonly
+			}
+		/>
+		if props.ErrorMsg != "" {
+			<p class="mt-1 text-sm text-danger-dark">
+				{ props.ErrorMsg }
+			</p>
+		}
+		if props.HelpText != "" && props.ErrorMsg == "" {
+			<p class="mt-1 text-sm text-secondary">
+				{ props.HelpText }
+			</p>
+		}
+	</div>
 }

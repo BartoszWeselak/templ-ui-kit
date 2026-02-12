@@ -1,7 +1,6 @@
 package components
 
 import (
-    "context"
     "fmt"
 )
 
@@ -39,14 +38,7 @@ type ModalTriggerProps struct {
     ClassName string
 }
 
-func getModalClasses(ctx context.Context, props ModalProps) string {
-    // Sprawdzenie czy kontekst nie został anulowany
-    select {
-    case <-ctx.Done():
-        return "opacity-50" // Fallback dla anulowanego kontekstu
-    default:
-    }
-    
+func getModalClasses(props ModalProps) string {
     // Defaults
     if props.Size == "" {
         props.Size = ModalSizeMedium
@@ -90,13 +82,13 @@ func getModalClasses(ctx context.Context, props ModalProps) string {
     )
 }
 
-templ Modal(ctx context.Context, props ModalProps) {
+templ Modal(props ModalProps) {
     <div 
         id={ props.ID }
         class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
         onclick={ templ.ComponentScript{Call: "if(event.target === this) document.getElementById('" + props.ID + "').classList.add('hidden')"} }
     >
-        <div class={ getModalClasses(ctx, props) }>
+        <div class={ getModalClasses(props) }>
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-bold text-gray-900">{ props.Title }</h3>
                 if props.ShowClose {
@@ -118,8 +110,8 @@ templ Modal(ctx context.Context, props ModalProps) {
     </div>
 }
 
-templ ModalTrigger(ctx context.Context, props ModalTriggerProps) {
-    @Button(ctx, ButtonProps{
+templ ModalTrigger(props ModalTriggerProps) {
+    @Button(ButtonProps{
         Text: props.Text,
         OnClick: templ.ComponentScript{Call: "document.getElementById('" + props.ModalID + "').classList.remove('hidden')"},
         Variant: props.Variant,
@@ -130,32 +122,32 @@ templ ModalTrigger(ctx context.Context, props ModalTriggerProps) {
 
 
 // Modal Footer - pomocniczy komponent do stopki modala
-templ ModalFooter(ctx context.Context) {
+templ ModalFooter() {
     <div class="mt-4 pt-4 border-t border-gray-200 flex justify-end gap-2">
         { children... }
     </div>
 }
 
 // Modal Body - pomocniczy komponent do treści modala
-templ ModalBody(ctx context.Context) {
+templ ModalBody() {
     <div class="py-2">
         { children... }
     </div>
 }
 
 // Przykładowe komponenty zawartości modala
-templ ConfirmationModalContent(ctx context.Context, message string, onConfirm, onCancel templ.ComponentScript) {
-    @ModalBody(ctx) {
+templ ConfirmationModalContent(message string, onConfirm, onCancel templ.ComponentScript) {
+    @ModalBody() {
         <p class="text-gray-700">{ message }</p>
     }
-    @ModalFooter(ctx) {
-        @Button(ctx, ButtonProps{
+    @ModalFooter() {
+        @Button(ButtonProps{
             Text:    "Anuluj",
             Variant: VariantSecondary,
             Size:    SizeMedium,
             OnClick: onCancel,
         })
-        @Button(ctx, ButtonProps{
+        @Button(ButtonProps{
             Text:    "Potwierdź",
             Variant: VariantPrimary,
             Size:    SizeMedium,
@@ -164,8 +156,8 @@ templ ConfirmationModalContent(ctx context.Context, message string, onConfirm, o
     }
 }
 
-templ FormModalContent(ctx context.Context) {
-    @ModalBody(ctx) {
+templ FormModalContent() {
+    @ModalBody() {
         { children... }
     }
 }
