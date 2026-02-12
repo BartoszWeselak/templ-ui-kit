@@ -1,0 +1,138 @@
+package components
+
+import "fmt"
+
+type SelectOption struct {
+	Value string
+	Label string
+}
+
+type FormSelectProps struct {
+	Name        string
+	Label       string
+	Options     []SelectOption
+	Selected    string
+	Placeholder string
+	Required    bool
+	Disabled    bool
+	Size        InputSize
+	Variant     InputVariant
+	ClassName   string
+	ErrorMsg    string
+	HelpText    string
+}
+
+func getSelectClasses(props FormSelectProps) string {
+	if props.Size == "" {
+		props.Size = InputSizeMedium
+	}
+	if props.Variant == "" {
+		props.Variant = InputVariantDefault
+	}
+
+	baseClasses := "w-full border rounded-md focus:outline-none focus:ring-2 transition-colors bg-white"
+
+	sizeClasses := ""
+	switch props.Size {
+	case InputSizeSmall:
+		sizeClasses = "px-3 py-1 text-sm"
+	case InputSizeMedium:
+		sizeClasses = "px-4 py-2 text-base"
+	case InputSizeLarge:
+		sizeClasses = "px-5 py-3 text-lg"
+	default:
+		sizeClasses = "px-4 py-2 text-base"
+	}
+
+	variantClasses := ""
+	switch props.Variant {
+	case InputVariantDefault:
+		variantClasses = "border-gray-300 focus:ring-primary focus:border-primary"
+	case InputVariantError:
+		variantClasses = "border-danger focus:ring-danger focus:border-danger"
+	case InputVariantSuccess:
+		variantClasses = "border-success focus:ring-success focus:border-success"
+	default:
+		variantClasses = "border-gray-300 focus:ring-primary focus:border-primary"
+	}
+
+	disabledClasses := ""
+	if props.Disabled {
+		disabledClasses = "bg-gray-100 cursor-not-allowed opacity-60"
+	}
+
+	return fmt.Sprintf("%s %s %s %s %s",
+		baseClasses,
+		sizeClasses,
+		variantClasses,
+		disabledClasses,
+		props.ClassName,
+	)
+}
+
+func getSelectLabelClasses(size InputSize) string {
+	baseClasses := "block text-gray-700 font-medium mb-2"
+
+	switch size {
+	case InputSizeSmall:
+		return fmt.Sprintf("%s text-sm", baseClasses)
+	case InputSizeMedium:
+		return baseClasses
+	case InputSizeLarge:
+		return fmt.Sprintf("%s text-lg", baseClasses)
+	default:
+		return baseClasses
+	}
+}
+
+templ FormSelect(props FormSelectProps) {
+	<div class="mb-4">
+		if props.Label != "" {
+			<label for={ props.Name } class={ getSelectLabelClasses(props.Size) }>
+				{ props.Label }
+				if props.Required {
+					<span class="text-danger">*</span>
+				}
+			</label>
+		}
+		<select
+			id={ props.Name }
+			name={ props.Name }
+			class={ getSelectClasses(props) }
+			if props.Required {
+				required
+			}
+			if props.Disabled {
+				disabled
+			}
+		>
+			<option value="">
+				if props.Placeholder != "" {
+					{ props.Placeholder }
+				} else {
+					Wybierz...
+				}
+			</option>
+			for _, option := range props.Options {
+				<option
+					value={ option.Value }
+					if option.Value == props.Selected {
+						selected
+					}
+				>
+					{ option.Label }
+				</option>
+			}
+		</select>
+		if props.ErrorMsg != "" {
+			<p class="mt-1 text-sm text-danger-dark">
+				{ props.ErrorMsg }
+			</p>
+		}
+		if props.HelpText != "" && props.ErrorMsg == "" {
+			<p class="mt-1 text-sm text-secondary">
+				{ props.HelpText }
+			</p>
+		}
+	</div>
+}

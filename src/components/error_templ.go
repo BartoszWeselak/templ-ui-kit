@@ -9,7 +9,6 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	"context"
 	"fmt"
 )
 
@@ -108,7 +107,7 @@ func getErrorIconClass(variant ErrorVariant) string {
 	}
 }
 
-func ErrorIcon(ctx context.Context, props ErrorProps) templ.Component {
+func ErrorIcon(props ErrorProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -229,7 +228,7 @@ func ErrorIcon(ctx context.Context, props ErrorProps) templ.Component {
 	})
 }
 
-func Error(ctx context.Context, props ErrorProps) templ.Component {
+func Error(props ErrorProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -274,7 +273,7 @@ func Error(ctx context.Context, props ErrorProps) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			if props.ShowIcon {
-				templ_7745c5c3_Err = ErrorIcon(ctx, props).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = ErrorIcon(props).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -286,7 +285,7 @@ func Error(ctx context.Context, props ErrorProps) templ.Component {
 			var templ_7745c5c3_Var13 string
 			templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(props.Message)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/error.templ`, Line: 128, Col: 44}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/error.templ`, Line: 127, Col: 44}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 			if templ_7745c5c3_Err != nil {
@@ -301,7 +300,7 @@ func Error(ctx context.Context, props ErrorProps) templ.Component {
 	})
 }
 
-func InlineError(ctx context.Context, props ErrorProps) templ.Component {
+func InlineError(props ErrorProps) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -346,7 +345,7 @@ func InlineError(ctx context.Context, props ErrorProps) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			if props.ShowIcon {
-				templ_7745c5c3_Err = ErrorIcon(ctx, props).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = ErrorIcon(props).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -358,7 +357,7 @@ func InlineError(ctx context.Context, props ErrorProps) templ.Component {
 			var templ_7745c5c3_Var17 string
 			templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(props.Message)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/error.templ`, Line: 139, Col: 44}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/error.templ`, Line: 138, Col: 44}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 			if templ_7745c5c3_Err != nil {
