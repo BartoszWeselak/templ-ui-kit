@@ -19,6 +19,11 @@ type (
 	NotificationProps = components.NotificationProps
 	NotificationType = components.NotificationType
 	NotificationPosition = components.NotificationPosition
+	FormInputProps = components.FormInputProps
+	InputSize = components.InputSize
+	InputVariant = components.InputVariant
+	FormSelectProps = components.FormSelectProps
+	SelectOption = components.SelectOption
 )
 
 // Aliasy dla funkcji komponentów
@@ -28,6 +33,8 @@ var (
 	Error = components.Error
 	Notification = components.Notification
 	InlineNotification = components.InlineNotification
+	FormInput = components.FormInput
+	FormSelect = components.FormSelect
 	IconPlus = components.IconPlus
 	IconTrash = components.IconTrash
 	IconDownload = components.IconDownload
@@ -68,6 +75,14 @@ const (
 	NotificationInfo = components.NotificationInfo
 	
 	PositionTopRight = components.PositionTopRight
+	
+	InputSizeSmall = components.InputSizeSmall
+	InputSizeMedium = components.InputSizeMedium
+	InputSizeLarge = components.InputSizeLarge
+	
+	InputVariantDefault = components.InputVariantDefault
+	InputVariantError = components.InputVariantError
+	InputVariantSuccess = components.InputVariantSuccess
 )
 
 // t helper function for translations
@@ -205,6 +220,235 @@ templ TestLayoutI18n(ctx context.Context) {
 							Variant: components.CardVariantBlue,
 							Size:    CardSizeMedium,
 						})
+					</div>
+				</section>
+				
+				// FORM INPUTS
+				<section class="component-section">
+					<h2 class="component-title">📝 { t(ctx, "section.forms") }</h2>
+					<div class="demo-grid">
+						<div class="demo-item">
+							<div class="demo-label">{ t(ctx, "label.variants") } & { t(ctx, "label.sizes") }</div>
+							<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+								<div>
+									@FormInput(FormInputProps{
+										Name:         "username",
+										Label:        t(ctx, "form.username"),
+										Placeholder:  t(ctx, "form.username.placeholder"),
+										Autocomplete: "username",
+									})
+								</div>
+								<div>
+									@FormInput(FormInputProps{
+										Name:         "email",
+										Type:         "email",
+										Label:        t(ctx, "form.email"),
+										Placeholder:  t(ctx, "form.email.placeholder"),
+										HelpText:     t(ctx, "form.email.help"),
+										Autocomplete: "email",
+									})
+								</div>
+								<div>
+									@FormInput(FormInputProps{
+										Name:         "password",
+										Type:         "password",
+										Label:        t(ctx, "form.password"),
+										Variant:      InputVariantError,
+										ErrorMsg:     t(ctx, "form.password.error"),
+										Autocomplete: "current-password",
+									})
+								</div>
+								<div>
+									@FormInput(FormInputProps{
+										Name:         "confirm",
+										Type:         "password",
+										Label:        t(ctx, "form.confirm"),
+										Variant:      InputVariantSuccess,
+										Autocomplete: "new-password",
+									})
+								</div>
+								<div>
+									@FormInput(FormInputProps{
+										Name:        "disabled",
+										Label:       t(ctx, "form.disabled"),
+										Value:       t(ctx, "form.disabled.value"),
+										Disabled:    true,
+									})
+								</div>
+								<div>
+									@FormInput(FormInputProps{
+										Name:        "large",
+										Label:       t(ctx, "form.large"),
+										Placeholder: t(ctx, "form.large.placeholder"),
+										Size:        InputSizeLarge,
+									})
+								</div>
+							</div>
+						</div>
+						
+						<div class="demo-item">
+							<div class="demo-label">Input Sizes</div>
+							<div class="space-y-4">
+								@FormInput(FormInputProps{
+									Name:        "small",
+									Label:       t(ctx, "size.small"),
+									Placeholder: t(ctx, "size.small"),
+									Size:        InputSizeSmall,
+								})
+								@FormInput(FormInputProps{
+									Name:        "medium",
+									Label:       t(ctx, "size.medium"),
+									Placeholder: t(ctx, "size.medium"),
+									Size:        InputSizeMedium,
+								})
+								@FormInput(FormInputProps{
+									Name:        "large-size",
+									Label:       t(ctx, "size.large"),
+									Placeholder: t(ctx, "size.large"),
+									Size:        InputSizeLarge,
+								})
+							</div>
+						</div>
+					</div>
+				</section>
+				
+				// FORM SELECTS
+				<section class="component-section">
+					<h2 class="component-title">📋 { t(ctx, "section.selects") }</h2>
+					<div class="demo-grid">
+						<div class="demo-item">
+							<div class="demo-label">Select Examples</div>
+							<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+								<div>
+									@FormSelect(FormSelectProps{
+										Name:         "country",
+										Label:        t(ctx, "select.country"),
+										Placeholder:  t(ctx, "select.country.placeholder"),
+										Autocomplete: "country",
+										Options: []SelectOption{
+											{Value: "pl", Label: t(ctx, "select.country.poland")},
+											{Value: "us", Label: t(ctx, "select.country.us")},
+											{Value: "uk", Label: t(ctx, "select.country.uk")},
+											{Value: "de", Label: t(ctx, "select.country.germany")},
+										},
+									})
+								</div>
+								<div>
+									@FormSelect(FormSelectProps{
+										Name:        "status",
+										Label:       t(ctx, "select.status"),
+										HelpText:    t(ctx, "select.status.help"),
+										Selected:    "active",
+										Options: []SelectOption{
+											{Value: "active", Label: t(ctx, "select.status.active")},
+											{Value: "inactive", Label: t(ctx, "select.status.inactive")},
+											{Value: "pending", Label: t(ctx, "select.status.pending")},
+										},
+									})
+								</div>
+								<div>
+									@FormSelect(FormSelectProps{
+										Name:     "error-select",
+										Label:    t(ctx, "select.error"),
+										Variant:  InputVariantError,
+										ErrorMsg: t(ctx, "select.error.required"),
+										Options: []SelectOption{
+											{Value: "1", Label: "Option 1"},
+											{Value: "2", Label: "Option 2"},
+										},
+									})
+								</div>
+								<div>
+									@FormSelect(FormSelectProps{
+										Name:     "disabled-select",
+										Label:    t(ctx, "select.disabled"),
+										Disabled: true,
+										Selected: "locked",
+										Options: []SelectOption{
+											{Value: "locked", Label: t(ctx, "select.locked")},
+										},
+									})
+								</div>
+							</div>
+						</div>
+						
+						<div class="demo-item">
+							<div class="demo-label">Select Sizes</div>
+							<div class="space-y-4">
+								@FormSelect(FormSelectProps{
+									Name:  "small-select",
+									Label: t(ctx, "size.small"),
+									Size:  InputSizeSmall,
+									Options: []SelectOption{
+										{Value: "1", Label: t(ctx, "size.small")},
+									},
+								})
+								@FormSelect(FormSelectProps{
+									Name:  "medium-select",
+									Label: t(ctx, "size.medium"),
+									Size:  InputSizeMedium,
+									Options: []SelectOption{
+										{Value: "1", Label: t(ctx, "size.medium")},
+									},
+								})
+								@FormSelect(FormSelectProps{
+									Name:  "large-select",
+									Label: t(ctx, "size.large"),
+									Size:  InputSizeLarge,
+									Options: []SelectOption{
+										{Value: "1", Label: t(ctx, "size.large")},
+									},
+								})
+							</div>
+						</div>
+					</div>
+				</section>
+				
+				// COMBINED FORM EXAMPLE
+				<section class="component-section">
+					<h2 class="component-title">👤 { t(ctx, "section.combined") }</h2>
+					<div class="demo-item">
+						<form class="max-w-2xl mx-auto">
+							<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+								@FormInput(FormInputProps{
+									Name:         "firstName",
+									Label:        t(ctx, "form.firstname"),
+									Placeholder:  t(ctx, "form.firstname.placeholder"),
+									Required:     true,
+									Autocomplete: "given-name",
+								})
+								@FormInput(FormInputProps{
+									Name:         "lastName",
+									Label:        t(ctx, "form.lastname"),
+									Placeholder:  t(ctx, "form.lastname.placeholder"),
+									Required:     true,
+									Autocomplete: "family-name",
+								})
+							</div>
+							@FormInput(FormInputProps{
+								Name:         "email-profile",
+								Type:         "email",
+								Label:        t(ctx, "form.email"),
+								Placeholder:  t(ctx, "form.email.placeholder"),
+								Required:     true,
+								Autocomplete: "email",
+							})
+							@FormSelect(FormSelectProps{
+								Name:         "role",
+								Label:        t(ctx, "select.role"),
+								Required:     true,
+								Autocomplete: "off",
+								Options: []SelectOption{
+									{Value: "admin", Label: t(ctx, "select.role.admin")},
+									{Value: "user", Label: t(ctx, "select.role.user")},
+									{Value: "guest", Label: t(ctx, "select.role.guest")},
+								},
+							})
+							<div class="flex gap-2 justify-end mt-6">
+								@Button(ButtonProps{Text: t(ctx, "button.cancel"), Variant: VariantSecondary})
+								@Button(ButtonProps{Text: t(ctx, "button.save"), Variant: VariantPrimary})
+							</div>
+						</form>
 					</div>
 				</section>
 				

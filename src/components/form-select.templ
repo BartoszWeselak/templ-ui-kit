@@ -8,18 +8,19 @@ type SelectOption struct {
 }
 
 type FormSelectProps struct {
-	Name        string
-	Label       string
-	Options     []SelectOption
-	Selected    string
-	Placeholder string
-	Required    bool
-	Disabled    bool
-	Size        InputSize
-	Variant     InputVariant
-	ClassName   string
-	ErrorMsg    string
-	HelpText    string
+	Name         string
+	Label        string
+	Options      []SelectOption
+	Selected     string
+	Placeholder  string
+	Required     bool
+	Disabled     bool
+	Size         InputSize
+	Variant      InputVariant
+	ClassName    string
+	ErrorMsg     string
+	HelpText     string
+	Autocomplete string 
 }
 
 func getSelectClasses(props FormSelectProps) string {
@@ -99,6 +100,14 @@ templ FormSelect(props FormSelectProps) {
 			id={ props.Name }
 			name={ props.Name }
 			class={ getSelectClasses(props) }
+			autocomplete={
+				func() string {
+					if props.Autocomplete != "" {
+						return props.Autocomplete
+					}
+					return "off"
+				}()
+			}
 			if props.Required {
 				required
 			}
