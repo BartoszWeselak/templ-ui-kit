@@ -1,0 +1,58 @@
+{
+  "app.title": "Templ Komponenten - Test Layout",
+  "app.subtitle": "Alle Komponenten an einem Ort zum Testen",
+  
+  "section.buttons": "Schaltflächen",
+  "section.cards": "Karten",
+  "section.errors": "Fehler & Warnungen",
+  "section.notifications": "Benachrichtigungen",
+  
+  "button.primary": "Primäre Schaltfläche",
+  "button.secondary": "Sekundäre Schaltfläche",
+  "button.danger": "Gefährliche Schaltfläche",
+  "button.buy": "Kaufen Schaltfläche",
+  "button.add": "Element hinzufügen",
+  "button.delete": "Löschen",
+  "button.download": "Herunterladen",
+  "button.loading": "Laden...",
+  "button.disabled": "Deaktiviert",
+  "button.cancel": "Abbrechen",
+  "button.save": "Änderungen speichern",
+  
+  "label.variants": "Varianten",
+  "label.sizes": "Größen",
+  "label.states": "Zustände",
+  "label.widths": "Breiten",
+  "label.icons": "Mit Symbolen",
+  
+  "size.small": "Klein",
+  "size.medium": "Mittel",
+  "size.large": "Groß",
+  "size.xlarge": "Sehr Groß",
+  
+  "width.xsmall": "Sehr Schmal",
+  "width.small": "Schmal",
+  "width.medium": "Mittel",
+  "width.large": "Breit",
+  "width.full": "Volle Breite (Standard)",
+  
+  "card.white.title": "Weiße Karte",
+  "card.white.content": "Dies ist eine weiße Karte mit mittlerem Schatten und großer Randabrundung.",
+  "card.gray.title": "Graue Karte",
+  "card.gray.content": "Dies ist eine graue Kartenvariante.",
+  "card.blue.title": "Blaue Karte",
+  "card.blue.content": "Dies ist eine blaue Kartenvariante.",
+  
+  "error.danger": "Fehler: Etwas ist schief gelaufen!",
+  "error.warning": "Warnung: Bitte überprüfen Sie Ihre Eingabe",
+  "error.info": "Info: Neue Updates verfügbar",
+  
+  "notification.success.title": "Erfolg!",
+  "notification.success.message": "Ihre Änderungen wurden erfolgreich gespeichert.",
+  "notification.error.title": "Fehler!",
+  "notification.error.message": "Verbindung zum Server fehlgeschlagen.",
+  "notification.warning.title": "Warnung!",
+  "notification.warning.message": "Ihre Sitzung läuft in 5 Minuten ab.",
+  
+  "footer.text": "Test Layout für Templ Komponenten • Alle Komponenten an einem Ort"
+}
