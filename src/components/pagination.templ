@@ -1,0 +1,272 @@
+package components
+
+import (
+	"fmt"
+	"strconv"
+)
+
+type PaginationVariant string
+type PaginationSize string
+
+const (
+	// Variants
+	PaginationVariantPrimary   PaginationVariant = "primary"
+	PaginationVariantSecondary PaginationVariant = "secondary"
+
+	// Sizes
+	PaginationSizeSmall  PaginationSize = "small"
+	PaginationSizeMedium PaginationSize = "medium"
+	PaginationSizeLarge  PaginationSize = "large"
+)
+
+type PaginationProps struct {
+	CurrentPage   int
+	TotalPages    int
+	BaseURL       string // np. "/products?page="
+	Variant       PaginationVariant
+	Size          PaginationSize
+	ShowFirstLast bool   // Pokazuj przyciski "First" i "Last"
+	MaxVisible    int    // Maksymalna liczba widocznych numerów stron (domyślnie 5)
+	ClassName     string
+}
+
+func getPaginationItemClasses(props PaginationProps, isActive bool, isDisabled bool) string {
+	if props.Variant == "" {
+		props.Variant = PaginationVariantPrimary
+	}
+	if props.Size == "" {
+		props.Size = PaginationSizeMedium
+	}
+
+	baseClasses := "inline-flex items-center justify-center border transition-colors"
+
+	// Size classes
+	sizeClasses := ""
+	switch props.Size {
+	case PaginationSizeSmall:
+		sizeClasses = "px-2 py-1 text-sm min-w-[2rem]"
+	case PaginationSizeMedium:
+		sizeClasses = "px-3 py-2 text-base min-w-[2.5rem]"
+	case PaginationSizeLarge:
+		sizeClasses = "px-4 py-2 text-lg min-w-[3rem]"
+	default:
+		sizeClasses = "px-3 py-2 text-base min-w-[2.5rem]"
+	}
+
+	// Variant and state classes
+	var stateClasses string
+	if isDisabled {
+		stateClasses = "bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200"
+	} else if isActive {
+		if props.Variant == PaginationVariantPrimary {
+			stateClasses = "bg-primary text-white border-primary"
+		} else {
+			stateClasses = "bg-secondary text-white border-secondary"
+		}
+	} else {
+		if props.Variant == PaginationVariantPrimary {
+			stateClasses = "bg-white text-primary border-gray-300 hover:bg-primary-light hover:border-primary"
+		} else {
+			stateClasses = "bg-white text-secondary border-gray-300 hover:bg-secondary-light hover:border-secondary"
+		}
+	}
+
+	return fmt.Sprintf("%s %s %s %s",
+		baseClasses,
+		sizeClasses,
+		stateClasses,
+		props.ClassName,
+	)
+}
+
+func getVisiblePages(currentPage, totalPages, maxVisible int) []int {
+	if maxVisible <= 0 {
+		maxVisible = 5
+	}
+
+	if totalPages <= maxVisible {
+		pages := make([]int, totalPages)
+		for i := 0; i < totalPages; i++ {
+			pages[i] = i + 1
+		}
+		return pages
+	}
+
+	// Obliczamy zakres widocznych stron
+	half := maxVisible / 2
+	start := currentPage - half
+	end := currentPage + half
+
+	// Dopasowujemy zakres jeśli wychodzi poza granice
+	if start < 1 {
+		start = 1
+		end = maxVisible
+	}
+	if end > totalPages {
+		end = totalPages
+		start = totalPages - maxVisible + 1
+	}
+
+	pages := make([]int, 0, maxVisible)
+	for i := start; i <= end; i++ {
+		pages = append(pages, i)
+	}
+
+	return pages
+}
+
+templ PaginationItem(url string, text string, isActive bool, isDisabled bool, props PaginationProps) {
+	if isDisabled {
+		<span class={ getPaginationItemClasses(props, isActive, isDisabled) }>
+			{ text }
+		</span>
+	} else if isActive {
+		<span class={ getPaginationItemClasses(props, isActive, isDisabled) } aria-current="page">
+			{ text }
+		</span>
+	} else {
+		<a href={ templ.SafeURL(url) } class={ getPaginationItemClasses(props, isActive, isDisabled) }>
+			{ text }
+		</a>
+	}
+}
+
+templ PaginationEllipsis(props PaginationProps) {
+	<span class={ getPaginationItemClasses(props, false, false) + " cursor-default hover:bg-white" }>
+		...
+	</span>
+}
+
+templ Pagination(props PaginationProps) {
+	if props.MaxVisible == 0 {
+		// Ustawiamy domyślną wartość
+		props.MaxVisible = 5
+	}
+	<nav class="flex items-center gap-1" aria-label="Pagination">
+		// First button
+		if props.ShowFirstLast {
+			@PaginationItem(
+				props.BaseURL + "1",
+				"First",
+				false,
+				props.CurrentPage == 1,
+				props,
+			)
+		}
+		// Previous button
+		@PaginationItem(
+			props.BaseURL + strconv.Itoa(props.CurrentPage-1),
+			"←",
+			false,
+			props.CurrentPage == 1,
+			props,
+		)
+		// Ellipsis na początku (jeśli potrzebna)
+		if props.TotalPages > props.MaxVisible && props.CurrentPage > (props.MaxVisible/2)+1 {
+			@PaginationItem(props.BaseURL + "1", "1", false, false, props)
+			@PaginationEllipsis(props)
+		}
+		// Page numbers
+		for _, page := range getVisiblePages(props.CurrentPage, props.TotalPages, props.MaxVisible) {
+			@PaginationItem(
+				props.BaseURL + strconv.Itoa(page),
+				strconv.Itoa(page),
+				page == props.CurrentPage,
+				false,
+				props,
+			)
+		}
+		// Ellipsis na końcu (jeśli potrzebna)
+		if props.TotalPages > props.MaxVisible && props.CurrentPage < props.TotalPages-(props.MaxVisible/2) {
+			@PaginationEllipsis(props)
+			@PaginationItem(
+				props.BaseURL + strconv.Itoa(props.TotalPages),
+				strconv.Itoa(props.TotalPages),
+				false,
+				false,
+				props,
+			)
+		}
+		// Next button
+		@PaginationItem(
+			props.BaseURL + strconv.Itoa(props.CurrentPage+1),
+			"→",
+			false,
+			props.CurrentPage == props.TotalPages,
+			props,
+		)
+		// Last button
+		if props.ShowFirstLast {
+			@PaginationItem(
+				props.BaseURL + strconv.Itoa(props.TotalPages),
+				"Last",
+				false,
+				props.CurrentPage == props.TotalPages,
+				props,
+			)
+		}
+	</nav>
+}
+
+// SimplePagination - uproszczona wersja z tylko prev/next i informacją o stronie
+templ SimplePagination(props PaginationProps) {
+	<nav class="flex items-center justify-between" aria-label="Pagination">
+		<a
+			href={ templ.SafeURL(props.BaseURL + strconv.Itoa(props.CurrentPage-1)) }
+			class={
+				getPaginationItemClasses(props, false, props.CurrentPage == 1) +
+				" " + func() string {
+					if props.CurrentPage == 1 {
+						return "pointer-events-none"
+					}
+					return ""
+				}()
+			}
+		>
+			← Previous
+		</a>
+		<span class="text-sm text-gray-600">
+			Page { strconv.Itoa(props.CurrentPage) } of { strconv.Itoa(props.TotalPages) }
+		</span>
+		<a
+			href={ templ.SafeURL(props.BaseURL + strconv.Itoa(props.CurrentPage+1)) }
+			class={
+				getPaginationItemClasses(props, false, props.CurrentPage == props.TotalPages) +
+				" " + func() string {
+					if props.CurrentPage == props.TotalPages {
+						return "pointer-events-none"
+					}
+					return ""
+				}()
+			}
+		>
+			Next →
+		</a>
+	</nav>
+}
+
+// PaginationWithInfo - paginacja z dodatkowymi informacjami o wynikach
+templ PaginationWithInfo(props PaginationProps, totalItems int, itemsPerPage int) {
+	<div class="flex flex-col gap-4">
+		<div class="text-sm text-gray-600">
+			Showing
+			<span class="font-medium">{ strconv.Itoa((props.CurrentPage-1)*itemsPerPage + 1) }</span>
+			to
+			<span class="font-medium">
+				{
+					strconv.Itoa(func() int {
+						end := props.CurrentPage * itemsPerPage
+						if end > totalItems {
+							return totalItems
+						}
+						return end
+					}())
+				}
+			</span>
+			of
+			<span class="font-medium">{ strconv.Itoa(totalItems) }</span>
+			results
+		</div>
+		@Pagination(props)
+	</div>
+}
