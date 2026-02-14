@@ -224,3 +224,24 @@
 .rounded-lg   { border-radius: var(--radius-lg); }
 
 .border-primary { border-color: var(--primary-border); }
+
+/* Focus ring colors */
+.focus\:ring-primary-300:focus {
+  --tw-ring-color: var(--primary-300);
+}
+
+.focus\:ring-secondary-300:focus {
+  --tw-ring-color: var(--secondary-300);
+}
+
+.focus\:ring-danger-300:focus {
+  --tw-ring-color: var(--danger-300);
+}
+
+.focus\:ring-success-300:focus {
+  --tw-ring-color: var(--success-300);
+}
+
+.focus\:ring-primary-200:focus {
+  --tw-ring-color: var(--primary-200);
+}

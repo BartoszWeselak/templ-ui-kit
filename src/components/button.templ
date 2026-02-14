@@ -1,5 +1,6 @@
 package components
 
+
 type ButtonVariant string
 type ButtonSize string
 type ButtonWidth string
@@ -12,7 +13,6 @@ const (
 	VariantDanger    ButtonVariant = "danger"
 	VariantTab       ButtonVariant = "tab"
 	VariantBuy       ButtonVariant = "buy"
-	VariantNone      ButtonVariant = "none"
 
 	// Sizes
 	SizeSmall  ButtonSize = "small"
@@ -21,28 +21,57 @@ const (
 	SizeXLarge ButtonSize = "xlarge"
 
 	// Widths
-	WidthXSmall ButtonWidth = "xsmall"
-	WidthSmall  ButtonWidth = "small"
-	WidthMedium ButtonWidth = "medium"
-	WidthLarge  ButtonWidth = "large"
+	WidthAuto   ButtonWidth = "auto"   // width from content
+	WidthSmall  ButtonWidth = "small"  // min-w-32
+	WidthMedium ButtonWidth = "medium" // min-w-48
+	WidthLarge  ButtonWidth = "large"  // min-w-64
+	WidthFull   ButtonWidth = "full"   // w-full
 
 	// Icon positions
 	IconLeft  IconPosition = "left"
 	IconRight IconPosition = "right"
 )
 
+// HtmxAttrs separates HTMX concerns from core button props
+type HtmxAttrs struct {
+	Get       string
+	Post      string
+	Put       string
+	Patch     string
+	Delete    string
+	Target    string
+	Swap      string
+	Trigger   string
+	Confirm   string
+	Indicator string
+	Vals      string
+	Headers   string
+	PushUrl   string
+	Select    string
+	SwapOob   string
+	Include   string
+}
+
 type ButtonProps struct {
+	// Core properties
 	Text         string
-	OnClick      templ.ComponentScript
 	Variant      ButtonVariant
 	Size         ButtonSize
 	Width        ButtonWidth
 	ClassName    string
 	Disabled     bool
 	Loading      bool
+	
+	// Icon properties
 	Icon         templ.Component
 	IconPosition IconPosition
+	
+	// Behavior
 	Type         string // "button", "submit", "reset"
+	AriaLabel    string
+	
+	// HTMX integration
+	Htmx         *HtmxAttrs
 }
 
 func (p ButtonProps) GetVariant() ButtonVariant {
@@ -57,6 +86,13 @@ func (p ButtonProps) GetSize() ButtonSize {
 		return SizeMedium
 	}
 	return p.Size
+}
+
+func (p ButtonProps) GetWidth() ButtonWidth {
+	if p.Width == "" {
+		return WidthAuto
+	}
+	return p.Width
 }
 
 func (p ButtonProps) GetIconPosition() IconPosition {
@@ -85,6 +121,7 @@ templ LoadingSpinner(size ButtonSize) {
 		xmlns="http://www.w3.org/2000/svg"
 		fill="none"
 		viewBox="0 0 24 24"
+		aria-hidden="true"
 	>
 		<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
 		<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -95,81 +132,148 @@ templ Button(props ButtonProps) {
 	<button
 		type={ props.GetType() }
 		class={
-			"hover:opacity-80 transition-opacity inline-flex items-center justify-center gap-2 rounded-md border-0 cursor-pointer text-white",
-			// Variants
-			templ.KV("bg-primary", props.GetVariant() == VariantPrimary),
-			templ.KV("bg-secondary", props.GetVariant() == VariantSecondary),
-			templ.KV("bg-danger", props.GetVariant() == VariantDanger),
-			templ.KV("bg-secondary-light text-primary", props.GetVariant() == VariantTab),
-			templ.KV("bg-success", props.GetVariant() == VariantBuy),
+			"inline-flex items-center justify-center gap-2 rounded-md border-0 cursor-pointer text-white",
+			"transition-all duration-200",
+			"hover:opacity-90 hover:shadow-md",
+			"focus:outline-none focus:ring-2 focus:ring-offset-2",
+			"disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:shadow-none",
+			// Variants with focus colors
+			templ.KV("bg-primary focus:ring-primary-300", props.GetVariant() == VariantPrimary),
+			templ.KV("bg-secondary focus:ring-secondary-300", props.GetVariant() == VariantSecondary),
+			templ.KV("bg-danger focus:ring-danger-300", props.GetVariant() == VariantDanger),
+			templ.KV("bg-secondary-light text-primary focus:ring-primary-200", props.GetVariant() == VariantTab),
+			templ.KV("bg-success focus:ring-success-300", props.GetVariant() == VariantBuy),
 			// Sizes
 			templ.KV("btn-sm", props.GetSize() == SizeSmall),
 			templ.KV("btn-md", props.GetSize() == SizeMedium),
 			templ.KV("btn-lg", props.GetSize() == SizeLarge),
 			templ.KV("btn-xl", props.GetSize() == SizeXLarge),
 			// Widths
-			templ.KV("w-[4%]", props.Width == WidthXSmall),
-			templ.KV("w-1/6", props.Width == WidthSmall),
-			templ.KV("w-1/4", props.Width == WidthMedium),
-			templ.KV("w-1/2", props.Width == WidthLarge),
-			templ.KV("w-full", props.Width == ""),
-			// States
-			templ.KV("opacity-60 cursor-not-allowed", props.Loading || props.Disabled),
+			templ.KV("min-w-32", props.GetWidth() == WidthSmall),
+			templ.KV("min-w-48", props.GetWidth() == WidthMedium),
+			templ.KV("min-w-64", props.GetWidth() == WidthLarge),
+			templ.KV("w-full", props.GetWidth() == WidthFull),
+			// HTMX loading indicator
+			templ.KV("htmx-request", props.Htmx != nil),
+			// Custom classes
 			props.ClassName,
 		}
-		onclick={ props.OnClick }
-		disabled?={ props.Disabled || props.Loading }
-	>
-		if (props.GetIconPosition() == IconLeft) && props.Loading {
-			@LoadingSpinner(props.GetSize())
+		if props.Disabled || props.Loading {
+			disabled
 		}
-		if (props.GetIconPosition() == IconLeft) && !props.Loading && props.Icon != nil {
-			@props.Icon
+		if props.AriaLabel != "" {
+			aria-label={ props.AriaLabel }
+		} else if props.Loading {
+			aria-label="Loading"
+		}
+		if props.Loading {
+			aria-busy="true"
+		}
+		HTMX attributes
+		if props.Htmx != nil {
+			if props.Htmx.Get != "" {
+				hx-get={ props.Htmx.Get }
+			}
+			if props.Htmx.Post != "" {
+				hx-post={ props.Htmx.Post }
+			}
+			if props.Htmx.Put != "" {
+				hx-put={ props.Htmx.Put }
+			}
+			if props.Htmx.Patch != "" {
+				hx-patch={ props.Htmx.Patch }
+			}
+			if props.Htmx.Delete != "" {
+				hx-delete={ props.Htmx.Delete }
+			}
+			if props.Htmx.Target != "" {
+				hx-target={ props.Htmx.Target }
+			}
+			if props.Htmx.Swap != "" {
+				hx-swap={ props.Htmx.Swap }
+			}
+			if props.Htmx.Trigger != "" {
+				hx-trigger={ props.Htmx.Trigger }
+			}
+			if props.Htmx.Confirm != "" {
+				hx-confirm={ props.Htmx.Confirm }
+			}
+			if props.Htmx.Indicator != "" {
+				hx-indicator={ props.Htmx.Indicator }
+			}
+			if props.Htmx.Vals != "" {
+				hx-vals={ props.Htmx.Vals }
+			}
+			if props.Htmx.Headers != "" {
+				hx-headers={ props.Htmx.Headers }
+			}
+			if props.Htmx.PushUrl != "" {
+				hx-push-url={ props.Htmx.PushUrl }
+			}
+			if props.Htmx.Select != "" {
+				hx-select={ props.Htmx.Select }
+			}
+			if props.Htmx.SwapOob != "" {
+				hx-swap-oob={ props.Htmx.SwapOob }
+			}
+			if props.Htmx.Include != "" {
+				hx-include={ props.Htmx.Include }
+			}
+		}
+	>
+		if props.GetIconPosition() == IconLeft {
+			if props.Loading {
+				@LoadingSpinner(props.GetSize())
+			} else if props.Icon != nil {
+				@props.Icon
+			}
 		}
 		if props.Text != "" {
 			<span>{ props.Text }</span>
 		}
-		if (props.GetIconPosition() == IconRight) && props.Loading {
-			@LoadingSpinner(props.GetSize())
-		}
-		if (props.GetIconPosition() == IconRight) && !props.Loading && props.Icon != nil {
-			@props.Icon
+		if props.GetIconPosition() == IconRight {
+			if props.Loading {
+				@LoadingSpinner(props.GetSize())
+			} else if props.Icon != nil {
+				@props.Icon
+			}
 		}
 	</button>
 }
 
+// Icon components
 templ IconPlus() {
-	<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+	<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
 	</svg>
 }
 
 templ IconTrash() {
-	<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+	<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
 	</svg>
 }
 
 templ IconCheck() {
-	<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+	<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
 	</svg>
 }
 
 templ IconX() {
-	<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+	<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
 	</svg>
 }
 
 templ IconArrowRight() {
-	<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+	<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
 	</svg>
 }
 
 templ IconDownload() {
-	<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+	<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
 	</svg>
 }

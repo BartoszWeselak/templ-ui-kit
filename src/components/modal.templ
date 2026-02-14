@@ -1,163 +1,329 @@
 package components
 
-import (
-    "fmt"
-)
-
 type ModalSize string
 type ModalPosition string
+type HttpMethod string
 
 const (
-    // Sizes
-    ModalSizeSmall  ModalSize = "small"
-    ModalSizeMedium ModalSize = "medium"
-    ModalSizeLarge  ModalSize = "large"
-    ModalSizeFull   ModalSize = "full"
-    
-    // Positions
-    ModalPositionTop    ModalPosition = "top"
-    ModalPositionCenter ModalPosition = "center"
-    ModalPositionBottom ModalPosition = "bottom"
+	// Sizes
+	ModalSizeSmall  ModalSize = "small"
+	ModalSizeMedium ModalSize = "medium"
+	ModalSizeLarge  ModalSize = "large"
+	ModalSizeFull   ModalSize = "full"
+
+	// Positions
+	ModalPositionTop    ModalPosition = "top"
+	ModalPositionCenter ModalPosition = "center"
+	ModalPositionBottom ModalPosition = "bottom"
+
+	// HTTP Methods for confirmation modals
+	MethodGET    HttpMethod = "GET"
+	MethodPOST   HttpMethod = "POST"
+	MethodPUT    HttpMethod = "PUT"
+	MethodPATCH  HttpMethod = "PATCH"
+	MethodDELETE HttpMethod = "DELETE"
 )
 
 type ModalProps struct {
-    ID        string
-    Title     string
-    Content   templ.Component
-    Size      ModalSize
-    Position  ModalPosition
-    ClassName string
-    ShowClose bool
+	ID        string
+	Title     string
+	Content   templ.Component
+	Size      ModalSize
+	Position  ModalPosition
+	ClassName string
+	ShowClose bool
+
+	// HTMX attributes for dynamic content loading
+	Htmx *HtmxAttrs
 }
 
 type ModalTriggerProps struct {
-    ModalID   string
-    Text      string
-    Variant   ButtonVariant
-    Size      ButtonSize
-    ClassName string
+	ModalID   string
+	Text      string
+	Variant   ButtonVariant
+	Size      ButtonSize
+	Width     ButtonWidth
+	ClassName string
+	Icon      templ.Component
+
+	// HTMX attributes to load modal content
+	Htmx *HtmxAttrs
 }
 
-func getModalClasses(props ModalProps) string {
-    // Defaults
-    if props.Size == "" {
-        props.Size = ModalSizeMedium
-    }
-    if props.Position == "" {
-        props.Position = ModalPositionTop
-    }
-    
-    // Base classes
-    baseClasses := "relative mx-auto p-5 border shadow-lg rounded-md bg-white"
-    
-    // Size classes
-    sizeClasses := ""
-    switch props.Size {
-    case ModalSizeSmall:
-        sizeClasses = "w-80 max-w-sm"
-    case ModalSizeMedium:
-        sizeClasses = "w-96 max-w-md"
-    case ModalSizeLarge:
-        sizeClasses = "w-[600px] max-w-2xl"
-    case ModalSizeFull:
-        sizeClasses = "w-full max-w-4xl mx-4"
-    }
-    
-    // Position classes
-    positionClasses := ""
-    switch props.Position {
-    case ModalPositionTop:
-        positionClasses = "top-20"
-    case ModalPositionCenter:
-        positionClasses = "top-1/2 -translate-y-1/2"
-    case ModalPositionBottom:
-        positionClasses = "bottom-20"
-    }
-    
-    return fmt.Sprintf("%s %s %s %s",
-        baseClasses,
-        sizeClasses,
-        positionClasses,
-        props.ClassName,
-    )
+type ConfirmationModalProps struct {
+	Message        string
+	ModalID        string
+	ConfirmAction  string
+	Method         HttpMethod
+	ConfirmText    string // Default: "Confirm"
+	CancelText     string // Default: "Cancel"
+	ConfirmVariant ButtonVariant
 }
 
-templ Modal(props ModalProps) {
-    <div 
-        id={ props.ID }
-        class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
-        onclick={ templ.ComponentScript{Call: "if(event.target === this) document.getElementById('" + props.ID + "').classList.add('hidden')"} }
-    >
-        <div class={ getModalClasses(props) }>
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-bold text-gray-900">{ props.Title }</h3>
-                if props.ShowClose {
-                    <button 
-                        onclick={ templ.ComponentScript{Call: "document.getElementById('" + props.ID + "').classList.add('hidden')"} }
-                        class="text-gray-400 hover:text-gray-600 transition-colors"
-                        aria-label="Close modal"
-                    >
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                }
-            </div>
-            <div class="mt-2">
-                @props.Content
-            </div>
-        </div>
-    </div>
+func (p ModalProps) GetSize() ModalSize {
+	if p.Size == "" {
+		return ModalSizeMedium
+	}
+	return p.Size
+}
+
+func (p ModalProps) GetPosition() ModalPosition {
+	if p.Position == "" {
+		return ModalPositionCenter
+	}
+	return p.Position
+}
+
+func (p ConfirmationModalProps) GetConfirmText() string {
+	if p.ConfirmText == "" {
+		return "Confirm"
+	}
+	return p.ConfirmText
+}
+
+func (p ConfirmationModalProps) GetCancelText() string {
+	if p.CancelText == "" {
+		return "Cancel"
+	}
+	return p.CancelText
+}
+
+func (p ConfirmationModalProps) GetConfirmVariant() ButtonVariant {
+	if p.ConfirmVariant == "" {
+		return VariantDanger
+	}
+	return p.ConfirmVariant
+}
+
+templ ModalScript() {
+	<script>
+		(function() {
+			// Prevent double initialization
+			if (window.modalHandlersInitialized) return;
+			window.modalHandlersInitialized = true;
+
+			// Open modal
+			document.addEventListener('click', function(e) {
+				const trigger = e.target.closest('[data-modal-trigger]');
+				if (trigger) {
+					const modalId = trigger.dataset.modalTrigger;
+					const modal = document.getElementById(modalId);
+					if (modal) {
+						modal.classList.remove('hidden');
+						document.body.style.overflow = 'hidden'; // Prevent background scroll
+					}
+				}
+			});
+
+			// Close modal
+			document.addEventListener('click', function(e) {
+				const closeBtn = e.target.closest('[data-modal-close]');
+				if (closeBtn) {
+					const modalId = closeBtn.dataset.modalClose;
+					const modal = document.getElementById(modalId);
+					if (modal) {
+						modal.classList.add('hidden');
+						document.body.style.overflow = ''; // Restore scroll
+					}
+					return;
+				}
+
+				// Close on overlay click (outside modal container)
+				const overlay = e.target.closest('.modal-overlay');
+				if (overlay && e.target === overlay) {
+					overlay.classList.add('hidden');
+					document.body.style.overflow = '';
+				}
+			});
+
+			// Close on ESC key
+			document.addEventListener('keydown', function(e) {
+				if (e.key === 'Escape') {
+					const openModal = document.querySelector('.modal-overlay:not(.hidden)');
+					if (openModal) {
+						openModal.classList.add('hidden');
+						document.body.style.overflow = '';
+					}
+				}
+			});
+
+			// Close modal after successful HTMX request (optional)
+			document.body.addEventListener('htmx:afterSwap', function(e) {
+				const trigger = e.detail.elt;
+				if (trigger && trigger.hasAttribute('data-close-modal-on-success')) {
+					const modalId = trigger.dataset.closeModalOnSuccess;
+					const modal = document.getElementById(modalId);
+					if (modal) {
+						setTimeout(() => {
+							modal.classList.add('hidden');
+							document.body.style.overflow = '';
+						}, 300); // Small delay for UX
+					}
+				}
+			});
+		})();
+	</script>
 }
 
 templ ModalTrigger(props ModalTriggerProps) {
-    @Button(ButtonProps{
-        Text: props.Text,
-        OnClick: templ.ComponentScript{Call: "document.getElementById('" + props.ModalID + "').classList.remove('hidden')"},
-        Variant: props.Variant,
-        Size: props.Size,
-        ClassName: props.ClassName,
-    })
+	<button
+		type="button"
+		class={
+			"inline-flex items-center justify-center gap-2 rounded-md border-0 cursor-pointer text-white",
+			"transition-all duration-200",
+			"hover:opacity-90 hover:shadow-md",
+			"focus:outline-none focus:ring-2 focus:ring-offset-2",
+			"disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:shadow-none",
+			// Variants
+			templ.KV("bg-primary focus:ring-primary-300", props.Variant == "" || props.Variant == VariantPrimary),
+			templ.KV("bg-secondary focus:ring-secondary-300", props.Variant == VariantSecondary),
+			templ.KV("bg-danger focus:ring-danger-300", props.Variant == VariantDanger),
+			templ.KV("bg-secondary-light text-primary focus:ring-primary-200", props.Variant == VariantTab),
+			templ.KV("bg-success focus:ring-success-300", props.Variant == VariantBuy),
+			// Sizes
+			templ.KV("btn-sm", props.Size == SizeSmall),
+			templ.KV("btn-md", props.Size == "" || props.Size == SizeMedium),
+			templ.KV("btn-lg", props.Size == SizeLarge),
+			templ.KV("btn-xl", props.Size == SizeXLarge),
+			// Widths
+			templ.KV("min-w-32", props.Width == WidthSmall),
+			templ.KV("min-w-48", props.Width == WidthMedium),
+			templ.KV("min-w-64", props.Width == WidthLarge),
+			templ.KV("w-full", props.Width == WidthFull),
+			props.ClassName,
+		}
+		data-modal-trigger={ props.ModalID }
+		if props.Htmx != nil {
+			if props.Htmx.Get != "" {
+				hx-get={ props.Htmx.Get }
+			}
+			if props.Htmx.Post != "" {
+				hx-post={ props.Htmx.Post }
+			}
+			if props.Htmx.Target != "" {
+				hx-target={ props.Htmx.Target }
+			} else if props.Htmx != nil && (props.Htmx.Get != "" || props.Htmx.Post != "") {
+				hx-target={ "#" + props.ModalID + "-content" }
+			}
+			if props.Htmx.Swap != "" {
+				hx-swap={ props.Htmx.Swap }
+			}
+			if props.Htmx.Trigger != "" {
+				hx-trigger={ props.Htmx.Trigger }
+			}
+		}
+	>
+		if props.Icon != nil {
+			@props.Icon
+		}
+		if props.Text != "" {
+			<span>{ props.Text }</span>
+		}
+	</button>
 }
 
-
-// Modal Footer - pomocniczy komponent do stopki modala
+// Modal Footer - helper component for modal footer
 templ ModalFooter() {
-    <div class="mt-4 pt-4 border-t border-gray-200 flex justify-end gap-2">
-        { children... }
-    </div>
+	<div class="mt-4 pt-4 border-t border-primary flex justify-end gap-2">
+		{ children... }
+	</div>
 }
 
-// Modal Body - pomocniczy komponent do treści modala
+// Modal Body - helper component for modal content
 templ ModalBody() {
-    <div class="py-2">
-        { children... }
-    </div>
+	<div class="text-primary-text">
+		{ children... }
+	</div>
 }
 
-// Przykładowe komponenty zawartości modala
-templ ConfirmationModalContent(message string, onConfirm, onCancel templ.ComponentScript) {
-    @ModalBody() {
-        <p class="text-gray-700">{ message }</p>
-    }
-    @ModalFooter() {
-        @Button(ButtonProps{
-            Text:    "Anuluj",
-            Variant: VariantSecondary,
-            Size:    SizeMedium,
-            OnClick: onCancel,
-        })
-        @Button(ButtonProps{
-            Text:    "Potwierdź",
-            Variant: VariantPrimary,
-            Size:    SizeMedium,
-            OnClick: onConfirm,
-        })
-    }
+// Confirmation modal content with HTMX support
+templ ConfirmationModalContent(props ConfirmationModalProps) {
+	@ModalBody() {
+		<p class="text-secondary-text">{ props.Message }</p>
+	}
+	@ModalFooter() {
+		@Button(ButtonProps{
+			Text:    props.GetCancelText(),
+			Variant: VariantSecondary,
+			Size:    SizeMedium,
+			Type:    "button",
+			Htmx: &HtmxAttrs{},
+		})
+		if props.Method == MethodDELETE {
+			@Button(ButtonProps{
+				Text:    props.GetConfirmText(),
+				Variant: props.GetConfirmVariant(),
+				Size:    SizeMedium,
+				Type:    "button",
+				Htmx: &HtmxAttrs{
+					Delete: props.ConfirmAction,
+				},
+			})
+		} else if props.Method == MethodPOST {
+			@Button(ButtonProps{
+				Text:    props.GetConfirmText(),
+				Variant: props.GetConfirmVariant(),
+				Size:    SizeMedium,
+				Type:    "button",
+				Htmx: &HtmxAttrs{
+					Post: props.ConfirmAction,
+				},
+			})
+		} else if props.Method == MethodPUT {
+			@Button(ButtonProps{
+				Text:    props.GetConfirmText(),
+				Variant: props.GetConfirmVariant(),
+				Size:    SizeMedium,
+				Type:    "button",
+				Htmx: &HtmxAttrs{
+					Put: props.ConfirmAction,
+				},
+			})
+		} else if props.Method == MethodPATCH {
+			@Button(ButtonProps{
+				Text:    props.GetConfirmText(),
+				Variant: props.GetConfirmVariant(),
+				Size:    SizeMedium,
+				Type:    "button",
+				Htmx: &HtmxAttrs{
+					Patch: props.ConfirmAction,
+				},
+			})
+		} else {
+			@Button(ButtonProps{
+				Text:    props.GetConfirmText(),
+				Variant: props.GetConfirmVariant(),
+				Size:    SizeMedium,
+				Type:    "button",
+			})
+		}
+	}
 }
 
+// Form modal content
 templ FormModalContent() {
-    @ModalBody() {
-        { children... }
-    }
+	@ModalBody() {
+		{ children... }
+	}
+}
+
+// Close modal button helper
+templ CloseModalButton(modalID string, text string, variant ButtonVariant) {
+	<button
+		type="button"
+		class={
+			"inline-flex items-center justify-center gap-2 rounded-md border-0 cursor-pointer text-white",
+			"transition-all duration-200",
+			"hover:opacity-90 hover:shadow-md",
+			"focus:outline-none focus:ring-2 focus:ring-offset-2",
+			// Variants
+			templ.KV("bg-primary focus:ring-primary-300", variant == "" || variant == VariantPrimary),
+			templ.KV("bg-secondary focus:ring-secondary-300", variant == VariantSecondary),
+			templ.KV("bg-danger focus:ring-danger-300", variant == VariantDanger),
+			"btn-md",
+		}
+		data-modal-close={ modalID }
+	>
+		<span>{ text }</span>
+	</button>
 }
