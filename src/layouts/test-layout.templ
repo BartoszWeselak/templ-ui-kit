@@ -155,44 +155,101 @@ templ TestLayoutI18n(ctx context.Context) {
 						<div class="demo-item">
 							<div class="demo-label">{ t(ctx, "label.variants") }</div>
 							<div class="flex gap-2 flex-wrap">
-								@Button(ButtonProps{Text: t(ctx, "button.primary"), Variant: VariantPrimary})
-								@Button(ButtonProps{Text: t(ctx, "button.secondary"), Variant: VariantSecondary})
-								@Button(ButtonProps{Text: t(ctx, "button.danger"), Variant: VariantDanger})
-								@Button(ButtonProps{Text: t(ctx, "button.buy"), Variant: VariantBuy})
+								@Button(ButtonProps{
+									Text: t(ctx, "button.primary"),
+									Variant: VariantPrimary,
+								})
+								@Button(ButtonProps{
+									Text: t(ctx, "button.secondary"),
+									Variant: VariantSecondary,
+								})
+								@Button(ButtonProps{
+									Text: t(ctx, "button.danger"),
+									Variant: VariantDanger,
+								})
+								@Button(ButtonProps{
+									Text: t(ctx, "button.buy"),
+									Variant: VariantBuy,
+								})
 							</div>
 						</div>
 						<div class="demo-item">
 							<div class="demo-label">{ t(ctx, "label.sizes") }</div>
 							<div class="flex gap-2 items-center flex-wrap">
-								@Button(ButtonProps{Text: t(ctx, "size.small"), Size: SizeSmall})
-								@Button(ButtonProps{Text: t(ctx, "size.medium"), Size: SizeMedium})
-								@Button(ButtonProps{Text: t(ctx, "size.large"), Size: SizeLarge})
-								@Button(ButtonProps{Text: t(ctx, "size.xlarge"), Size: SizeXLarge})
+								@Button(ButtonProps{
+									Text: t(ctx, "size.small"),
+									Size: SizeSmall,
+								})
+								@Button(ButtonProps{
+									Text: t(ctx, "size.medium"),
+									Size: SizeMedium,
+								})
+								@Button(ButtonProps{
+									Text: t(ctx, "size.large"),
+									Size: SizeLarge,
+								})
+								@Button(ButtonProps{
+									Text: t(ctx, "size.xlarge"),
+									Size: SizeXLarge,
+								})
 							</div>
 						</div>
 						<div class="demo-item">
 							<div class="demo-label">{ t(ctx, "label.icons") }</div>
 							<div class="flex gap-2 flex-wrap">
-								@Button(ButtonProps{Text: t(ctx, "button.add"), Icon: IconPlus(), IconPosition: IconLeft})
-								@Button(ButtonProps{Text: t(ctx, "button.delete"), Icon: IconTrash(), Variant: VariantDanger})
-								@Button(ButtonProps{Text: t(ctx, "button.download"), Icon: IconDownload(), IconPosition: IconRight, Variant: VariantBuy})
+								@Button(ButtonProps{
+									Text: t(ctx, "button.add"),
+									Icon: IconPlus(),
+									IconPosition: IconLeft,
+								})
+								@Button(ButtonProps{
+									Text: t(ctx, "button.delete"),
+									Icon: IconTrash(),
+									Variant: VariantDanger,
+								})
+								@Button(ButtonProps{
+									Text: t(ctx, "button.download"),
+									Icon: IconDownload(),
+									IconPosition: IconRight,
+									Variant: VariantBuy,
+								})
 							</div>
 						</div>
 						<div class="demo-item">
 							<div class="demo-label">{ t(ctx, "label.states") }</div>
 							<div class="flex gap-2 flex-wrap">
-								@Button(ButtonProps{Text: t(ctx, "button.loading"), Loading: true})
-								@Button(ButtonProps{Text: t(ctx, "button.disabled"), Disabled: true})
+								@Button(ButtonProps{
+									Text: t(ctx, "button.loading"),
+									Loading: true,
+								})
+								@Button(ButtonProps{
+									Text: t(ctx, "button.disabled"),
+									Disabled: true,
+								})
 							</div>
 						</div>
 						<div class="demo-item">
 							<div class="demo-label">{ t(ctx, "label.widths") }</div>
 							<div class="space-y-2">
-								@Button(ButtonProps{Text: t(ctx, "width.xsmall"), Width: WidthXSmall})
-								@Button(ButtonProps{Text: t(ctx, "width.small"), Width: WidthSmall})
-								@Button(ButtonProps{Text: t(ctx, "width.medium"), Width: WidthMedium})
-								@Button(ButtonProps{Text: t(ctx, "width.large"), Width: WidthLarge})
-								@Button(ButtonProps{Text: t(ctx, "width.full")})
+								@Button(ButtonProps{
+									Text: t(ctx, "width.xsmall"),
+									Width: WidthXSmall,
+								})
+								@Button(ButtonProps{
+									Text: t(ctx, "width.small"),
+									Width: WidthSmall,
+								})
+								@Button(ButtonProps{
+									Text: t(ctx, "width.medium"),
+									Width: WidthMedium,
+								})
+								@Button(ButtonProps{
+									Text: t(ctx, "width.large"),
+									Width: WidthLarge,
+								})
+								@Button(ButtonProps{
+									Text: t(ctx, "width.full"),
+								})
 							</div>
 						</div>
 					</div>
@@ -445,8 +502,14 @@ templ TestLayoutI18n(ctx context.Context) {
 								},
 							})
 							<div class="flex gap-2 justify-end mt-6">
-								@Button(ButtonProps{Text: t(ctx, "button.cancel"), Variant: VariantSecondary})
-								@Button(ButtonProps{Text: t(ctx, "button.save"), Variant: VariantPrimary})
+								@Button(ButtonProps{
+									Text: t(ctx, "button.cancel"),
+									Variant: VariantSecondary,
+								})
+								@Button(ButtonProps{
+									Text: t(ctx, "button.save"),
+									Variant: VariantPrimary,
+								})
 							</div>
 						</form>
 					</div>

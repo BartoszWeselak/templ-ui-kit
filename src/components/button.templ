@@ -1,9 +1,5 @@
 package components
 
-import (
-	"fmt"
-)
-
 type ButtonVariant string
 type ButtonSize string
 type ButtonWidth string
@@ -49,99 +45,47 @@ type ButtonProps struct {
 	Type         string // "button", "submit", "reset"
 }
 
-func getButtonVariantClasses(variant ButtonVariant) string {
-	// Klasy z theme.css
-	switch variant {
-	case VariantPrimary:
-		return "bg-primary text-white"
-	case VariantSecondary:
-		return "bg-secondary text-white"
-	case VariantDanger:
-		return "bg-danger text-white"
-	case VariantTab:
-		return "bg-secondary-light text-primary"
-	case VariantBuy:
-		return "bg-success text-white"
-	case VariantNone:
-		return ""
-	default:
-		return "bg-primary text-white"
+func (p ButtonProps) GetVariant() ButtonVariant {
+	if p.Variant == "" {
+		return VariantPrimary
 	}
+	return p.Variant
 }
 
-func getButtonClasses(props ButtonProps) string {
-	if props.Variant == "" {
-		props.Variant = VariantPrimary
+func (p ButtonProps) GetSize() ButtonSize {
+	if p.Size == "" {
+		return SizeMedium
 	}
-	if props.Size == "" {
-		props.Size = SizeMedium
-	}
-	if props.IconPosition == "" {
-		props.IconPosition = IconLeft
-	}
-
-	baseClasses := "hover:opacity-80 transition-opacity inline-flex items-center justify-center gap-2 rounded-md border-0 cursor-pointer"
-
-	variantClasses := getButtonVariantClasses(props.Variant)
-
-	// Size classes
-	sizeClasses := ""
-	switch props.Size {
-	case SizeSmall:
-		sizeClasses = "btn-sm"
-	case SizeMedium:
-		sizeClasses = "btn-md"
-	case SizeLarge:
-		sizeClasses = "btn-lg"
-	case SizeXLarge:
-		sizeClasses = "btn-xl"
-	}
-
-	// Width classes
-	widthClasses := "w-full"
-	switch props.Width {
-	case WidthXSmall:
-		widthClasses = "w-[4%]"
-	case WidthSmall:
-		widthClasses = "w-1/6"
-	case WidthMedium:
-		widthClasses = "w-1/4"
-	case WidthLarge:
-		widthClasses = "w-1/2"
-	}
-
-	stateClasses := ""
-	if props.Loading || props.Disabled {
-		stateClasses = "opacity-60 cursor-not-allowed"
-	}
-
-	return fmt.Sprintf("%s %s %s %s %s %s",
-		baseClasses,
-		variantClasses,
-		sizeClasses,
-		widthClasses,
-		stateClasses,
-		props.ClassName,
-	)
+	return p.Size
 }
 
-func getSpinnerSize(size ButtonSize) string {
-	switch size {
-	case SizeSmall:
-		return "w-3 h-3"
-	case SizeMedium:
-		return "w-4 h-4"
-	case SizeLarge:
-		return "w-5 h-5"
-	case SizeXLarge:
-		return "w-6 h-6"
-	default:
-		return "w-4 h-4"
+func (p ButtonProps) GetIconPosition() IconPosition {
+	if p.IconPosition == "" {
+		return IconLeft
 	}
+	return p.IconPosition
+}
+
+func (p ButtonProps) GetType() string {
+	if p.Type == "" {
+		return "button"
+	}
+	return p.Type
 }
 
 templ LoadingSpinner(size ButtonSize) {
-	<svg class={ fmt.Sprintf("%s animate-spin", getSpinnerSize(size)) } xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+	<svg
+		class={
+			"animate-spin",
+			templ.KV("w-3 h-3", size == SizeSmall),
+			templ.KV("w-4 h-4", size == SizeMedium || size == ""),
+			templ.KV("w-5 h-5", size == SizeLarge),
+			templ.KV("w-6 h-6", size == SizeXLarge),
+		}
+		xmlns="http://www.w3.org/2000/svg"
+		fill="none"
+		viewBox="0 0 24 24"
+	>
 		<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
 		<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
 	</svg>
@@ -149,36 +93,47 @@ templ LoadingSpinner(size ButtonSize) {
 
 templ Button(props ButtonProps) {
 	<button
-		type={
-			func() string {
-				if props.Type != "" {
-					return props.Type
-				}
-				return "button"
-			}()
+		type={ props.GetType() }
+		class={
+			"hover:opacity-80 transition-opacity inline-flex items-center justify-center gap-2 rounded-md border-0 cursor-pointer text-white",
+			// Variants
+			templ.KV("bg-primary", props.GetVariant() == VariantPrimary),
+			templ.KV("bg-secondary", props.GetVariant() == VariantSecondary),
+			templ.KV("bg-danger", props.GetVariant() == VariantDanger),
+			templ.KV("bg-secondary-light text-primary", props.GetVariant() == VariantTab),
+			templ.KV("bg-success", props.GetVariant() == VariantBuy),
+			// Sizes
+			templ.KV("btn-sm", props.GetSize() == SizeSmall),
+			templ.KV("btn-md", props.GetSize() == SizeMedium),
+			templ.KV("btn-lg", props.GetSize() == SizeLarge),
+			templ.KV("btn-xl", props.GetSize() == SizeXLarge),
+			// Widths
+			templ.KV("w-[4%]", props.Width == WidthXSmall),
+			templ.KV("w-1/6", props.Width == WidthSmall),
+			templ.KV("w-1/4", props.Width == WidthMedium),
+			templ.KV("w-1/2", props.Width == WidthLarge),
+			templ.KV("w-full", props.Width == ""),
+			// States
+			templ.KV("opacity-60 cursor-not-allowed", props.Loading || props.Disabled),
+			props.ClassName,
 		}
-		class={ getButtonClasses(props) }
 		onclick={ props.OnClick }
-		if props.Disabled || props.Loading {
-			disabled
-		}
+		disabled?={ props.Disabled || props.Loading }
 	>
-		if props.IconPosition == IconLeft || props.IconPosition == "" {
-			if props.Loading {
-				@LoadingSpinner(props.Size)
-			} else if props.Icon != nil {
-				@props.Icon
-			}
+		if (props.GetIconPosition() == IconLeft) && props.Loading {
+			@LoadingSpinner(props.GetSize())
+		}
+		if (props.GetIconPosition() == IconLeft) && !props.Loading && props.Icon != nil {
+			@props.Icon
 		}
 		if props.Text != "" {
 			<span>{ props.Text }</span>
 		}
-		if props.IconPosition == IconRight {
-			if props.Loading {
-				@LoadingSpinner(props.Size)
-			} else if props.Icon != nil {
-				@props.Icon
-			}
+		if (props.GetIconPosition() == IconRight) && props.Loading {
+			@LoadingSpinner(props.GetSize())
+		}
+		if (props.GetIconPosition() == IconRight) && !props.Loading && props.Icon != nil {
+			@props.Icon
 		}
 	</button>
 }

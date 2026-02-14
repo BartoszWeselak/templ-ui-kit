@@ -8,10 +8,6 @@ package components
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import (
-	"fmt"
-)
-
 type ButtonVariant string
 type ButtonSize string
 type ButtonWidth string
@@ -57,95 +53,32 @@ type ButtonProps struct {
 	Type         string // "button", "submit", "reset"
 }
 
-func getButtonVariantClasses(variant ButtonVariant) string {
-	// Klasy z theme.css
-	switch variant {
-	case VariantPrimary:
-		return "bg-primary text-white"
-	case VariantSecondary:
-		return "bg-secondary text-white"
-	case VariantDanger:
-		return "bg-danger text-white"
-	case VariantTab:
-		return "bg-secondary-light text-primary"
-	case VariantBuy:
-		return "bg-success text-white"
-	case VariantNone:
-		return ""
-	default:
-		return "bg-primary text-white"
+func (p ButtonProps) GetVariant() ButtonVariant {
+	if p.Variant == "" {
+		return VariantPrimary
 	}
+	return p.Variant
 }
 
-func getButtonClasses(props ButtonProps) string {
-	if props.Variant == "" {
-		props.Variant = VariantPrimary
+func (p ButtonProps) GetSize() ButtonSize {
+	if p.Size == "" {
+		return SizeMedium
 	}
-	if props.Size == "" {
-		props.Size = SizeMedium
-	}
-	if props.IconPosition == "" {
-		props.IconPosition = IconLeft
-	}
-
-	baseClasses := "hover:opacity-80 transition-opacity inline-flex items-center justify-center gap-2 rounded-md border-0 cursor-pointer"
-
-	variantClasses := getButtonVariantClasses(props.Variant)
-
-	// Size classes
-	sizeClasses := ""
-	switch props.Size {
-	case SizeSmall:
-		sizeClasses = "btn-sm"
-	case SizeMedium:
-		sizeClasses = "btn-md"
-	case SizeLarge:
-		sizeClasses = "btn-lg"
-	case SizeXLarge:
-		sizeClasses = "btn-xl"
-	}
-
-	// Width classes
-	widthClasses := "w-full"
-	switch props.Width {
-	case WidthXSmall:
-		widthClasses = "w-[4%]"
-	case WidthSmall:
-		widthClasses = "w-1/6"
-	case WidthMedium:
-		widthClasses = "w-1/4"
-	case WidthLarge:
-		widthClasses = "w-1/2"
-	}
-
-	stateClasses := ""
-	if props.Loading || props.Disabled {
-		stateClasses = "opacity-60 cursor-not-allowed"
-	}
-
-	return fmt.Sprintf("%s %s %s %s %s %s",
-		baseClasses,
-		variantClasses,
-		sizeClasses,
-		widthClasses,
-		stateClasses,
-		props.ClassName,
-	)
+	return p.Size
 }
 
-func getSpinnerSize(size ButtonSize) string {
-	switch size {
-	case SizeSmall:
-		return "w-3 h-3"
-	case SizeMedium:
-		return "w-4 h-4"
-	case SizeLarge:
-		return "w-5 h-5"
-	case SizeXLarge:
-		return "w-6 h-6"
-	default:
-		return "w-4 h-4"
+func (p ButtonProps) GetIconPosition() IconPosition {
+	if p.IconPosition == "" {
+		return IconLeft
 	}
+	return p.IconPosition
+}
+
+func (p ButtonProps) GetType() string {
+	if p.Type == "" {
+		return "button"
+	}
+	return p.Type
 }
 
 func LoadingSpinner(size ButtonSize) templ.Component {
@@ -169,7 +102,12 @@ func LoadingSpinner(size ButtonSize) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var2 = []any{fmt.Sprintf("%s animate-spin", getSpinnerSize(size))}
+		var templ_7745c5c3_Var2 = []any{"animate-spin",
+			templ.KV("w-3 h-3", size == SizeSmall),
+			templ.KV("w-4 h-4", size == SizeMedium || size == ""),
+			templ.KV("w-5 h-5", size == SizeLarge),
+			templ.KV("w-6 h-6", size == SizeXLarge),
+		}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -216,7 +154,28 @@ func Button(props ButtonProps) templ.Component {
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var5 = []any{getButtonClasses(props)}
+		var templ_7745c5c3_Var5 = []any{"hover:opacity-80 transition-opacity inline-flex items-center justify-center gap-2 rounded-md border-0 cursor-pointer text-white",
+			// Variants
+			templ.KV("bg-primary", props.GetVariant() == VariantPrimary),
+			templ.KV("bg-secondary", props.GetVariant() == VariantSecondary),
+			templ.KV("bg-danger", props.GetVariant() == VariantDanger),
+			templ.KV("bg-secondary-light text-primary", props.GetVariant() == VariantTab),
+			templ.KV("bg-success", props.GetVariant() == VariantBuy),
+			// Sizes
+			templ.KV("btn-sm", props.GetSize() == SizeSmall),
+			templ.KV("btn-md", props.GetSize() == SizeMedium),
+			templ.KV("btn-lg", props.GetSize() == SizeLarge),
+			templ.KV("btn-xl", props.GetSize() == SizeXLarge),
+			// Widths
+			templ.KV("w-[4%]", props.Width == WidthXSmall),
+			templ.KV("w-1/6", props.Width == WidthSmall),
+			templ.KV("w-1/4", props.Width == WidthMedium),
+			templ.KV("w-1/2", props.Width == WidthLarge),
+			templ.KV("w-full", props.Width == ""),
+			// States
+			templ.KV("opacity-60 cursor-not-allowed", props.Loading || props.Disabled),
+			props.ClassName,
+		}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var5...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -230,14 +189,9 @@ func Button(props ButtonProps) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var6 string
-		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(func() string {
-			if props.Type != "" {
-				return props.Type
-			}
-			return "button"
-		}())
+		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(props.GetType())
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/button.templ`, Line: 158, Col: 6}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/button.templ`, Line: 96, Col: 24}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -279,17 +233,16 @@ func Button(props ButtonProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if props.IconPosition == IconLeft || props.IconPosition == "" {
-			if props.Loading {
-				templ_7745c5c3_Err = LoadingSpinner(props.Size).Render(ctx, templ_7745c5c3_Buffer)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-			} else if props.Icon != nil {
-				templ_7745c5c3_Err = props.Icon.Render(ctx, templ_7745c5c3_Buffer)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
+		if (props.GetIconPosition() == IconLeft) && props.Loading {
+			templ_7745c5c3_Err = LoadingSpinner(props.GetSize()).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		if (props.GetIconPosition() == IconLeft) && !props.Loading && props.Icon != nil {
+			templ_7745c5c3_Err = props.Icon.Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
 			}
 		}
 		if props.Text != "" {
@@ -300,7 +253,7 @@ func Button(props ButtonProps) templ.Component {
 			var templ_7745c5c3_Var9 string
 			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(props.Text)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/button.templ`, Line: 174, Col: 21}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/button.templ`, Line: 130, Col: 21}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 			if templ_7745c5c3_Err != nil {
@@ -311,17 +264,16 @@ func Button(props ButtonProps) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		if props.IconPosition == IconRight {
-			if props.Loading {
-				templ_7745c5c3_Err = LoadingSpinner(props.Size).Render(ctx, templ_7745c5c3_Buffer)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-			} else if props.Icon != nil {
-				templ_7745c5c3_Err = props.Icon.Render(ctx, templ_7745c5c3_Buffer)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
+		if (props.GetIconPosition() == IconRight) && props.Loading {
+			templ_7745c5c3_Err = LoadingSpinner(props.GetSize()).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		if (props.GetIconPosition() == IconRight) && !props.Loading && props.Icon != nil {
+			templ_7745c5c3_Err = props.Icon.Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
 			}
 		}
 		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</button>")
