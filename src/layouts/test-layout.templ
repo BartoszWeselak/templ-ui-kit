@@ -280,6 +280,173 @@ templ TestLayoutI18n(ctx context.Context) {
 					</div>
 				</section>
 				
+				// MODALS
+				<section class="component-section">
+					<h2 class="component-title">🪟 { t(ctx, "section.modals") }</h2>
+					<div class="demo-grid">
+						<div class="demo-item">
+							<div class="demo-label">{ t(ctx, "label.modal.triggers") }</div>
+							<div class="flex gap-2 flex-wrap">
+								@components.ModalTrigger(components.ModalTriggerProps{
+									ModalID: "modal-basic",
+									Text:    t(ctx, "modal.open.basic"),
+									Variant: VariantPrimary,
+								})
+								@components.ModalTrigger(components.ModalTriggerProps{
+									ModalID: "modal-confirmation",
+									Text:    t(ctx, "modal.open.confirmation"),
+									Variant: VariantDanger,
+									Icon:    IconTrash(),
+								})
+								@components.ModalTrigger(components.ModalTriggerProps{
+									ModalID: "modal-form",
+									Text:    t(ctx, "modal.open.form"),
+									Variant: VariantSecondary,
+								})
+							</div>
+						</div>
+						<div class="demo-item">
+							<div class="demo-label">{ t(ctx, "label.modal.sizes") }</div>
+							<div class="flex gap-2 flex-wrap">
+								@components.ModalTrigger(components.ModalTriggerProps{
+									ModalID: "modal-small",
+									Text:    t(ctx, "size.small"),
+									Size:    SizeSmall,
+								})
+								@components.ModalTrigger(components.ModalTriggerProps{
+									ModalID: "modal-medium",
+									Text:    t(ctx, "size.medium"),
+								})
+								@components.ModalTrigger(components.ModalTriggerProps{
+									ModalID: "modal-large",
+									Text:    t(ctx, "size.large"),
+								})
+								@components.ModalTrigger(components.ModalTriggerProps{
+									ModalID: "modal-full",
+									Text:    "Full Size",
+								})
+							</div>
+						</div>
+					</div>
+					
+					// Modal instances - Basic
+					@components.Modal(components.ModalProps{
+						ID:        "modal-basic",
+						Title:     t(ctx, "modal.basic.title"),
+						Size:      components.ModalSizeMedium,
+						ShowClose: true,
+						Content:   components.ModalBody() {
+							<p>{ t(ctx, "modal.basic.content") }</p>
+							@components.ModalFooter() {
+								@components.CloseModalButton("modal-basic", t(ctx, "button.close"), VariantPrimary)
+							}
+						},
+					})
+					
+					// Modal - Confirmation
+					@components.Modal(components.ModalProps{
+						ID:        "modal-confirmation",
+						Title:     t(ctx, "modal.confirmation.title"),
+						Size:      components.ModalSizeSmall,
+						ShowClose: true,
+						Content:   components.ConfirmationModalContent(components.ConfirmationModalProps{
+							Message:        t(ctx, "modal.confirmation.message"),
+							ModalID:        "modal-confirmation",
+							ConfirmAction:  "/api/delete",
+							Method:         components.MethodDELETE,
+							ConfirmText:    t(ctx, "button.confirm"),
+							CancelText:     t(ctx, "button.cancel"),
+							ConfirmVariant: VariantDanger,
+						}),
+					})
+					
+					// Modal - Form
+					@components.Modal(components.ModalProps{
+						ID:        "modal-form",
+						Title:     t(ctx, "modal.form.title"),
+						Size:      components.ModalSizeLarge,
+						ShowClose: true,
+						Content:   components.FormModalContent() {
+							<div class="space-y-4">
+								@FormInput(FormInputProps{
+									Name:        "modal-name",
+									Label:       t(ctx, "form.username"),
+									Placeholder: t(ctx, "form.username.placeholder"),
+									Required:    true,
+								})
+								@FormInput(FormInputProps{
+									Name:        "modal-email",
+									Type:        "email",
+									Label:       t(ctx, "form.email"),
+									Placeholder: t(ctx, "form.email.placeholder"),
+									Required:    true,
+								})
+								@components.ModalFooter() {
+									@components.CloseModalButton("modal-form", t(ctx, "button.cancel"), VariantSecondary)
+									@Button(ButtonProps{
+										Text:    t(ctx, "button.save"),
+										Variant: VariantPrimary,
+										Type:    "submit",
+									})
+								}
+							</div>
+						},
+					})
+					
+					// Modal Size Examples
+					@components.Modal(components.ModalProps{
+						ID:        "modal-small",
+						Title:     "Small Modal",
+						Size:      components.ModalSizeSmall,
+						ShowClose: true,
+						Content:   components.ModalBody() {
+							<p>This is a small modal.</p>
+							@components.ModalFooter() {
+								@components.CloseModalButton("modal-small", t(ctx, "button.close"), VariantPrimary)
+							}
+						},
+					})
+					
+					@components.Modal(components.ModalProps{
+						ID:        "modal-medium",
+						Title:     "Medium Modal",
+						Size:      components.ModalSizeMedium,
+						ShowClose: true,
+						Content:   components.ModalBody() {
+							<p>This is a medium modal (default size).</p>
+							@components.ModalFooter() {
+								@components.CloseModalButton("modal-medium", t(ctx, "button.close"), VariantPrimary)
+							}
+						},
+					})
+					
+					@components.Modal(components.ModalProps{
+						ID:        "modal-large",
+						Title:     "Large Modal",
+						Size:      components.ModalSizeLarge,
+						ShowClose: true,
+						Content:   components.ModalBody() {
+							<p>This is a large modal with more content space.</p>
+							@components.ModalFooter() {
+								@components.CloseModalButton("modal-large", t(ctx, "button.close"), VariantPrimary)
+							}
+						},
+					})
+					
+					@components.Modal(components.ModalProps{
+						ID:        "modal-full",
+						Title:     "Full Size Modal",
+						Size:      components.ModalSizeFull,
+						ShowClose: true,
+						Content:   components.ModalBody() {
+							<p>This modal takes up almost the full screen.</p>
+							@components.ModalFooter() {
+								@components.CloseModalButton("modal-full", t(ctx, "button.close"), VariantPrimary)
+							}
+						},
+					})
+				</section>
+				
 				// FORM INPUTS
 				<section class="component-section">
 					<h2 class="component-title">📝 { t(ctx, "section.forms") }</h2>
@@ -570,6 +737,9 @@ templ TestLayoutI18n(ctx context.Context) {
 					<p>{ t(ctx, "footer.text") }</p>
 				</footer>
 			</div>
+			
+			// Modal Script - added at the end before closing body tag
+			@components.ModalScript()
 		</body>
 	</html>
 }
