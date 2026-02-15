@@ -1,7 +1,6 @@
 package components
 
 import (
-	"fmt"
 	"strconv"
 )
 
@@ -20,70 +19,54 @@ const (
 )
 
 type PaginationProps struct {
+	// Core properties
 	CurrentPage   int
 	TotalPages    int
 	BaseURL       string // np. "/products?page="
 	Variant       PaginationVariant
 	Size          PaginationSize
-	ShowFirstLast bool   // Pokazuj przyciski "First" i "Last"
-	MaxVisible    int    // Maksymalna liczba widocznych numerów stron (domyślnie 5)
 	ClassName     string
+	
+	// Display options
+	ShowFirstLast bool // Pokazuj przyciski "First" i "Last"
+	MaxVisible    int  // Maksymalna liczba widocznych numerów stron (domyślnie 5)
+	
+	// Behavior
+	AriaLabel     string
+	
+	// HTMX integration
+	Htmx          *HtmxAttrs
 }
 
-func getPaginationItemClasses(props PaginationProps, isActive bool, isDisabled bool) string {
-	if props.Variant == "" {
-		props.Variant = PaginationVariantPrimary
+func (p PaginationProps) GetVariant() PaginationVariant {
+	if p.Variant == "" {
+		return PaginationVariantPrimary
 	}
-	if props.Size == "" {
-		props.Size = PaginationSizeMedium
+	return p.Variant
+}
+
+func (p PaginationProps) GetSize() PaginationSize {
+	if p.Size == "" {
+		return PaginationSizeMedium
 	}
+	return p.Size
+}
 
-	baseClasses := "inline-flex items-center justify-center border transition-colors"
-
-	// Size classes
-	sizeClasses := ""
-	switch props.Size {
-	case PaginationSizeSmall:
-		sizeClasses = "px-2 py-1 text-sm min-w-[2rem]"
-	case PaginationSizeMedium:
-		sizeClasses = "px-3 py-2 text-base min-w-[2.5rem]"
-	case PaginationSizeLarge:
-		sizeClasses = "px-4 py-2 text-lg min-w-[3rem]"
-	default:
-		sizeClasses = "px-3 py-2 text-base min-w-[2.5rem]"
+func (p PaginationProps) GetMaxVisible() int {
+	if p.MaxVisible <= 0 {
+		return 5
 	}
+	return p.MaxVisible
+}
 
-	// Variant and state classes
-	var stateClasses string
-	if isDisabled {
-		stateClasses = "bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200"
-	} else if isActive {
-		if props.Variant == PaginationVariantPrimary {
-			stateClasses = "bg-primary text-white border-primary"
-		} else {
-			stateClasses = "bg-secondary text-white border-secondary"
-		}
-	} else {
-		if props.Variant == PaginationVariantPrimary {
-			stateClasses = "bg-white text-primary border-gray-300 hover:bg-primary-light hover:border-primary"
-		} else {
-			stateClasses = "bg-white text-secondary border-gray-300 hover:bg-secondary-light hover:border-secondary"
-		}
+func (p PaginationProps) GetAriaLabel() string {
+	if p.AriaLabel == "" {
+		return "Pagination"
 	}
-
-	return fmt.Sprintf("%s %s %s %s",
-		baseClasses,
-		sizeClasses,
-		stateClasses,
-		props.ClassName,
-	)
+	return p.AriaLabel
 }
 
 func getVisiblePages(currentPage, totalPages, maxVisible int) []int {
-	if maxVisible <= 0 {
-		maxVisible = 5
-	}
-
 	if totalPages <= maxVisible {
 		pages := make([]int, totalPages)
 		for i := 0; i < totalPages; i++ {
@@ -117,32 +100,90 @@ func getVisiblePages(currentPage, totalPages, maxVisible int) []int {
 
 templ PaginationItem(url string, text string, isActive bool, isDisabled bool, props PaginationProps) {
 	if isDisabled {
-		<span class={ getPaginationItemClasses(props, isActive, isDisabled) }>
+		<span
+			class={
+				"inline-flex items-center justify-center border transition-colors",
+				// Sizes
+				templ.KV("px-2 py-1 text-sm min-w-[2rem]", props.GetSize() == PaginationSizeSmall),
+				templ.KV("px-3 py-2 text-base min-w-[2.5rem]", props.GetSize() == PaginationSizeMedium),
+				templ.KV("px-4 py-2 text-lg min-w-[3rem]", props.GetSize() == PaginationSizeLarge),
+				// Disabled state
+				"bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200",
+			}
+		>
 			{ text }
 		</span>
 	} else if isActive {
-		<span class={ getPaginationItemClasses(props, isActive, isDisabled) } aria-current="page">
+		<span
+			class={
+				"inline-flex items-center justify-center border transition-colors",
+				// Sizes
+				templ.KV("px-2 py-1 text-sm min-w-[2rem]", props.GetSize() == PaginationSizeSmall),
+				templ.KV("px-3 py-2 text-base min-w-[2.5rem]", props.GetSize() == PaginationSizeMedium),
+				templ.KV("px-4 py-2 text-lg min-w-[3rem]", props.GetSize() == PaginationSizeLarge),
+				// Active state
+				templ.KV("bg-primary text-white border-primary", props.GetVariant() == PaginationVariantPrimary),
+				templ.KV("bg-secondary text-white border-secondary", props.GetVariant() == PaginationVariantSecondary),
+			}
+			aria-current="page"
+		>
 			{ text }
 		</span>
 	} else {
-		<a href={ templ.SafeURL(url) } class={ getPaginationItemClasses(props, isActive, isDisabled) }>
+		<a
+			href={ templ.SafeURL(url) }
+			class={
+				"inline-flex items-center justify-center border transition-colors",
+				// Sizes
+				templ.KV("px-2 py-1 text-sm min-w-[2rem]", props.GetSize() == PaginationSizeSmall),
+				templ.KV("px-3 py-2 text-base min-w-[2.5rem]", props.GetSize() == PaginationSizeMedium),
+				templ.KV("px-4 py-2 text-lg min-w-[3rem]", props.GetSize() == PaginationSizeLarge),
+				// Variants
+				templ.KV("bg-white text-primary border-gray-300 hover:bg-primary-light hover:border-primary", props.GetVariant() == PaginationVariantPrimary),
+				templ.KV("bg-white text-secondary border-gray-300 hover:bg-secondary-light hover:border-secondary", props.GetVariant() == PaginationVariantSecondary),
+			}
+			if props.Htmx != nil && props.Htmx.Get != "" {
+				hx-get={ url }
+			}
+			if props.Htmx != nil && props.Htmx.Post != "" {
+				hx-post={ url }
+			}
+			if props.Htmx != nil && props.Htmx.Target != "" {
+				hx-target={ props.Htmx.Target }
+			}
+			if props.Htmx != nil && props.Htmx.Swap != "" {
+				hx-swap={ props.Htmx.Swap }
+			}
+			if props.Htmx != nil && props.Htmx.PushUrl != "" {
+				hx-push-url={ props.Htmx.PushUrl }
+			}
+			if props.Htmx != nil && props.Htmx.Indicator != "" {
+				hx-indicator={ props.Htmx.Indicator }
+			}
+		>
 			{ text }
 		</a>
 	}
 }
 
 templ PaginationEllipsis(props PaginationProps) {
-	<span class={ getPaginationItemClasses(props, false, false) + " cursor-default hover:bg-white" }>
+	<span
+		class={
+			"inline-flex items-center justify-center border transition-colors cursor-default",
+			// Sizes
+			templ.KV("px-2 py-1 text-sm min-w-[2rem]", props.GetSize() == PaginationSizeSmall),
+			templ.KV("px-3 py-2 text-base min-w-[2.5rem]", props.GetSize() == PaginationSizeMedium),
+			templ.KV("px-4 py-2 text-lg min-w-[3rem]", props.GetSize() == PaginationSizeLarge),
+			// Style
+			"bg-white text-gray-400 border-gray-300",
+		}
+	>
 		...
 	</span>
 }
 
 templ Pagination(props PaginationProps) {
-	if props.MaxVisible == 0 {
-		// Ustawiamy domyślną wartość
-		props.MaxVisible = 5
-	}
-	<nav class="flex items-center gap-1" aria-label="Pagination">
+	<nav class={ "flex items-center gap-1", props.ClassName } aria-label={ props.GetAriaLabel() }>
 		// First button
 		if props.ShowFirstLast {
 			@PaginationItem(
@@ -162,12 +203,12 @@ templ Pagination(props PaginationProps) {
 			props,
 		)
 		// Ellipsis na początku (jeśli potrzebna)
-		if props.TotalPages > props.MaxVisible && props.CurrentPage > (props.MaxVisible/2)+1 {
+		if props.TotalPages > props.GetMaxVisible() && props.CurrentPage > (props.GetMaxVisible()/2)+1 {
 			@PaginationItem(props.BaseURL + "1", "1", false, false, props)
 			@PaginationEllipsis(props)
 		}
 		// Page numbers
-		for _, page := range getVisiblePages(props.CurrentPage, props.TotalPages, props.MaxVisible) {
+		for _, page := range getVisiblePages(props.CurrentPage, props.TotalPages, props.GetMaxVisible()) {
 			@PaginationItem(
 				props.BaseURL + strconv.Itoa(page),
 				strconv.Itoa(page),
@@ -177,7 +218,7 @@ templ Pagination(props PaginationProps) {
 			)
 		}
 		// Ellipsis na końcu (jeśli potrzebna)
-		if props.TotalPages > props.MaxVisible && props.CurrentPage < props.TotalPages-(props.MaxVisible/2) {
+		if props.TotalPages > props.GetMaxVisible() && props.CurrentPage < props.TotalPages-(props.GetMaxVisible()/2) {
 			@PaginationEllipsis(props)
 			@PaginationItem(
 				props.BaseURL + strconv.Itoa(props.TotalPages),
@@ -210,38 +251,92 @@ templ Pagination(props PaginationProps) {
 
 // SimplePagination - uproszczona wersja z tylko prev/next i informacją o stronie
 templ SimplePagination(props PaginationProps) {
-	<nav class="flex items-center justify-between" aria-label="Pagination">
-		<a
-			href={ templ.SafeURL(props.BaseURL + strconv.Itoa(props.CurrentPage-1)) }
-			class={
-				getPaginationItemClasses(props, false, props.CurrentPage == 1) +
-				" " + func() string {
-					if props.CurrentPage == 1 {
-						return "pointer-events-none"
-					}
-					return ""
-				}()
-			}
-		>
-			← Previous
-		</a>
+	<nav class={ "flex items-center justify-between", props.ClassName } aria-label={ props.GetAriaLabel() }>
+		if props.CurrentPage > 1 {
+			<a
+				href={ templ.SafeURL(props.BaseURL + strconv.Itoa(props.CurrentPage-1)) }
+				class={
+					"inline-flex items-center justify-center border transition-colors",
+					// Sizes
+					templ.KV("px-2 py-1 text-sm", props.GetSize() == PaginationSizeSmall),
+					templ.KV("px-3 py-2 text-base", props.GetSize() == PaginationSizeMedium),
+					templ.KV("px-4 py-2 text-lg", props.GetSize() == PaginationSizeLarge),
+					// Variants
+					templ.KV("bg-white text-primary border-gray-300 hover:bg-primary-light hover:border-primary", props.GetVariant() == PaginationVariantPrimary),
+					templ.KV("bg-white text-secondary border-gray-300 hover:bg-secondary-light hover:border-secondary", props.GetVariant() == PaginationVariantSecondary),
+				}
+				if props.Htmx != nil && props.Htmx.Get != "" {
+					hx-get={ props.BaseURL + strconv.Itoa(props.CurrentPage-1) }
+				}
+				if props.Htmx != nil && props.Htmx.Target != "" {
+					hx-target={ props.Htmx.Target }
+				}
+				if props.Htmx != nil && props.Htmx.Swap != "" {
+					hx-swap={ props.Htmx.Swap }
+				}
+				if props.Htmx != nil && props.Htmx.PushUrl != "" {
+					hx-push-url={ props.Htmx.PushUrl }
+				}
+			>
+				← Previous
+			</a>
+		} else {
+			<span
+				class={
+					"inline-flex items-center justify-center border transition-colors bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200",
+					// Sizes
+					templ.KV("px-2 py-1 text-sm", props.GetSize() == PaginationSizeSmall),
+					templ.KV("px-3 py-2 text-base", props.GetSize() == PaginationSizeMedium),
+					templ.KV("px-4 py-2 text-lg", props.GetSize() == PaginationSizeLarge),
+				}
+			>
+				← Previous
+			</span>
+		}
 		<span class="text-sm text-gray-600">
 			Page { strconv.Itoa(props.CurrentPage) } of { strconv.Itoa(props.TotalPages) }
 		</span>
-		<a
-			href={ templ.SafeURL(props.BaseURL + strconv.Itoa(props.CurrentPage+1)) }
-			class={
-				getPaginationItemClasses(props, false, props.CurrentPage == props.TotalPages) +
-				" " + func() string {
-					if props.CurrentPage == props.TotalPages {
-						return "pointer-events-none"
-					}
-					return ""
-				}()
-			}
-		>
-			Next →
-		</a>
+		if props.CurrentPage < props.TotalPages {
+			<a
+				href={ templ.SafeURL(props.BaseURL + strconv.Itoa(props.CurrentPage+1)) }
+				class={
+					"inline-flex items-center justify-center border transition-colors",
+					// Sizes
+					templ.KV("px-2 py-1 text-sm", props.GetSize() == PaginationSizeSmall),
+					templ.KV("px-3 py-2 text-base", props.GetSize() == PaginationSizeMedium),
+					templ.KV("px-4 py-2 text-lg", props.GetSize() == PaginationSizeLarge),
+					// Variants
+					templ.KV("bg-white text-primary border-gray-300 hover:bg-primary-light hover:border-primary", props.GetVariant() == PaginationVariantPrimary),
+					templ.KV("bg-white text-secondary border-gray-300 hover:bg-secondary-light hover:border-secondary", props.GetVariant() == PaginationVariantSecondary),
+				}
+				if props.Htmx != nil && props.Htmx.Get != "" {
+					hx-get={ props.BaseURL + strconv.Itoa(props.CurrentPage+1) }
+				}
+				if props.Htmx != nil && props.Htmx.Target != "" {
+					hx-target={ props.Htmx.Target }
+				}
+				if props.Htmx != nil && props.Htmx.Swap != "" {
+					hx-swap={ props.Htmx.Swap }
+				}
+				if props.Htmx != nil && props.Htmx.PushUrl != "" {
+					hx-push-url={ props.Htmx.PushUrl }
+				}
+			>
+				Next →
+			</a>
+		} else {
+			<span
+				class={
+					"inline-flex items-center justify-center border transition-colors bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200",
+					// Sizes
+					templ.KV("px-2 py-1 text-sm", props.GetSize() == PaginationSizeSmall),
+					templ.KV("px-3 py-2 text-base", props.GetSize() == PaginationSizeMedium),
+					templ.KV("px-4 py-2 text-lg", props.GetSize() == PaginationSizeLarge),
+				}
+			>
+				Next →
+			</span>
+		}
 	</nav>
 }
 
@@ -269,4 +364,19 @@ templ PaginationWithInfo(props PaginationProps, totalItems int, itemsPerPage int
 		</div>
 		@Pagination(props)
 	</div>
+}
+
+// Helper component for HTMX pagination
+templ HtmxPagination(currentPage, totalPages int, targetSelector string) {
+	@Pagination(PaginationProps{
+		CurrentPage: currentPage,
+		TotalPages:  totalPages,
+		BaseURL:     "?page=",
+		Htmx: &HtmxAttrs{
+			Get:     "?page=",
+			Target:  targetSelector,
+			Swap:    "innerHTML",
+			PushUrl: "true",
+		},
+	})
 }
