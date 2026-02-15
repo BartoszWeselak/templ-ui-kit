@@ -1,9 +1,5 @@
 package components
 
-import (
-	"fmt"
-)
-
 type ErrorVariant string
 type ErrorSize string
 
@@ -20,97 +16,92 @@ const (
 )
 
 type ErrorProps struct {
+	// Core properties
 	Message   string
 	Variant   ErrorVariant
 	Size      ErrorSize
 	ClassName string
 	ShowIcon  bool
+	
+	// Behavior
+	Dismissible bool
+	Role        string // "alert", "status", etc.
+	
+	// HTMX integration
+	Htmx *HtmxAttrs
 }
 
-func getErrorClasses(props ErrorProps) string {
-	// Defaults
-	if props.Variant == "" {
-		props.Variant = ErrorVariantDanger
+func (p ErrorProps) GetVariant() ErrorVariant {
+	if p.Variant == "" {
+		return ErrorVariantDanger
 	}
-	if props.Size == "" {
-		props.Size = ErrorSizeMedium
-	}
-
-	baseClasses := "border rounded-md relative flex items-center"
-
-	// Variant classes - używamy theme.css
-	variantClasses := ""
-	switch props.Variant {
-	case ErrorVariantDanger:
-		variantClasses = "bg-danger-light border-danger-light text-danger-dark"
-	case ErrorVariantWarning:
-		variantClasses = "bg-warning-light border-warning-light text-warning-dark"
-	case ErrorVariantInfo:
-		variantClasses = "bg-primary-light border-primary-light text-primary-dark"
-	default:
-		variantClasses = "bg-danger-light border-danger-light text-danger-dark"
-	}
-
-	// Size classes
-	sizeClasses := ""
-	switch props.Size {
-	case ErrorSizeSmall:
-		sizeClasses = "px-2 py-1 text-sm"
-	case ErrorSizeMedium:
-		sizeClasses = "px-4 py-3 text-base"
-	case ErrorSizeLarge:
-		sizeClasses = "px-6 py-4 text-lg"
-	default:
-		sizeClasses = "px-4 py-3 text-base"
-	}
-
-	return fmt.Sprintf("%s %s %s %s",
-		baseClasses,
-		variantClasses,
-		sizeClasses,
-		props.ClassName,
-	)
+	return p.Variant
 }
 
-func getErrorIconSize(size ErrorSize) string {
-	switch size {
-	case ErrorSizeSmall:
-		return "w-4 h-4"
-	case ErrorSizeMedium:
-		return "w-5 h-5"
-	case ErrorSizeLarge:
-		return "w-6 h-6"
-	default:
-		return "w-5 h-5"
+func (p ErrorProps) GetSize() ErrorSize {
+	if p.Size == "" {
+		return ErrorSizeMedium
 	}
+	return p.Size
 }
 
-func getErrorIconClass(variant ErrorVariant) string {
-	// Klasy z theme.css: text-danger, text-warning, text-primary
-	switch variant {
-	case ErrorVariantDanger:
-		return "text-danger"
-	case ErrorVariantWarning:
-		return "text-warning"
-	case ErrorVariantInfo:
-		return "text-primary"
-	default:
-		return "text-danger"
+func (p ErrorProps) GetRole() string {
+	if p.Role == "" {
+		return "alert"
 	}
+	return p.Role
 }
 
 templ ErrorIcon(props ErrorProps) {
-	<div class={ fmt.Sprintf("inline-flex flex-shrink-0 mr-2 %s", getErrorIconClass(props.Variant)) }>
-		if props.Variant == ErrorVariantDanger {
-			<svg class={ getErrorIconSize(props.Size) } fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+	<div
+		class={
+			"inline-flex flex-shrink-0 mr-2",
+			// Icon colors
+			templ.KV("text-danger", props.GetVariant() == ErrorVariantDanger),
+			templ.KV("text-warning", props.GetVariant() == ErrorVariantWarning),
+			templ.KV("text-primary", props.GetVariant() == ErrorVariantInfo),
+		}
+	>
+		if props.GetVariant() == ErrorVariantDanger {
+			<svg
+				class={
+					templ.KV("w-4 h-4", props.GetSize() == ErrorSizeSmall),
+					templ.KV("w-5 h-5", props.GetSize() == ErrorSizeMedium),
+					templ.KV("w-6 h-6", props.GetSize() == ErrorSizeLarge),
+				}
+				fill="currentColor"
+				viewBox="0 0 20 20"
+				xmlns="http://www.w3.org/2000/svg"
+				aria-hidden="true"
+			>
 				<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
 			</svg>
-		} else if props.Variant == ErrorVariantWarning {
-			<svg class={ getErrorIconSize(props.Size) } fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+		} else if props.GetVariant() == ErrorVariantWarning {
+			<svg
+				class={
+					templ.KV("w-4 h-4", props.GetSize() == ErrorSizeSmall),
+					templ.KV("w-5 h-5", props.GetSize() == ErrorSizeMedium),
+					templ.KV("w-6 h-6", props.GetSize() == ErrorSizeLarge),
+				}
+				fill="currentColor"
+				viewBox="0 0 20 20"
+				xmlns="http://www.w3.org/2000/svg"
+				aria-hidden="true"
+			>
 				<path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
 			</svg>
 		} else {
-			<svg class={ getErrorIconSize(props.Size) } fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+			<svg
+				class={
+					templ.KV("w-4 h-4", props.GetSize() == ErrorSizeSmall),
+					templ.KV("w-5 h-5", props.GetSize() == ErrorSizeMedium),
+					templ.KV("w-6 h-6", props.GetSize() == ErrorSizeLarge),
+				}
+				fill="currentColor"
+				viewBox="0 0 20 20"
+				xmlns="http://www.w3.org/2000/svg"
+				aria-hidden="true"
+			>
 				<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
 			</svg>
 		}
@@ -118,24 +109,126 @@ templ ErrorIcon(props ErrorProps) {
 }
 
 templ Error(props ErrorProps) {
-	// Wyświetl tylko gdy Message nie jest pusty
 	if props.Message != "" {
-		<div class={ getErrorClasses(props) } role="alert">
+		<div
+			class={
+				"border rounded-md relative flex items-center transition-all duration-200",
+				// Variants
+				templ.KV("bg-danger-light border-danger-light text-danger-dark", props.GetVariant() == ErrorVariantDanger),
+				templ.KV("bg-warning-light border-warning-light text-warning-dark", props.GetVariant() == ErrorVariantWarning),
+				templ.KV("bg-primary-light border-primary-light text-primary-dark", props.GetVariant() == ErrorVariantInfo),
+				// Sizes
+				templ.KV("px-2 py-1 text-sm", props.GetSize() == ErrorSizeSmall),
+				templ.KV("px-4 py-3 text-base", props.GetSize() == ErrorSizeMedium),
+				templ.KV("px-6 py-4 text-lg", props.GetSize() == ErrorSizeLarge),
+				// Dismissible padding adjustment
+				templ.KV("pr-10", props.Dismissible),
+				// HTMX loading indicator
+				templ.KV("htmx-request", props.Htmx != nil),
+				// Custom classes
+				props.ClassName,
+			}
+			role={ props.GetRole() }
+			if props.Htmx != nil {
+				if props.Htmx.Get != "" {
+					hx-get={ props.Htmx.Get }
+				}
+				if props.Htmx.Post != "" {
+					hx-post={ props.Htmx.Post }
+				}
+				if props.Htmx.Put != "" {
+					hx-put={ props.Htmx.Put }
+				}
+				if props.Htmx.Patch != "" {
+					hx-patch={ props.Htmx.Patch }
+				}
+				if props.Htmx.Delete != "" {
+					hx-delete={ props.Htmx.Delete }
+				}
+				if props.Htmx.Target != "" {
+					hx-target={ props.Htmx.Target }
+				}
+				if props.Htmx.Swap != "" {
+					hx-swap={ props.Htmx.Swap }
+				}
+				if props.Htmx.Trigger != "" {
+					hx-trigger={ props.Htmx.Trigger }
+				}
+				if props.Htmx.Confirm != "" {
+					hx-confirm={ props.Htmx.Confirm }
+				}
+				if props.Htmx.Indicator != "" {
+					hx-indicator={ props.Htmx.Indicator }
+				}
+				if props.Htmx.Vals != "" {
+					hx-vals={ props.Htmx.Vals }
+				}
+				if props.Htmx.Headers != "" {
+					hx-headers={ props.Htmx.Headers }
+				}
+				if props.Htmx.PushUrl != "" {
+					hx-push-url={ props.Htmx.PushUrl }
+				}
+				if props.Htmx.Select != "" {
+					hx-select={ props.Htmx.Select }
+				}
+				if props.Htmx.SwapOob != "" {
+					hx-swap-oob={ props.Htmx.SwapOob }
+				}
+				if props.Htmx.Include != "" {
+					hx-include={ props.Htmx.Include }
+				}
+			}
+		>
 			if props.ShowIcon {
 				@ErrorIcon(props)
 			}
-			<span class="font-medium">{ props.Message }</span>
+			<span class="font-medium flex-1">{ props.Message }</span>
+			{ children... }
+			if props.Dismissible {
+				<button
+					type="button"
+					class={
+						"absolute top-0 right-0 p-2 hover:opacity-70 transition-opacity",
+						templ.KV("text-danger-dark", props.GetVariant() == ErrorVariantDanger),
+						templ.KV("text-warning-dark", props.GetVariant() == ErrorVariantWarning),
+						templ.KV("text-primary-dark", props.GetVariant() == ErrorVariantInfo),
+					}
+					onclick="this.parentElement.remove()"
+					aria-label="Dismiss"
+				>
+					<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+					</svg>
+				</button>
+			}
 		</div>
 	}
 }
 
-templ InlineError(props ErrorProps) {
-	if props.Message != "" {
-		<div class={ getErrorClasses(props) } role="alert">
-			if props.ShowIcon {
-				@ErrorIcon(props)
-			}
-			<span class="font-medium">{ props.Message }</span>
-		</div>
-	}
+// Success alert (shorthand)
+templ Success(message string) {
+	@Error(ErrorProps{
+		Message:  message,
+		Variant:  ErrorVariantInfo,
+		ShowIcon: true,
+	})
+}
+
+// Warning alert (shorthand)
+templ Warning(message string) {
+	@Error(ErrorProps{
+		Message:  message,
+		Variant:  ErrorVariantWarning,
+		ShowIcon: true,
+	})
+}
+
+// Danger alert (shorthand)
+templ Danger(message string) {
+	@Error(ErrorProps{
+		Message:  message,
+		Variant:  ErrorVariantDanger,
+		ShowIcon: true,
+	})
 }
