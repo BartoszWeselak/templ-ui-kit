@@ -19,11 +19,15 @@ type (
 	NotificationProps = components.NotificationProps
 	NotificationType = components.NotificationType
 	NotificationPosition = components.NotificationPosition
+	NotificationSize = components.NotificationSize
 	FormInputProps = components.FormInputProps
 	InputSize = components.InputSize
 	InputVariant = components.InputVariant
 	FormSelectProps = components.FormSelectProps
 	SelectOption = components.SelectOption
+	PaginationProps = components.PaginationProps
+	ModalTriggerProps = components.ModalTriggerProps
+	HtmxAttrs = components.HtmxAttrs
 )
 
 // Aliasy dla funkcji komponentów
@@ -32,12 +36,16 @@ var (
 	Card = components.Card
 	Error = components.Error
 	Notification = components.Notification
-	InlineNotification = components.InlineNotification
 	FormInput = components.FormInput
 	FormSelect = components.FormSelect
 	IconPlus = components.IconPlus
 	IconTrash = components.IconTrash
 	IconDownload = components.IconDownload
+	Pagination = components.Pagination
+	ModalTrigger = components.ModalTrigger
+	ModalBody = components.ModalBody
+	ModalFooter = components.ModalFooter
+	ModalScript = components.ModalScript
 )
 
 // Aliasy dla stałych
@@ -52,16 +60,18 @@ const (
 	SizeLarge = components.SizeLarge
 	SizeXLarge = components.SizeXLarge
 	
-	WidthXSmall = components.WidthXSmall
+	WidthAuto = components.WidthAuto
 	WidthSmall = components.WidthSmall
 	WidthMedium = components.WidthMedium
 	WidthLarge = components.WidthLarge
+	WidthFull = components.WidthFull
 	
 	IconLeft = components.IconLeft
 	IconRight = components.IconRight
 	
 	CardVariantGray = components.CardVariantGray
 	CardVariantWhite = components.CardVariantWhite
+	CardVariantBlue = components.CardVariantBlue
 	CardSizeMedium = components.CardSizeMedium
 	CardSizeFull = components.CardSizeFull
 	
@@ -83,6 +93,10 @@ const (
 	InputVariantDefault = components.InputVariantDefault
 	InputVariantError = components.InputVariantError
 	InputVariantSuccess = components.InputVariantSuccess
+	
+	NotificationSizeSmall = components.NotificationSizeSmall
+	NotificationSizeMedium = components.NotificationSizeMedium
+	NotificationSizeLarge = components.NotificationSizeLarge
 )
 
 // t helper function for translations
@@ -100,6 +114,7 @@ templ TestLayoutI18n(ctx context.Context) {
 			<title>{ t(ctx, "app.title") }</title>
 			<script src="https://cdn.tailwindcss.com"></script>
 			<link rel="stylesheet" href="/static/theme.css"/>
+			@ModalScript()
 			<style>
 				.component-section {
 					margin-bottom: 3rem;
@@ -232,10 +247,6 @@ templ TestLayoutI18n(ctx context.Context) {
 							<div class="demo-label">{ t(ctx, "label.widths") }</div>
 							<div class="space-y-2">
 								@Button(ButtonProps{
-									Text: t(ctx, "width.xsmall"),
-									Width: WidthXSmall,
-								})
-								@Button(ButtonProps{
 									Text: t(ctx, "width.small"),
 									Width: WidthSmall,
 								})
@@ -249,6 +260,7 @@ templ TestLayoutI18n(ctx context.Context) {
 								})
 								@Button(ButtonProps{
 									Text: t(ctx, "width.full"),
+									Width: WidthFull,
 								})
 							</div>
 						</div>
@@ -260,22 +272,22 @@ templ TestLayoutI18n(ctx context.Context) {
 					<h2 class="component-title">🃏 { t(ctx, "section.cards") }</h2>
 					<div class="demo-grid grid-cols-1 md:grid-cols-3">
 						@Card(CardProps{
-							Title:   t(ctx, "card.white.title"),
+							Title: t(ctx, "card.white.title"),
 							Content: t(ctx, "card.white.content"),
 							Variant: CardVariantWhite,
-							Size:    CardSizeMedium,
+							Size: CardSizeMedium,
 						})
 						@Card(CardProps{
-							Title:   t(ctx, "card.gray.title"),
+							Title: t(ctx, "card.gray.title"),
 							Content: t(ctx, "card.gray.content"),
 							Variant: CardVariantGray,
-							Size:    CardSizeMedium,
+							Size: CardSizeMedium,
 						})
 						@Card(CardProps{
-							Title:   t(ctx, "card.blue.title"),
+							Title: t(ctx, "card.blue.title"),
 							Content: t(ctx, "card.blue.content"),
-							Variant: components.CardVariantBlue,
-							Size:    CardSizeMedium,
+							Variant: CardVariantBlue,
+							Size: CardSizeMedium,
 						})
 					</div>
 				</section>
@@ -289,55 +301,55 @@ templ TestLayoutI18n(ctx context.Context) {
 							<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 								<div>
 									@FormInput(FormInputProps{
-										Name:         "username",
-										Label:        t(ctx, "form.username"),
-										Placeholder:  t(ctx, "form.username.placeholder"),
+										Name: "username",
+										Label: t(ctx, "form.username"),
+										Placeholder: t(ctx, "form.username.placeholder"),
 										Autocomplete: "username",
 									})
 								</div>
 								<div>
 									@FormInput(FormInputProps{
-										Name:         "email",
-										Type:         "email",
-										Label:        t(ctx, "form.email"),
-										Placeholder:  t(ctx, "form.email.placeholder"),
-										HelpText:     t(ctx, "form.email.help"),
+										Name: "email",
+										Type: "email",
+										Label: t(ctx, "form.email"),
+										Placeholder: t(ctx, "form.email.placeholder"),
+										HelpText: t(ctx, "form.email.help"),
 										Autocomplete: "email",
 									})
 								</div>
 								<div>
 									@FormInput(FormInputProps{
-										Name:         "password",
-										Type:         "password",
-										Label:        t(ctx, "form.password"),
-										Variant:      InputVariantError,
-										ErrorMsg:     t(ctx, "form.password.error"),
+										Name: "password",
+										Type: "password",
+										Label: t(ctx, "form.password"),
+										Variant: InputVariantError,
+										ErrorMsg: t(ctx, "form.password.error"),
 										Autocomplete: "current-password",
 									})
 								</div>
 								<div>
 									@FormInput(FormInputProps{
-										Name:         "confirm",
-										Type:         "password",
-										Label:        t(ctx, "form.confirm"),
-										Variant:      InputVariantSuccess,
+										Name: "confirm",
+										Type: "password",
+										Label: t(ctx, "form.confirm"),
+										Variant: InputVariantSuccess,
 										Autocomplete: "new-password",
 									})
 								</div>
 								<div>
 									@FormInput(FormInputProps{
-										Name:        "disabled",
-										Label:       t(ctx, "form.disabled"),
-										Value:       t(ctx, "form.disabled.value"),
-										Disabled:    true,
+										Name: "disabled",
+										Label: t(ctx, "form.disabled"),
+										Value: t(ctx, "form.disabled.value"),
+										Disabled: true,
 									})
 								</div>
 								<div>
 									@FormInput(FormInputProps{
-										Name:        "large",
-										Label:       t(ctx, "form.large"),
+										Name: "large",
+										Label: t(ctx, "form.large"),
 										Placeholder: t(ctx, "form.large.placeholder"),
-										Size:        InputSizeLarge,
+										Size: InputSizeLarge,
 									})
 								</div>
 							</div>
@@ -347,22 +359,22 @@ templ TestLayoutI18n(ctx context.Context) {
 							<div class="demo-label">Input Sizes</div>
 							<div class="space-y-4">
 								@FormInput(FormInputProps{
-									Name:        "small",
-									Label:       t(ctx, "size.small"),
+									Name: "small",
+									Label: t(ctx, "size.small"),
 									Placeholder: t(ctx, "size.small"),
-									Size:        InputSizeSmall,
+									Size: InputSizeSmall,
 								})
 								@FormInput(FormInputProps{
-									Name:        "medium",
-									Label:       t(ctx, "size.medium"),
+									Name: "medium",
+									Label: t(ctx, "size.medium"),
 									Placeholder: t(ctx, "size.medium"),
-									Size:        InputSizeMedium,
+									Size: InputSizeMedium,
 								})
 								@FormInput(FormInputProps{
-									Name:        "large-size",
-									Label:       t(ctx, "size.large"),
+									Name: "large-size",
+									Label: t(ctx, "size.large"),
 									Placeholder: t(ctx, "size.large"),
-									Size:        InputSizeLarge,
+									Size: InputSizeLarge,
 								})
 							</div>
 						</div>
@@ -378,9 +390,9 @@ templ TestLayoutI18n(ctx context.Context) {
 							<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 								<div>
 									@FormSelect(FormSelectProps{
-										Name:         "country",
-										Label:        t(ctx, "select.country"),
-										Placeholder:  t(ctx, "select.country.placeholder"),
+										Name: "country",
+										Label: t(ctx, "select.country"),
+										Placeholder: t(ctx, "select.country.placeholder"),
 										Autocomplete: "country",
 										Options: []SelectOption{
 											{Value: "pl", Label: t(ctx, "select.country.poland")},
@@ -392,10 +404,10 @@ templ TestLayoutI18n(ctx context.Context) {
 								</div>
 								<div>
 									@FormSelect(FormSelectProps{
-										Name:        "status",
-										Label:       t(ctx, "select.status"),
-										HelpText:    t(ctx, "select.status.help"),
-										Selected:    "active",
+										Name: "status",
+										Label: t(ctx, "select.status"),
+										HelpText: t(ctx, "select.status.help"),
+										Selected: "active",
 										Options: []SelectOption{
 											{Value: "active", Label: t(ctx, "select.status.active")},
 											{Value: "inactive", Label: t(ctx, "select.status.inactive")},
@@ -405,9 +417,9 @@ templ TestLayoutI18n(ctx context.Context) {
 								</div>
 								<div>
 									@FormSelect(FormSelectProps{
-										Name:     "error-select",
-										Label:    t(ctx, "select.error"),
-										Variant:  InputVariantError,
+										Name: "error-select",
+										Label: t(ctx, "select.error"),
+										Variant: InputVariantError,
 										ErrorMsg: t(ctx, "select.error.required"),
 										Options: []SelectOption{
 											{Value: "1", Label: "Option 1"},
@@ -417,8 +429,8 @@ templ TestLayoutI18n(ctx context.Context) {
 								</div>
 								<div>
 									@FormSelect(FormSelectProps{
-										Name:     "disabled-select",
-										Label:    t(ctx, "select.disabled"),
+										Name: "disabled-select",
+										Label: t(ctx, "select.disabled"),
 										Disabled: true,
 										Selected: "locked",
 										Options: []SelectOption{
@@ -433,25 +445,25 @@ templ TestLayoutI18n(ctx context.Context) {
 							<div class="demo-label">Select Sizes</div>
 							<div class="space-y-4">
 								@FormSelect(FormSelectProps{
-									Name:  "small-select",
+									Name: "small-select",
 									Label: t(ctx, "size.small"),
-									Size:  InputSizeSmall,
+									Size: InputSizeSmall,
 									Options: []SelectOption{
 										{Value: "1", Label: t(ctx, "size.small")},
 									},
 								})
 								@FormSelect(FormSelectProps{
-									Name:  "medium-select",
+									Name: "medium-select",
 									Label: t(ctx, "size.medium"),
-									Size:  InputSizeMedium,
+									Size: InputSizeMedium,
 									Options: []SelectOption{
 										{Value: "1", Label: t(ctx, "size.medium")},
 									},
 								})
 								@FormSelect(FormSelectProps{
-									Name:  "large-select",
+									Name: "large-select",
 									Label: t(ctx, "size.large"),
-									Size:  InputSizeLarge,
+									Size: InputSizeLarge,
 									Options: []SelectOption{
 										{Value: "1", Label: t(ctx, "size.large")},
 									},
@@ -465,35 +477,35 @@ templ TestLayoutI18n(ctx context.Context) {
 				<section class="component-section">
 					<h2 class="component-title">👤 { t(ctx, "section.combined") }</h2>
 					<div class="demo-item">
-						<form class="max-w-2xl mx-auto">
+						<form class="max-w-2xl mx-auto" onsubmit="event.preventDefault(); alert('Form submitted!');">
 							<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 								@FormInput(FormInputProps{
-									Name:         "firstName",
-									Label:        t(ctx, "form.firstname"),
-									Placeholder:  t(ctx, "form.firstname.placeholder"),
-									Required:     true,
+									Name: "firstName",
+									Label: t(ctx, "form.firstname"),
+									Placeholder: t(ctx, "form.firstname.placeholder"),
+									Required: true,
 									Autocomplete: "given-name",
 								})
 								@FormInput(FormInputProps{
-									Name:         "lastName",
-									Label:        t(ctx, "form.lastname"),
-									Placeholder:  t(ctx, "form.lastname.placeholder"),
-									Required:     true,
+									Name: "lastName",
+									Label: t(ctx, "form.lastname"),
+									Placeholder: t(ctx, "form.lastname.placeholder"),
+									Required: true,
 									Autocomplete: "family-name",
 								})
 							</div>
 							@FormInput(FormInputProps{
-								Name:         "email-profile",
-								Type:         "email",
-								Label:        t(ctx, "form.email"),
-								Placeholder:  t(ctx, "form.email.placeholder"),
-								Required:     true,
+								Name: "email-profile",
+								Type: "email",
+								Label: t(ctx, "form.email"),
+								Placeholder: t(ctx, "form.email.placeholder"),
+								Required: true,
 								Autocomplete: "email",
 							})
 							@FormSelect(FormSelectProps{
-								Name:         "role",
-								Label:        t(ctx, "select.role"),
-								Required:     true,
+								Name: "role",
+								Label: t(ctx, "select.role"),
+								Required: true,
 								Autocomplete: "off",
 								Options: []SelectOption{
 									{Value: "admin", Label: t(ctx, "select.role.admin")},
@@ -505,10 +517,12 @@ templ TestLayoutI18n(ctx context.Context) {
 								@Button(ButtonProps{
 									Text: t(ctx, "button.cancel"),
 									Variant: VariantSecondary,
+									Type: "button",
 								})
 								@Button(ButtonProps{
 									Text: t(ctx, "button.save"),
 									Variant: VariantPrimary,
+									Type: "submit",
 								})
 							</div>
 						</form>
@@ -520,20 +534,29 @@ templ TestLayoutI18n(ctx context.Context) {
 					<h2 class="component-title">⚠️ { t(ctx, "section.errors") }</h2>
 					<div class="demo-grid">
 						@Error(ErrorProps{
-							Message:  t(ctx, "error.danger"),
-							Variant:  ErrorVariantDanger,
+							Message: t(ctx, "error.danger"),
+							Variant: ErrorVariantDanger,
 							ShowIcon: true,
 						})
 						@Error(ErrorProps{
-							Message:  t(ctx, "error.warning"),
-							Variant:  ErrorVariantWarning,
+							Message: t(ctx, "error.warning"),
+							Variant: ErrorVariantWarning,
 							ShowIcon: true,
 						})
 						@Error(ErrorProps{
-							Message:  t(ctx, "error.info"),
-							Variant:  ErrorVariantInfo,
+							Message: t(ctx, "error.info"),
+							Variant: ErrorVariantInfo,
 							ShowIcon: true,
 						})
+						<div class="demo-item">
+							<div class="demo-label">Dismissible Error</div>
+							@Error(ErrorProps{
+								Message: "This error can be dismissed",
+								Variant: ErrorVariantDanger,
+								ShowIcon: true,
+								Dismissible: true,
+							})
+						</div>
 					</div>
 				</section>
 				
@@ -542,27 +565,500 @@ templ TestLayoutI18n(ctx context.Context) {
 					<h2 class="component-title">🔔 { t(ctx, "section.notifications") }</h2>
 					<div class="demo-grid">
 						<div class="demo-item">
+							<div class="demo-label">Inline Notifications</div>
 							<div class="space-y-3">
-								@InlineNotification(NotificationProps{
-									Title:       t(ctx, "notification.success.title"),
-									Message:     t(ctx, "notification.success.message"),
-									Type:        NotificationSuccess,
+								@Notification(NotificationProps{
+									Title: t(ctx, "notification.success.title"),
+									Message: t(ctx, "notification.success.message"),
+									Type: NotificationSuccess,
 									Dismissible: true,
+									Inline: true,
+									ShowIcon: true,
 								})
-								@InlineNotification(NotificationProps{
-									Title:       t(ctx, "notification.error.title"),
-									Message:     t(ctx, "notification.error.message"),
-									Type:        NotificationError,
+								@Notification(NotificationProps{
+									Title: t(ctx, "notification.error.title"),
+									Message: t(ctx, "notification.error.message"),
+									Type: NotificationError,
 									Dismissible: true,
+									Inline: true,
+									ShowIcon: true,
 								})
-								@InlineNotification(NotificationProps{
-									Title:       t(ctx, "notification.warning.title"),
-									Message:     t(ctx, "notification.warning.message"),
-									Type:        NotificationWarning,
+								@Notification(NotificationProps{
+									Title: t(ctx, "notification.warning.title"),
+									Message: t(ctx, "notification.warning.message"),
+									Type: NotificationWarning,
 									Dismissible: true,
+									Inline: true,
+									ShowIcon: true,
 								})
 							</div>
 						</div>
+						<div class="demo-item">
+							<div class="demo-label">Notification Sizes</div>
+							<div class="space-y-3">
+								@Notification(NotificationProps{
+									Title: "Small Notification",
+									Message: "This is a small notification",
+									Type: NotificationInfo,
+									Size: NotificationSizeSmall,
+									Inline: true,
+									ShowIcon: true,
+								})
+								@Notification(NotificationProps{
+									Title: "Medium Notification",
+									Message: "This is a medium notification",
+									Type: NotificationInfo,
+									Size: NotificationSizeMedium,
+									Inline: true,
+									ShowIcon: true,
+								})
+								@Notification(NotificationProps{
+									Title: "Large Notification",
+									Message: "This is a large notification",
+									Type: NotificationInfo,
+									Size: NotificationSizeLarge,
+									Inline: true,
+									ShowIcon: true,
+								})
+							</div>
+						</div>
+					</div>
+				</section>
+				
+				// MODALS
+				<section class="component-section">
+					<h2 class="component-title">🪟 { t(ctx, "section.modals") }</h2>
+					<div class="demo-grid">
+						<div class="demo-item">
+							<div class="demo-label">Simple Modal</div>
+							<div class="space-y-2">
+								@ModalTrigger(ModalTriggerProps{
+									ModalID: "simple-modal",
+									Text: "Open Simple Modal",
+									Variant: VariantPrimary,
+								})
+								
+								<div id="simple-modal" class="modal-overlay hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+									<div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
+										<h3 class="text-xl font-bold mb-4">Simple Modal</h3>
+										@ModalBody() {
+											<p class="text-gray-700">This is a simple modal with some content. You can close it by clicking the X button, clicking outside, or pressing ESC.</p>
+										}
+										@ModalFooter() {
+											<button 
+												type="button" 
+												class="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+												data-modal-close="simple-modal"
+											>
+												Close
+											</button>
+										}
+										<button 
+											type="button" 
+											class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+											data-modal-close="simple-modal"
+										>
+											<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+											</svg>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="demo-item">
+							<div class="demo-label">Confirmation Modal</div>
+							<div class="space-y-2">
+								@ModalTrigger(ModalTriggerProps{
+									ModalID: "confirm-modal",
+									Text: "Delete Item",
+									Variant: VariantDanger,
+									Icon: IconTrash(),
+								})
+								
+								<div id="confirm-modal" class="modal-overlay hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+									<div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
+										<h3 class="text-xl font-bold mb-4 text-danger">Confirm Deletion</h3>
+										@ModalBody() {
+											<p class="text-gray-700">Are you sure you want to delete this item? This action cannot be undone.</p>
+										}
+										@ModalFooter() {
+											<button 
+												type="button" 
+												class="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+												data-modal-close="confirm-modal"
+											>
+												Cancel
+											</button>
+											<button 
+												type="button" 
+												class="px-4 py-2 bg-danger text-white rounded hover:opacity-90"
+												data-modal-close="confirm-modal"
+												onclick="alert('Item deleted!')"
+											>
+												Yes, Delete
+											</button>
+										}
+										<button 
+											type="button" 
+											class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+											data-modal-close="confirm-modal"
+										>
+											<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+											</svg>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="demo-item">
+							<div class="demo-label">Form Modal</div>
+							<div class="space-y-2">
+								@ModalTrigger(ModalTriggerProps{
+									ModalID: "form-modal",
+									Text: "Add New Item",
+									Variant: VariantPrimary,
+									Icon: IconPlus(),
+								})
+								
+								<div id="form-modal" class="modal-overlay hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+									<div class="bg-white rounded-lg shadow-xl max-w-lg w-full mx-4 p-6">
+										<h3 class="text-xl font-bold mb-4">Add New Item</h3>
+										@ModalBody() {
+											<form id="add-item-form" onsubmit="event.preventDefault(); alert('Item added!'); document.getElementById('form-modal').classList.add('hidden'); document.body.style.overflow = '';">
+												@FormInput(FormInputProps{
+													Name: "item-name",
+													Label: "Item Name",
+													Placeholder: "Enter item name",
+													Required: true,
+												})
+												@FormInput(FormInputProps{
+													Name: "item-description",
+													Label: "Description",
+													Placeholder: "Enter description",
+												})
+												@FormSelect(FormSelectProps{
+													Name: "item-category",
+													Label: "Category",
+													Required: true,
+													Options: []SelectOption{
+														{Value: "electronics", Label: "Electronics"},
+														{Value: "clothing", Label: "Clothing"},
+														{Value: "food", Label: "Food"},
+													},
+												})
+											</form>
+										}
+										@ModalFooter() {
+											<button 
+												type="button" 
+												class="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+												data-modal-close="form-modal"
+											>
+												Cancel
+											</button>
+											<button 
+												type="submit"
+												form="add-item-form"
+												class="px-4 py-2 bg-primary text-white rounded hover:opacity-90"
+											>
+												Add Item
+											</button>
+										}
+										<button 
+											type="button" 
+											class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+											data-modal-close="form-modal"
+										>
+											<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+											</svg>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="demo-item">
+							<div class="demo-label">{ t(ctx, "modal.triggers") }</div>
+							<div class="flex gap-2 flex-wrap">
+								@ModalTrigger(ModalTriggerProps{
+									ModalID: "small-modal",
+									Text: t(ctx, "modal.trigger.small"),
+									Size: SizeSmall,
+								})
+								@ModalTrigger(ModalTriggerProps{
+									ModalID: "medium-modal",
+									Text: t(ctx, "modal.trigger.medium"),
+									Size: SizeMedium,
+								})
+								@ModalTrigger(ModalTriggerProps{
+									ModalID: "large-modal",
+									Text: t(ctx, "modal.trigger.large"),
+									Size: SizeLarge,
+								})
+								
+								<div id="small-modal" class="modal-overlay hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+									<div class="bg-white rounded-lg shadow-xl max-w-sm w-full mx-4 p-6">
+										<h3 class="text-lg font-bold mb-2">{ t(ctx, "modal.small.title") }</h3>
+										<p class="text-sm text-gray-700 mb-4">{ t(ctx, "modal.small.content") }</p>
+										<button 
+											type="button" 
+											class="px-3 py-1 bg-primary text-white rounded text-sm hover:opacity-90"
+											data-modal-close="small-modal"
+										>
+											Close
+										</button>
+									</div>
+								</div>
+								
+								<div id="medium-modal" class="modal-overlay hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+									<div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
+										<h3 class="text-xl font-bold mb-3">{ t(ctx, "modal.medium.title") }</h3>
+										<p class="text-gray-700 mb-4">{ t(ctx, "modal.medium.content") }</p>
+										<button 
+											type="button" 
+											class="px-4 py-2 bg-primary text-white rounded hover:opacity-90"
+											data-modal-close="medium-modal"
+										>
+											Close
+										</button>
+									</div>
+								</div>
+								
+								<div id="large-modal" class="modal-overlay hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+									<div class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 p-8">
+										<h3 class="text-2xl font-bold mb-4">{ t(ctx, "modal.large.title") }</h3>
+										<p class="text-gray-700 mb-6">{ t(ctx, "modal.large.content") }</p>
+										<div class="grid grid-cols-2 gap-4 mb-6">
+											<div class="p-4 bg-gray-100 rounded">Section 1</div>
+											<div class="p-4 bg-gray-100 rounded">Section 2</div>
+										</div>
+										<button 
+											type="button" 
+											class="px-4 py-2 bg-primary text-white rounded hover:opacity-90"
+											data-modal-close="large-modal"
+										>
+											Close
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+				
+				// PAGINATION
+				<section class="component-section">
+					<h2 class="component-title">📄 { t(ctx, "section.pagination") }</h2>
+					<div class="demo-item">
+						<div class="demo-label">{ t(ctx, "pagination.title") }</div>
+						<p class="text-sm text-gray-600 mb-4">{ t(ctx, "pagination.description") }</p>
+						
+						// Dynamic content area
+						<div id="page-content" class="mb-6 p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg border-2 border-blue-200 min-h-[200px]">
+							<div class="text-center" id="page-1-content">
+								<h3 class="text-2xl font-bold text-blue-900 mb-3">{ t(ctx, "pagination.page") } 1</h3>
+								<p class="text-blue-700 mb-4">{ t(ctx, "pagination.description") }</p>
+								<div class="grid grid-cols-2 gap-3 max-w-md mx-auto">
+									<div class="p-3 bg-white rounded shadow-sm">
+										<p class="font-semibold text-gray-800">{ t(ctx, "pagination.content.item") } 1</p>
+									</div>
+									<div class="p-3 bg-white rounded shadow-sm">
+										<p class="font-semibold text-gray-800">{ t(ctx, "pagination.content.item") } 2</p>
+									</div>
+									<div class="p-3 bg-white rounded shadow-sm">
+										<p class="font-semibold text-gray-800">{ t(ctx, "pagination.content.item") } 3</p>
+									</div>
+									<div class="p-3 bg-white rounded shadow-sm">
+										<p class="font-semibold text-gray-800">{ t(ctx, "pagination.content.item") } 4</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="text-center hidden" id="page-2-content">
+								<h3 class="text-2xl font-bold text-green-900 mb-3">{ t(ctx, "pagination.page") } 2</h3>
+								<p class="text-green-700 mb-4">{ t(ctx, "pagination.description") }</p>
+								<div class="grid grid-cols-2 gap-3 max-w-md mx-auto">
+									<div class="p-3 bg-white rounded shadow-sm">
+										<p class="font-semibold text-gray-800">{ t(ctx, "pagination.content.item") } 5</p>
+									</div>
+									<div class="p-3 bg-white rounded shadow-sm">
+										<p class="font-semibold text-gray-800">{ t(ctx, "pagination.content.item") } 6</p>
+									</div>
+									<div class="p-3 bg-white rounded shadow-sm">
+										<p class="font-semibold text-gray-800">{ t(ctx, "pagination.content.item") } 7</p>
+									</div>
+									<div class="p-3 bg-white rounded shadow-sm">
+										<p class="font-semibold text-gray-800">{ t(ctx, "pagination.content.item") } 8</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="text-center hidden" id="page-3-content">
+								<h3 class="text-2xl font-bold text-purple-900 mb-3">{ t(ctx, "pagination.page") } 3</h3>
+								<p class="text-purple-700 mb-4">{ t(ctx, "pagination.description") }</p>
+								<div class="grid grid-cols-2 gap-3 max-w-md mx-auto">
+									<div class="p-3 bg-white rounded shadow-sm">
+										<p class="font-semibold text-gray-800">{ t(ctx, "pagination.content.item") } 9</p>
+									</div>
+									<div class="p-3 bg-white rounded shadow-sm">
+										<p class="font-semibold text-gray-800">{ t(ctx, "pagination.content.item") } 10</p>
+									</div>
+									<div class="p-3 bg-white rounded shadow-sm">
+										<p class="font-semibold text-gray-800">{ t(ctx, "pagination.content.item") } 11</p>
+									</div>
+									<div class="p-3 bg-white rounded shadow-sm">
+										<p class="font-semibold text-gray-800">{ t(ctx, "pagination.content.item") } 12</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="text-center hidden" id="page-4-content">
+								<h3 class="text-2xl font-bold text-orange-900 mb-3">{ t(ctx, "pagination.page") } 4</h3>
+								<p class="text-orange-700 mb-4">{ t(ctx, "pagination.description") }</p>
+								<div class="grid grid-cols-2 gap-3 max-w-md mx-auto">
+									<div class="p-3 bg-white rounded shadow-sm">
+										<p class="font-semibold text-gray-800">{ t(ctx, "pagination.content.item") } 13</p>
+									</div>
+									<div class="p-3 bg-white rounded shadow-sm">
+										<p class="font-semibold text-gray-800">{ t(ctx, "pagination.content.item") } 14</p>
+									</div>
+									<div class="p-3 bg-white rounded shadow-sm">
+										<p class="font-semibold text-gray-800">{ t(ctx, "pagination.content.item") } 15</p>
+									</div>
+									<div class="p-3 bg-white rounded shadow-sm">
+										<p class="font-semibold text-gray-800">{ t(ctx, "pagination.content.item") } 16</p>
+									</div>
+								</div>
+							</div>
+							
+							<div class="text-center hidden" id="page-5-content">
+								<h3 class="text-2xl font-bold text-red-900 mb-3">{ t(ctx, "pagination.page") } 5</h3>
+								<p class="text-red-700 mb-4">{ t(ctx, "pagination.description") }</p>
+								<div class="grid grid-cols-2 gap-3 max-w-md mx-auto">
+									<div class="p-3 bg-white rounded shadow-sm">
+										<p class="font-semibold text-gray-800">{ t(ctx, "pagination.content.item") } 17</p>
+									</div>
+									<div class="p-3 bg-white rounded shadow-sm">
+										<p class="font-semibold text-gray-800">{ t(ctx, "pagination.content.item") } 18</p>
+									</div>
+									<div class="p-3 bg-white rounded shadow-sm">
+										<p class="font-semibold text-gray-800">{ t(ctx, "pagination.content.item") } 19</p>
+									</div>
+									<div class="p-3 bg-white rounded shadow-sm">
+										<p class="font-semibold text-gray-800">{ t(ctx, "pagination.content.item") } 20</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						// Pagination controls
+						<div id="pagination-controls">
+							@components.Pagination(components.PaginationProps{
+								CurrentPage: 1,
+								TotalPages: 5,
+								BaseURL: "javascript:void(0)",
+							})
+						</div>
+						
+						<script>
+							(function() {
+								// Get all pagination links
+								const paginationLinks = document.querySelectorAll('#pagination-controls a');
+								const contentDiv = document.getElementById('page-content');
+								
+								// Color classes for each page
+								const pageColors = [
+									'from-blue-50 to-indigo-50 border-blue-200',
+									'from-green-50 to-emerald-50 border-green-200',
+									'from-purple-50 to-pink-50 border-purple-200',
+									'from-orange-50 to-yellow-50 border-orange-200',
+									'from-red-50 to-rose-50 border-red-200'
+								];
+								
+								function showPage(pageNum) {
+									// Hide all page contents
+									for (let i = 1; i <= 5; i++) {
+										const pageContent = document.getElementById('page-' + i + '-content');
+										if (pageContent) {
+											pageContent.classList.add('hidden');
+										}
+									}
+									
+									// Show selected page content
+									const selectedContent = document.getElementById('page-' + pageNum + '-content');
+									if (selectedContent) {
+										selectedContent.classList.remove('hidden');
+									}
+									
+									// Update background color
+									contentDiv.className = 'mb-6 p-6 rounded-lg border-2 min-h-[200px] bg-gradient-to-br ' + pageColors[pageNum - 1];
+									
+									// Update pagination controls
+									updatePaginationControls(pageNum);
+								}
+								
+								function updatePaginationControls(currentPage) {
+									const container = document.getElementById('pagination-controls');
+									container.innerHTML = '';
+									
+									// Create new pagination
+									const nav = document.createElement('nav');
+									nav.className = 'flex items-center gap-1';
+									nav.setAttribute('aria-label', 'Pagination');
+									
+									// Previous button
+									const prevBtn = createPaginationItem('←', currentPage - 1, currentPage === 1, currentPage === 1);
+									nav.appendChild(prevBtn);
+									
+									// Page numbers
+									for (let i = 1; i <= 5; i++) {
+										const pageBtn = createPaginationItem(i.toString(), i, false, i === currentPage);
+										nav.appendChild(pageBtn);
+									}
+									
+									// Next button
+									const nextBtn = createPaginationItem('→', currentPage + 1, currentPage === 5, currentPage === 5);
+									nav.appendChild(nextBtn);
+									
+									container.appendChild(nav);
+								}
+								
+								function createPaginationItem(text, pageNum, isDisabled, isActive) {
+									if (isDisabled) {
+										const span = document.createElement('span');
+										span.className = 'inline-flex items-center justify-center border transition-colors px-3 py-2 text-base min-w-[2.5rem] bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200';
+										span.textContent = text;
+										return span;
+									}
+									
+									if (isActive) {
+										const span = document.createElement('span');
+										span.className = 'inline-flex items-center justify-center border transition-colors px-3 py-2 text-base min-w-[2.5rem] bg-primary text-white border-primary';
+										span.setAttribute('aria-current', 'page');
+										span.textContent = text;
+										return span;
+									}
+									
+									const a = document.createElement('a');
+									a.href = 'javascript:void(0)';
+									a.className = 'inline-flex items-center justify-center border transition-colors px-3 py-2 text-base min-w-[2.5rem] bg-white text-primary border-gray-300 hover:bg-primary-light hover:border-primary';
+									a.textContent = text;
+									a.onclick = function(e) {
+										e.preventDefault();
+										showPage(pageNum);
+									};
+									return a;
+								}
+								
+								// Initialize - show page 1
+								showPage(1);
+							})();
+						</script>
 					</div>
 				</section>
 				

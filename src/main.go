@@ -25,8 +25,8 @@ func main() {
 	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("src/static"))))
 
 	log.Println("Server running on http://localhost:8080")
-	log.Println("Available languages: en, pl, de, es, fr")
-	log.Println("Change language: ?lang=pl or ?lang=en")
+	log.Println("Available languages: en, pl, de")
+	log.Println("Change language: ?lang=pl or ?lang=en or ?lang=de")
 	log.Fatal(http.ListenAndServe(":8080", mux))
 }
 

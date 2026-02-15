@@ -119,10 +119,13 @@
   "select.role.user": "Użytkownik",
   "select.role.guest": "Gość",
   
-  "pagination.primary": "Główne Stronicowanie (Strona 1 z 5)",
-  "pagination.secondary": "Drugorzędne Stronicowanie (Strona 3 z 5)",
-  "pagination.small": "Małe Stronicowanie",
-  "pagination.large": "Duże Stronicowanie",
+  "pagination.title": "Przykład Interaktywnej Paginacji",
+  "pagination.description": "Kliknij numery stron aby zobaczyć dynamiczną zawartość",
+  "pagination.page": "Strona",
+  "pagination.of": "z",
+  "pagination.content.title": "To jest Strona {0}",
+  "pagination.content.description": "Przeglądasz stronę {0} z {1}. Każda strona pokazuje unikalną zawartość.",
+  "pagination.content.item": "Element {0}",
   
   "modal.small.title": "Małe Okno",
   "modal.small.content": "To jest małe okno modalne. Idealne do prostych potwierdzeń lub alertów.",

@@ -27,25 +27,33 @@ type (
 	NotificationProps    = components.NotificationProps
 	NotificationType     = components.NotificationType
 	NotificationPosition = components.NotificationPosition
+	NotificationSize     = components.NotificationSize
 	FormInputProps       = components.FormInputProps
 	InputSize            = components.InputSize
 	InputVariant         = components.InputVariant
 	FormSelectProps      = components.FormSelectProps
 	SelectOption         = components.SelectOption
+	PaginationProps      = components.PaginationProps
+	ModalTriggerProps    = components.ModalTriggerProps
+	HtmxAttrs            = components.HtmxAttrs
 )
 
 // Aliasy dla funkcji komponentów
 var (
-	Button             = components.Button
-	Card               = components.Card
-	Error              = components.Error
-	Notification       = components.Notification
-	InlineNotification = components.InlineNotification
-	FormInput          = components.FormInput
-	FormSelect         = components.FormSelect
-	IconPlus           = components.IconPlus
-	IconTrash          = components.IconTrash
-	IconDownload       = components.IconDownload
+	Button       = components.Button
+	Card         = components.Card
+	Error        = components.Error
+	Notification = components.Notification
+	FormInput    = components.FormInput
+	FormSelect   = components.FormSelect
+	IconPlus     = components.IconPlus
+	IconTrash    = components.IconTrash
+	IconDownload = components.IconDownload
+	Pagination   = components.Pagination
+	ModalTrigger = components.ModalTrigger
+	ModalBody    = components.ModalBody
+	ModalFooter  = components.ModalFooter
+	ModalScript  = components.ModalScript
 )
 
 // Aliasy dla stałych
@@ -60,16 +68,18 @@ const (
 	SizeLarge  = components.SizeLarge
 	SizeXLarge = components.SizeXLarge
 
-	WidthXSmall = components.WidthXSmall
+	WidthAuto   = components.WidthAuto
 	WidthSmall  = components.WidthSmall
 	WidthMedium = components.WidthMedium
 	WidthLarge  = components.WidthLarge
+	WidthFull   = components.WidthFull
 
 	IconLeft  = components.IconLeft
 	IconRight = components.IconRight
 
 	CardVariantGray  = components.CardVariantGray
 	CardVariantWhite = components.CardVariantWhite
+	CardVariantBlue  = components.CardVariantBlue
 	CardSizeMedium   = components.CardSizeMedium
 	CardSizeFull     = components.CardSizeFull
 
@@ -91,6 +101,10 @@ const (
 	InputVariantDefault = components.InputVariantDefault
 	InputVariantError   = components.InputVariantError
 	InputVariantSuccess = components.InputVariantSuccess
+
+	NotificationSizeSmall  = components.NotificationSizeSmall
+	NotificationSizeMedium = components.NotificationSizeMedium
+	NotificationSizeLarge  = components.NotificationSizeLarge
 )
 
 // t helper function for translations
@@ -127,7 +141,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.GetLanguage(ctx))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 96, Col: 35}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 110, Col: 35}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -140,65 +154,73 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "app.title"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 100, Col: 31}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 114, Col: 31}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</title><script src=\"https://cdn.tailwindcss.com\"></script><link rel=\"stylesheet\" href=\"/static/theme.css\"><style>\r\n\t\t\t\t.component-section {\r\n\t\t\t\t\tmargin-bottom: 3rem;\r\n\t\t\t\t\tpadding: 2rem;\r\n\t\t\t\t\tbackground: #f9fafb;\r\n\t\t\t\t\tborder-radius: 0.5rem;\r\n\t\t\t\t}\r\n\t\t\t\t.component-title {\r\n\t\t\t\t\tfont-size: 1.5rem;\r\n\t\t\t\t\tfont-weight: bold;\r\n\t\t\t\t\tmargin-bottom: 1.5rem;\r\n\t\t\t\t\tcolor: #1f2937;\r\n\t\t\t\t\tborder-bottom: 2px solid #3b82f6;\r\n\t\t\t\t\tpadding-bottom: 0.5rem;\r\n\t\t\t\t}\r\n\t\t\t\t.demo-grid {\r\n\t\t\t\t\tdisplay: grid;\r\n\t\t\t\t\tgap: 1.5rem;\r\n\t\t\t\t\tmargin-top: 1rem;\r\n\t\t\t\t}\r\n\t\t\t\t.demo-item {\r\n\t\t\t\t\tpadding: 1rem;\r\n\t\t\t\t\tbackground: white;\r\n\t\t\t\t\tborder-radius: 0.375rem;\r\n\t\t\t\t\tborder: 1px solid #e5e7eb;\r\n\t\t\t\t}\r\n\t\t\t\t.demo-label {\r\n\t\t\t\t\tfont-size: 0.875rem;\r\n\t\t\t\t\tfont-weight: 600;\r\n\t\t\t\t\tcolor: #6b7280;\r\n\t\t\t\t\tmargin-bottom: 0.5rem;\r\n\t\t\t\t}\r\n\t\t\t</style></head><body class=\"bg-gray-100 p-8\"><div class=\"max-w-7xl mx-auto\"><div class=\"mb-4 flex justify-end gap-2\"><a href=\"?lang=en\" class=\"px-3 py-1 bg-white border rounded hover:bg-gray-50\">English</a> <a href=\"?lang=pl\" class=\"px-3 py-1 bg-white border rounded hover:bg-gray-50\">Polski</a> <a href=\"?lang=de\" class=\"px-3 py-1 bg-white border rounded hover:bg-gray-50\">Deutsch</a></div><header class=\"mb-8\"><h1 class=\"text-4xl font-bold text-gray-900 mb-2\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</title><script src=\"https://cdn.tailwindcss.com\"></script><link rel=\"stylesheet\" href=\"/static/theme.css\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = ModalScript().Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<style>\r\n\t\t\t\t.component-section {\r\n\t\t\t\t\tmargin-bottom: 3rem;\r\n\t\t\t\t\tpadding: 2rem;\r\n\t\t\t\t\tbackground: #f9fafb;\r\n\t\t\t\t\tborder-radius: 0.5rem;\r\n\t\t\t\t}\r\n\t\t\t\t.component-title {\r\n\t\t\t\t\tfont-size: 1.5rem;\r\n\t\t\t\t\tfont-weight: bold;\r\n\t\t\t\t\tmargin-bottom: 1.5rem;\r\n\t\t\t\t\tcolor: #1f2937;\r\n\t\t\t\t\tborder-bottom: 2px solid #3b82f6;\r\n\t\t\t\t\tpadding-bottom: 0.5rem;\r\n\t\t\t\t}\r\n\t\t\t\t.demo-grid {\r\n\t\t\t\t\tdisplay: grid;\r\n\t\t\t\t\tgap: 1.5rem;\r\n\t\t\t\t\tmargin-top: 1rem;\r\n\t\t\t\t}\r\n\t\t\t\t.demo-item {\r\n\t\t\t\t\tpadding: 1rem;\r\n\t\t\t\t\tbackground: white;\r\n\t\t\t\t\tborder-radius: 0.375rem;\r\n\t\t\t\t\tborder: 1px solid #e5e7eb;\r\n\t\t\t\t}\r\n\t\t\t\t.demo-label {\r\n\t\t\t\t\tfont-size: 0.875rem;\r\n\t\t\t\t\tfont-weight: 600;\r\n\t\t\t\t\tcolor: #6b7280;\r\n\t\t\t\t\tmargin-bottom: 0.5rem;\r\n\t\t\t\t}\r\n\t\t\t</style></head><body class=\"bg-gray-100 p-8\"><div class=\"max-w-7xl mx-auto\"><div class=\"mb-4 flex justify-end gap-2\"><a href=\"?lang=en\" class=\"px-3 py-1 bg-white border rounded hover:bg-gray-50\">English</a> <a href=\"?lang=pl\" class=\"px-3 py-1 bg-white border rounded hover:bg-gray-50\">Polski</a> <a href=\"?lang=de\" class=\"px-3 py-1 bg-white border rounded hover:bg-gray-50\">Deutsch</a></div><header class=\"mb-8\"><h1 class=\"text-4xl font-bold text-gray-900 mb-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "app.title"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 147, Col: 76}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 162, Col: 76}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</h1><p class=\"text-gray-600\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</h1><p class=\"text-gray-600\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "app.subtitle"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 148, Col: 54}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 163, Col: 54}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</p></header><section class=\"component-section\"><h2 class=\"component-title\">🔘 ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</p></header><section class=\"component-section\"><h2 class=\"component-title\">🔘 ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "section.buttons"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 153, Col: 65}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 168, Col: 65}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "label.variants"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 156, Col: 57}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 171, Col: 57}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</div><div class=\"flex gap-2 flex-wrap\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</div><div class=\"flex gap-2 flex-wrap\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -230,20 +252,20 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "label.sizes"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 177, Col: 54}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 192, Col: 54}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</div><div class=\"flex gap-2 items-center flex-wrap\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</div><div class=\"flex gap-2 items-center flex-wrap\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -275,20 +297,20 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "label.icons"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 198, Col: 54}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 213, Col: 54}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div><div class=\"flex gap-2 flex-wrap\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</div><div class=\"flex gap-2 flex-wrap\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -317,20 +339,20 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var10 string
 		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "label.states"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 219, Col: 55}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 234, Col: 55}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</div><div class=\"flex gap-2 flex-wrap\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</div><div class=\"flex gap-2 flex-wrap\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -348,27 +370,20 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var11 string
 		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "label.widths"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 232, Col: 55}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 247, Col: 55}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</div><div class=\"space-y-2\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(ButtonProps{
-			Text:  t(ctx, "width.xsmall"),
-			Width: WidthXSmall,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</div><div class=\"space-y-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -394,25 +409,26 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		templ_7745c5c3_Err = Button(ButtonProps{
-			Text: t(ctx, "width.full"),
+			Text:  t(ctx, "width.full"),
+			Width: WidthFull,
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</div></div></div></section><section class=\"component-section\"><h2 class=\"component-title\">🃏 ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div></div></div></section><section class=\"component-section\"><h2 class=\"component-title\">🃏 ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var12 string
 		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "section.cards"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 260, Col: 63}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 272, Col: 63}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</h2><div class=\"demo-grid grid-cols-1 md:grid-cols-3\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</h2><div class=\"demo-grid grid-cols-1 md:grid-cols-3\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -437,52 +453,52 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		templ_7745c5c3_Err = Card(CardProps{
 			Title:   t(ctx, "card.blue.title"),
 			Content: t(ctx, "card.blue.content"),
-			Variant: components.CardVariantBlue,
+			Variant: CardVariantBlue,
 			Size:    CardSizeMedium,
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</div></section><section class=\"component-section\"><h2 class=\"component-title\">📝 ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</div></section><section class=\"component-section\"><h2 class=\"component-title\">📝 ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var13 string
 		templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "section.forms"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 285, Col: 63}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 297, Col: 63}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var14 string
 		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "label.variants"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 288, Col: 57}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 300, Col: 57}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, " & ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, " & ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var15 string
 		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "label.sizes"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 288, Col: 85}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 300, Col: 85}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</div><div class=\"grid grid-cols-1 md:grid-cols-2 gap-4\"><div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</div><div class=\"grid grid-cols-1 md:grid-cols-2 gap-4\"><div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -495,7 +511,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</div><div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</div><div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -510,7 +526,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</div><div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</div><div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -525,7 +541,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</div><div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</div><div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -539,7 +555,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</div><div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</div><div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -552,7 +568,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</div><div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</div><div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -565,7 +581,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</div></div></div><div class=\"demo-item\"><div class=\"demo-label\">Input Sizes</div><div class=\"space-y-4\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</div></div></div><div class=\"demo-item\"><div class=\"demo-label\">Input Sizes</div><div class=\"space-y-4\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -596,20 +612,20 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</div></div></div></section><section class=\"component-section\"><h2 class=\"component-title\">📋 ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "</div></div></div></section><section class=\"component-section\"><h2 class=\"component-title\">📋 ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var16 string
 		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "section.selects"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 374, Col: 65}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 386, Col: 65}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">Select Examples</div><div class=\"grid grid-cols-1 md:grid-cols-2 gap-4\"><div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">Select Examples</div><div class=\"grid grid-cols-1 md:grid-cols-2 gap-4\"><div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -628,7 +644,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "</div><div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</div><div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -646,7 +662,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</div><div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</div><div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -663,7 +679,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</div><div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "</div><div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -679,7 +695,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "</div></div></div><div class=\"demo-item\"><div class=\"demo-label\">Select Sizes</div><div class=\"space-y-4\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "</div></div></div><div class=\"demo-item\"><div class=\"demo-label\">Select Sizes</div><div class=\"space-y-4\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -716,20 +732,20 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "</div></div></div></section><section class=\"component-section\"><h2 class=\"component-title\">👤 ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</div></div></div></section><section class=\"component-section\"><h2 class=\"component-title\">👤 ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var17 string
 		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "section.combined"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 466, Col: 66}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 478, Col: 66}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</h2><div class=\"demo-item\"><form class=\"max-w-2xl mx-auto\"><div class=\"grid grid-cols-1 md:grid-cols-2 gap-4\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "</h2><div class=\"demo-item\"><form class=\"max-w-2xl mx-auto\" onsubmit=\"event.preventDefault(); alert('Form submitted!');\"><div class=\"grid grid-cols-1 md:grid-cols-2 gap-4\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -753,7 +769,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -782,13 +798,14 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "<div class=\"flex gap-2 justify-end mt-6\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "<div class=\"flex gap-2 justify-end mt-6\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		templ_7745c5c3_Err = Button(ButtonProps{
 			Text:    t(ctx, "button.cancel"),
 			Variant: VariantSecondary,
+			Type:    "button",
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -796,24 +813,25 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		templ_7745c5c3_Err = Button(ButtonProps{
 			Text:    t(ctx, "button.save"),
 			Variant: VariantPrimary,
+			Type:    "submit",
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "</div></form></div></section><section class=\"component-section\"><h2 class=\"component-title\">⚠️ ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "</div></form></div></section><section class=\"component-section\"><h2 class=\"component-title\">⚠️ ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var18 string
 		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "section.errors"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 520, Col: 66}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 534, Col: 66}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "</h2><div class=\"demo-grid\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "</h2><div class=\"demo-grid\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -841,64 +859,909 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "</div></section><section class=\"component-section\"><h2 class=\"component-title\">🔔 ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "<div class=\"demo-item\"><div class=\"demo-label\">Dismissible Error</div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = Error(ErrorProps{
+			Message:     "This error can be dismissed",
+			Variant:     ErrorVariantDanger,
+			ShowIcon:    true,
+			Dismissible: true,
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "</div></div></section><section class=\"component-section\"><h2 class=\"component-title\">🔔 ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var19 string
 		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "section.notifications"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 542, Col: 71}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 565, Col: 71}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"space-y-3\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">Inline Notifications</div><div class=\"space-y-3\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = InlineNotification(NotificationProps{
+		templ_7745c5c3_Err = Notification(NotificationProps{
 			Title:       t(ctx, "notification.success.title"),
 			Message:     t(ctx, "notification.success.message"),
 			Type:        NotificationSuccess,
 			Dismissible: true,
+			Inline:      true,
+			ShowIcon:    true,
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = InlineNotification(NotificationProps{
+		templ_7745c5c3_Err = Notification(NotificationProps{
 			Title:       t(ctx, "notification.error.title"),
 			Message:     t(ctx, "notification.error.message"),
 			Type:        NotificationError,
 			Dismissible: true,
+			Inline:      true,
+			ShowIcon:    true,
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = InlineNotification(NotificationProps{
+		templ_7745c5c3_Err = Notification(NotificationProps{
 			Title:       t(ctx, "notification.warning.title"),
 			Message:     t(ctx, "notification.warning.message"),
 			Type:        NotificationWarning,
 			Dismissible: true,
+			Inline:      true,
+			ShowIcon:    true,
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "</div></div></div></section><footer class=\"mt-8 text-center text-gray-600 pb-8\"><p>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">Notification Sizes</div><div class=\"space-y-3\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = Notification(NotificationProps{
+			Title:    "Small Notification",
+			Message:  "This is a small notification",
+			Type:     NotificationInfo,
+			Size:     NotificationSizeSmall,
+			Inline:   true,
+			ShowIcon: true,
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = Notification(NotificationProps{
+			Title:    "Medium Notification",
+			Message:  "This is a medium notification",
+			Type:     NotificationInfo,
+			Size:     NotificationSizeMedium,
+			Inline:   true,
+			ShowIcon: true,
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = Notification(NotificationProps{
+			Title:    "Large Notification",
+			Message:  "This is a large notification",
+			Type:     NotificationInfo,
+			Size:     NotificationSizeLarge,
+			Inline:   true,
+			ShowIcon: true,
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "</div></div></div></section><section class=\"component-section\"><h2 class=\"component-title\">🪟 ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var20 string
-		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "footer.text"))
+		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "section.modals"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 570, Col: 31}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 630, Col: 64}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "</p></footer></div></body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 46, "</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">Simple Modal</div><div class=\"space-y-2\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = ModalTrigger(ModalTriggerProps{
+			ModalID: "simple-modal",
+			Text:    "Open Simple Modal",
+			Variant: VariantPrimary,
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "<div id=\"simple-modal\" class=\"modal-overlay hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50\"><div class=\"bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-6\"><h3 class=\"text-xl font-bold mb-4\">Simple Modal</h3>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Var21 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+			if !templ_7745c5c3_IsBuffer {
+				defer func() {
+					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err == nil {
+						templ_7745c5c3_Err = templ_7745c5c3_BufErr
+					}
+				}()
+			}
+			ctx = templ.InitializeContext(ctx)
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 48, "<p class=\"text-gray-700\">This is a simple modal with some content. You can close it by clicking the X button, clicking outside, or pressing ESC.</p>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			return nil
+		})
+		templ_7745c5c3_Err = ModalBody().Render(templ.WithChildren(ctx, templ_7745c5c3_Var21), templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Var22 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+			if !templ_7745c5c3_IsBuffer {
+				defer func() {
+					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err == nil {
+						templ_7745c5c3_Err = templ_7745c5c3_BufErr
+					}
+				}()
+			}
+			ctx = templ.InitializeContext(ctx)
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 49, "<button type=\"button\" class=\"px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300\" data-modal-close=\"simple-modal\">Close</button>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			return nil
+		})
+		templ_7745c5c3_Err = ModalFooter().Render(templ.WithChildren(ctx, templ_7745c5c3_Var22), templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 50, "<button type=\"button\" class=\"absolute top-4 right-4 text-gray-400 hover:text-gray-600\" data-modal-close=\"simple-modal\"><svg class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M6 18L18 6M6 6l12 12\"></path></svg></button></div></div></div></div><div class=\"demo-item\"><div class=\"demo-label\">Confirmation Modal</div><div class=\"space-y-2\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = ModalTrigger(ModalTriggerProps{
+			ModalID: "confirm-modal",
+			Text:    "Delete Item",
+			Variant: VariantDanger,
+			Icon:    IconTrash(),
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 51, "<div id=\"confirm-modal\" class=\"modal-overlay hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50\"><div class=\"bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-6\"><h3 class=\"text-xl font-bold mb-4 text-danger\">Confirm Deletion</h3>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Var23 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+			if !templ_7745c5c3_IsBuffer {
+				defer func() {
+					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err == nil {
+						templ_7745c5c3_Err = templ_7745c5c3_BufErr
+					}
+				}()
+			}
+			ctx = templ.InitializeContext(ctx)
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 52, "<p class=\"text-gray-700\">Are you sure you want to delete this item? This action cannot be undone.</p>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			return nil
+		})
+		templ_7745c5c3_Err = ModalBody().Render(templ.WithChildren(ctx, templ_7745c5c3_Var23), templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Var24 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+			if !templ_7745c5c3_IsBuffer {
+				defer func() {
+					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err == nil {
+						templ_7745c5c3_Err = templ_7745c5c3_BufErr
+					}
+				}()
+			}
+			ctx = templ.InitializeContext(ctx)
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 53, "<button type=\"button\" class=\"px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300\" data-modal-close=\"confirm-modal\">Cancel</button> <button type=\"button\" class=\"px-4 py-2 bg-danger text-white rounded hover:opacity-90\" data-modal-close=\"confirm-modal\" onclick=\"alert('Item deleted!')\">Yes, Delete</button>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			return nil
+		})
+		templ_7745c5c3_Err = ModalFooter().Render(templ.WithChildren(ctx, templ_7745c5c3_Var24), templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 54, "<button type=\"button\" class=\"absolute top-4 right-4 text-gray-400 hover:text-gray-600\" data-modal-close=\"confirm-modal\"><svg class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M6 18L18 6M6 6l12 12\"></path></svg></button></div></div></div></div><div class=\"demo-item\"><div class=\"demo-label\">Form Modal</div><div class=\"space-y-2\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = ModalTrigger(ModalTriggerProps{
+			ModalID: "form-modal",
+			Text:    "Add New Item",
+			Variant: VariantPrimary,
+			Icon:    IconPlus(),
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 55, "<div id=\"form-modal\" class=\"modal-overlay hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50\"><div class=\"bg-white rounded-lg shadow-xl max-w-lg w-full mx-4 p-6\"><h3 class=\"text-xl font-bold mb-4\">Add New Item</h3>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Var25 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+			if !templ_7745c5c3_IsBuffer {
+				defer func() {
+					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err == nil {
+						templ_7745c5c3_Err = templ_7745c5c3_BufErr
+					}
+				}()
+			}
+			ctx = templ.InitializeContext(ctx)
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 56, "<form id=\"add-item-form\" onsubmit=\"event.preventDefault(); alert('Item added!'); document.getElementById('form-modal').classList.add('hidden'); document.body.style.overflow = '';\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = FormInput(FormInputProps{
+				Name:        "item-name",
+				Label:       "Item Name",
+				Placeholder: "Enter item name",
+				Required:    true,
+			}).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = FormInput(FormInputProps{
+				Name:        "item-description",
+				Label:       "Description",
+				Placeholder: "Enter description",
+			}).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = FormSelect(FormSelectProps{
+				Name:     "item-category",
+				Label:    "Category",
+				Required: true,
+				Options: []SelectOption{
+					{Value: "electronics", Label: "Electronics"},
+					{Value: "clothing", Label: "Clothing"},
+					{Value: "food", Label: "Food"},
+				},
+			}).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 57, "</form>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			return nil
+		})
+		templ_7745c5c3_Err = ModalBody().Render(templ.WithChildren(ctx, templ_7745c5c3_Var25), templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Var26 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+			if !templ_7745c5c3_IsBuffer {
+				defer func() {
+					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err == nil {
+						templ_7745c5c3_Err = templ_7745c5c3_BufErr
+					}
+				}()
+			}
+			ctx = templ.InitializeContext(ctx)
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 58, "<button type=\"button\" class=\"px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300\" data-modal-close=\"form-modal\">Cancel</button> <button type=\"submit\" form=\"add-item-form\" class=\"px-4 py-2 bg-primary text-white rounded hover:opacity-90\">Add Item</button>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			return nil
+		})
+		templ_7745c5c3_Err = ModalFooter().Render(templ.WithChildren(ctx, templ_7745c5c3_Var26), templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 59, "<button type=\"button\" class=\"absolute top-4 right-4 text-gray-400 hover:text-gray-600\" data-modal-close=\"form-modal\"><svg class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M6 18L18 6M6 6l12 12\"></path></svg></button></div></div></div></div><div class=\"demo-item\"><div class=\"demo-label\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var27 string
+		templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "modal.triggers"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 786, Col: 57}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var27))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 60, "</div><div class=\"flex gap-2 flex-wrap\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = ModalTrigger(ModalTriggerProps{
+			ModalID: "small-modal",
+			Text:    t(ctx, "modal.trigger.small"),
+			Size:    SizeSmall,
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = ModalTrigger(ModalTriggerProps{
+			ModalID: "medium-modal",
+			Text:    t(ctx, "modal.trigger.medium"),
+			Size:    SizeMedium,
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = ModalTrigger(ModalTriggerProps{
+			ModalID: "large-modal",
+			Text:    t(ctx, "modal.trigger.large"),
+			Size:    SizeLarge,
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 61, "<div id=\"small-modal\" class=\"modal-overlay hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50\"><div class=\"bg-white rounded-lg shadow-xl max-w-sm w-full mx-4 p-6\"><h3 class=\"text-lg font-bold mb-2\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var28 string
+		templ_7745c5c3_Var28, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "modal.small.title"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 806, Col: 74}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var28))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 62, "</h3><p class=\"text-sm text-gray-700 mb-4\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var29 string
+		templ_7745c5c3_Var29, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "modal.small.content"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 807, Col: 79}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var29))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 63, "</p><button type=\"button\" class=\"px-3 py-1 bg-primary text-white rounded text-sm hover:opacity-90\" data-modal-close=\"small-modal\">Close</button></div></div><div id=\"medium-modal\" class=\"modal-overlay hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50\"><div class=\"bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-6\"><h3 class=\"text-xl font-bold mb-3\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var30 string
+		templ_7745c5c3_Var30, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "modal.medium.title"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 820, Col: 75}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var30))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 64, "</h3><p class=\"text-gray-700 mb-4\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var31 string
+		templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "modal.medium.content"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 821, Col: 72}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var31))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 65, "</p><button type=\"button\" class=\"px-4 py-2 bg-primary text-white rounded hover:opacity-90\" data-modal-close=\"medium-modal\">Close</button></div></div><div id=\"large-modal\" class=\"modal-overlay hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50\"><div class=\"bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 p-8\"><h3 class=\"text-2xl font-bold mb-4\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var32 string
+		templ_7745c5c3_Var32, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "modal.large.title"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 834, Col: 75}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var32))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 66, "</h3><p class=\"text-gray-700 mb-6\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var33 string
+		templ_7745c5c3_Var33, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "modal.large.content"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 835, Col: 71}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var33))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 67, "</p><div class=\"grid grid-cols-2 gap-4 mb-6\"><div class=\"p-4 bg-gray-100 rounded\">Section 1</div><div class=\"p-4 bg-gray-100 rounded\">Section 2</div></div><button type=\"button\" class=\"px-4 py-2 bg-primary text-white rounded hover:opacity-90\" data-modal-close=\"large-modal\">Close</button></div></div></div></div></div></section><section class=\"component-section\"><h2 class=\"component-title\">📄 ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var34 string
+		templ_7745c5c3_Var34, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "section.pagination"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 856, Col: 68}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var34))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 68, "</h2><div class=\"demo-item\"><div class=\"demo-label\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var35 string
+		templ_7745c5c3_Var35, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.title"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 858, Col: 58}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var35))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 69, "</div><p class=\"text-sm text-gray-600 mb-4\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var36 string
+		templ_7745c5c3_Var36, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.description"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 859, Col: 78}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var36))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 70, "</p><div id=\"page-content\" class=\"mb-6 p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg border-2 border-blue-200 min-h-[200px]\"><div class=\"text-center\" id=\"page-1-content\"><h3 class=\"text-2xl font-bold text-blue-900 mb-3\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var37 string
+		templ_7745c5c3_Var37, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.page"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 864, Col: 85}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var37))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 71, " 1</h3><p class=\"text-blue-700 mb-4\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var38 string
+		templ_7745c5c3_Var38, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.description"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 865, Col: 72}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var38))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 72, "</p><div class=\"grid grid-cols-2 gap-3 max-w-md mx-auto\"><div class=\"p-3 bg-white rounded shadow-sm\"><p class=\"font-semibold text-gray-800\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var39 string
+		templ_7745c5c3_Var39, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.content.item"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 868, Col: 84}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var39))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 73, " 1</p></div><div class=\"p-3 bg-white rounded shadow-sm\"><p class=\"font-semibold text-gray-800\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var40 string
+		templ_7745c5c3_Var40, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.content.item"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 871, Col: 84}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var40))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 74, " 2</p></div><div class=\"p-3 bg-white rounded shadow-sm\"><p class=\"font-semibold text-gray-800\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var41 string
+		templ_7745c5c3_Var41, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.content.item"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 874, Col: 84}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var41))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 75, " 3</p></div><div class=\"p-3 bg-white rounded shadow-sm\"><p class=\"font-semibold text-gray-800\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var42 string
+		templ_7745c5c3_Var42, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.content.item"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 877, Col: 84}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var42))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 76, " 4</p></div></div></div><div class=\"text-center hidden\" id=\"page-2-content\"><h3 class=\"text-2xl font-bold text-green-900 mb-3\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var43 string
+		templ_7745c5c3_Var43, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.page"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 883, Col: 86}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var43))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 77, " 2</h3><p class=\"text-green-700 mb-4\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var44 string
+		templ_7745c5c3_Var44, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.description"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 884, Col: 73}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var44))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 78, "</p><div class=\"grid grid-cols-2 gap-3 max-w-md mx-auto\"><div class=\"p-3 bg-white rounded shadow-sm\"><p class=\"font-semibold text-gray-800\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var45 string
+		templ_7745c5c3_Var45, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.content.item"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 887, Col: 84}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var45))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 79, " 5</p></div><div class=\"p-3 bg-white rounded shadow-sm\"><p class=\"font-semibold text-gray-800\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var46 string
+		templ_7745c5c3_Var46, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.content.item"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 890, Col: 84}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var46))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 80, " 6</p></div><div class=\"p-3 bg-white rounded shadow-sm\"><p class=\"font-semibold text-gray-800\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var47 string
+		templ_7745c5c3_Var47, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.content.item"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 893, Col: 84}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var47))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 81, " 7</p></div><div class=\"p-3 bg-white rounded shadow-sm\"><p class=\"font-semibold text-gray-800\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var48 string
+		templ_7745c5c3_Var48, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.content.item"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 896, Col: 84}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var48))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 82, " 8</p></div></div></div><div class=\"text-center hidden\" id=\"page-3-content\"><h3 class=\"text-2xl font-bold text-purple-900 mb-3\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var49 string
+		templ_7745c5c3_Var49, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.page"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 902, Col: 87}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var49))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 83, " 3</h3><p class=\"text-purple-700 mb-4\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var50 string
+		templ_7745c5c3_Var50, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.description"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 903, Col: 74}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var50))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 84, "</p><div class=\"grid grid-cols-2 gap-3 max-w-md mx-auto\"><div class=\"p-3 bg-white rounded shadow-sm\"><p class=\"font-semibold text-gray-800\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var51 string
+		templ_7745c5c3_Var51, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.content.item"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 906, Col: 84}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var51))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 85, " 9</p></div><div class=\"p-3 bg-white rounded shadow-sm\"><p class=\"font-semibold text-gray-800\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var52 string
+		templ_7745c5c3_Var52, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.content.item"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 909, Col: 84}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var52))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 86, " 10</p></div><div class=\"p-3 bg-white rounded shadow-sm\"><p class=\"font-semibold text-gray-800\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var53 string
+		templ_7745c5c3_Var53, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.content.item"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 912, Col: 84}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var53))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 87, " 11</p></div><div class=\"p-3 bg-white rounded shadow-sm\"><p class=\"font-semibold text-gray-800\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var54 string
+		templ_7745c5c3_Var54, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.content.item"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 915, Col: 84}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var54))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 88, " 12</p></div></div></div><div class=\"text-center hidden\" id=\"page-4-content\"><h3 class=\"text-2xl font-bold text-orange-900 mb-3\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var55 string
+		templ_7745c5c3_Var55, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.page"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 921, Col: 87}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var55))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 89, " 4</h3><p class=\"text-orange-700 mb-4\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var56 string
+		templ_7745c5c3_Var56, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.description"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 922, Col: 74}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var56))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 90, "</p><div class=\"grid grid-cols-2 gap-3 max-w-md mx-auto\"><div class=\"p-3 bg-white rounded shadow-sm\"><p class=\"font-semibold text-gray-800\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var57 string
+		templ_7745c5c3_Var57, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.content.item"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 925, Col: 84}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var57))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 91, " 13</p></div><div class=\"p-3 bg-white rounded shadow-sm\"><p class=\"font-semibold text-gray-800\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var58 string
+		templ_7745c5c3_Var58, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.content.item"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 928, Col: 84}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var58))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 92, " 14</p></div><div class=\"p-3 bg-white rounded shadow-sm\"><p class=\"font-semibold text-gray-800\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var59 string
+		templ_7745c5c3_Var59, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.content.item"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 931, Col: 84}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var59))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 93, " 15</p></div><div class=\"p-3 bg-white rounded shadow-sm\"><p class=\"font-semibold text-gray-800\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var60 string
+		templ_7745c5c3_Var60, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.content.item"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 934, Col: 84}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var60))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 94, " 16</p></div></div></div><div class=\"text-center hidden\" id=\"page-5-content\"><h3 class=\"text-2xl font-bold text-red-900 mb-3\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var61 string
+		templ_7745c5c3_Var61, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.page"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 940, Col: 84}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var61))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 95, " 5</h3><p class=\"text-red-700 mb-4\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var62 string
+		templ_7745c5c3_Var62, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.description"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 941, Col: 71}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var62))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 96, "</p><div class=\"grid grid-cols-2 gap-3 max-w-md mx-auto\"><div class=\"p-3 bg-white rounded shadow-sm\"><p class=\"font-semibold text-gray-800\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var63 string
+		templ_7745c5c3_Var63, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.content.item"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 944, Col: 84}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var63))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 97, " 17</p></div><div class=\"p-3 bg-white rounded shadow-sm\"><p class=\"font-semibold text-gray-800\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var64 string
+		templ_7745c5c3_Var64, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.content.item"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 947, Col: 84}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var64))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 98, " 18</p></div><div class=\"p-3 bg-white rounded shadow-sm\"><p class=\"font-semibold text-gray-800\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var65 string
+		templ_7745c5c3_Var65, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.content.item"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 950, Col: 84}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var65))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 99, " 19</p></div><div class=\"p-3 bg-white rounded shadow-sm\"><p class=\"font-semibold text-gray-800\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var66 string
+		templ_7745c5c3_Var66, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "pagination.content.item"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 953, Col: 84}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var66))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 100, " 20</p></div></div></div></div><div id=\"pagination-controls\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = components.Pagination(components.PaginationProps{
+			CurrentPage: 1,
+			TotalPages:  5,
+			BaseURL:     "javascript:void(0)",
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 101, "</div><script>\r\n\t\t\t\t\t\t\t(function() {\r\n\t\t\t\t\t\t\t\t// Get all pagination links\r\n\t\t\t\t\t\t\t\tconst paginationLinks = document.querySelectorAll('#pagination-controls a');\r\n\t\t\t\t\t\t\t\tconst contentDiv = document.getElementById('page-content');\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t// Color classes for each page\r\n\t\t\t\t\t\t\t\tconst pageColors = [\r\n\t\t\t\t\t\t\t\t\t'from-blue-50 to-indigo-50 border-blue-200',\r\n\t\t\t\t\t\t\t\t\t'from-green-50 to-emerald-50 border-green-200',\r\n\t\t\t\t\t\t\t\t\t'from-purple-50 to-pink-50 border-purple-200',\r\n\t\t\t\t\t\t\t\t\t'from-orange-50 to-yellow-50 border-orange-200',\r\n\t\t\t\t\t\t\t\t\t'from-red-50 to-rose-50 border-red-200'\r\n\t\t\t\t\t\t\t\t];\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\tfunction showPage(pageNum) {\r\n\t\t\t\t\t\t\t\t\t// Hide all page contents\r\n\t\t\t\t\t\t\t\t\tfor (let i = 1; i <= 5; i++) {\r\n\t\t\t\t\t\t\t\t\t\tconst pageContent = document.getElementById('page-' + i + '-content');\r\n\t\t\t\t\t\t\t\t\t\tif (pageContent) {\r\n\t\t\t\t\t\t\t\t\t\t\tpageContent.classList.add('hidden');\r\n\t\t\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t// Show selected page content\r\n\t\t\t\t\t\t\t\t\tconst selectedContent = document.getElementById('page-' + pageNum + '-content');\r\n\t\t\t\t\t\t\t\t\tif (selectedContent) {\r\n\t\t\t\t\t\t\t\t\t\tselectedContent.classList.remove('hidden');\r\n\t\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t// Update background color\r\n\t\t\t\t\t\t\t\t\tcontentDiv.className = 'mb-6 p-6 rounded-lg border-2 min-h-[200px] bg-gradient-to-br ' + pageColors[pageNum - 1];\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t// Update pagination controls\r\n\t\t\t\t\t\t\t\t\tupdatePaginationControls(pageNum);\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\tfunction updatePaginationControls(currentPage) {\r\n\t\t\t\t\t\t\t\t\tconst container = document.getElementById('pagination-controls');\r\n\t\t\t\t\t\t\t\t\tcontainer.innerHTML = '';\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t// Create new pagination\r\n\t\t\t\t\t\t\t\t\tconst nav = document.createElement('nav');\r\n\t\t\t\t\t\t\t\t\tnav.className = 'flex items-center gap-1';\r\n\t\t\t\t\t\t\t\t\tnav.setAttribute('aria-label', 'Pagination');\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t// Previous button\r\n\t\t\t\t\t\t\t\t\tconst prevBtn = createPaginationItem('←', currentPage - 1, currentPage === 1, currentPage === 1);\r\n\t\t\t\t\t\t\t\t\tnav.appendChild(prevBtn);\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t// Page numbers\r\n\t\t\t\t\t\t\t\t\tfor (let i = 1; i <= 5; i++) {\r\n\t\t\t\t\t\t\t\t\t\tconst pageBtn = createPaginationItem(i.toString(), i, false, i === currentPage);\r\n\t\t\t\t\t\t\t\t\t\tnav.appendChild(pageBtn);\r\n\t\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t// Next button\r\n\t\t\t\t\t\t\t\t\tconst nextBtn = createPaginationItem('→', currentPage + 1, currentPage === 5, currentPage === 5);\r\n\t\t\t\t\t\t\t\t\tnav.appendChild(nextBtn);\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\tcontainer.appendChild(nav);\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\tfunction createPaginationItem(text, pageNum, isDisabled, isActive) {\r\n\t\t\t\t\t\t\t\t\tif (isDisabled) {\r\n\t\t\t\t\t\t\t\t\t\tconst span = document.createElement('span');\r\n\t\t\t\t\t\t\t\t\t\tspan.className = 'inline-flex items-center justify-center border transition-colors px-3 py-2 text-base min-w-[2.5rem] bg-gray-100 text-gray-400 cursor-not-allowed border-gray-200';\r\n\t\t\t\t\t\t\t\t\t\tspan.textContent = text;\r\n\t\t\t\t\t\t\t\t\t\treturn span;\r\n\t\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\tif (isActive) {\r\n\t\t\t\t\t\t\t\t\t\tconst span = document.createElement('span');\r\n\t\t\t\t\t\t\t\t\t\tspan.className = 'inline-flex items-center justify-center border transition-colors px-3 py-2 text-base min-w-[2.5rem] bg-primary text-white border-primary';\r\n\t\t\t\t\t\t\t\t\t\tspan.setAttribute('aria-current', 'page');\r\n\t\t\t\t\t\t\t\t\t\tspan.textContent = text;\r\n\t\t\t\t\t\t\t\t\t\treturn span;\r\n\t\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\tconst a = document.createElement('a');\r\n\t\t\t\t\t\t\t\t\ta.href = 'javascript:void(0)';\r\n\t\t\t\t\t\t\t\t\ta.className = 'inline-flex items-center justify-center border transition-colors px-3 py-2 text-base min-w-[2.5rem] bg-white text-primary border-gray-300 hover:bg-primary-light hover:border-primary';\r\n\t\t\t\t\t\t\t\t\ta.textContent = text;\r\n\t\t\t\t\t\t\t\t\ta.onclick = function(e) {\r\n\t\t\t\t\t\t\t\t\t\te.preventDefault();\r\n\t\t\t\t\t\t\t\t\t\tshowPage(pageNum);\r\n\t\t\t\t\t\t\t\t\t};\r\n\t\t\t\t\t\t\t\t\treturn a;\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t// Initialize - show page 1\r\n\t\t\t\t\t\t\t\tshowPage(1);\r\n\t\t\t\t\t\t\t})();\r\n\t\t\t\t\t\t</script></div></section><footer class=\"mt-8 text-center text-gray-600 pb-8\"><p>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var67 string
+		templ_7745c5c3_Var67, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "footer.text"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 1066, Col: 31}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var67))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 102, "</p></footer></div></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
