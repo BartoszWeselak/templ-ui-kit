@@ -1,11 +1,8 @@
 package components
 
-import (
-	"fmt"
-)
-
 type InputSize string
 type InputVariant string
+type InputType string
 
 const (
 	// Sizes
@@ -17,143 +14,137 @@ const (
 	InputVariantDefault InputVariant = "default"
 	InputVariantError   InputVariant = "error"
 	InputVariantSuccess InputVariant = "success"
+
+	// Types
+	InputTypeText     InputType = "text"
+	InputTypeEmail    InputType = "email"
+	InputTypePassword InputType = "password"
+	InputTypeNumber   InputType = "number"
+	InputTypeUrl      InputType = "url"
+	InputTypeTel      InputType = "tel"
+	InputTypeDate     InputType = "date"
+	InputTypeTime     InputType = "time"
+	InputTypeSearch   InputType = "search"
 )
 
 type FormInputProps struct {
-	Name         string
-	Type         string
-	Placeholder  string
-	Label        string
-	Value        string
-	Required     bool
-	Disabled     bool
-	Readonly     bool
-	Size         InputSize
-	Variant      InputVariant
-	ClassName    string
-	ErrorMsg     string
-	HelpText     string
+	// Core properties
+	Name        string
+	Type        string
+	Placeholder string
+	Label       string
+	Value       string
+	ClassName   string
+	
+	// Validation
+	Required  bool
+	Pattern   string
+	MinLength int
+	MaxLength int
+	Min       string
+	Max       string
+	Step      string
+	
+	// State
+	Disabled bool
+	Readonly bool
+	
+	// Styling
+	Size    InputSize
+	Variant InputVariant
+	
+	// Messages
+	ErrorMsg string
+	HelpText string
+	
+	// Behavior
 	Autocomplete string
-	Pattern      string
-	MinLength    int
-	MaxLength    int
-	Min          string
-	Max          string
-	Step         string
+	AriaLabel    string
+	AriaDescribedBy string
+	
+	// HTMX integration
+	Htmx *HtmxAttrs
 }
 
-func getFormInputClasses(props FormInputProps) string {
-	// Defaults
-	if props.Size == "" {
-		props.Size = InputSizeMedium
+func (p FormInputProps) GetSize() InputSize {
+	if p.Size == "" {
+		return InputSizeMedium
 	}
-	if props.Variant == "" {
-		props.Variant = InputVariantDefault
-	}
-	if props.Type == "" {
-		props.Type = "text"
-	}
-
-	baseClasses := "w-full border rounded-md focus:outline-none focus:ring-2 transition-colors"
-
-	// Size classes
-	sizeClasses := ""
-	switch props.Size {
-	case InputSizeSmall:
-		sizeClasses = "px-3 py-1 text-sm"
-	case InputSizeMedium:
-		sizeClasses = "px-4 py-2 text-base"
-	case InputSizeLarge:
-		sizeClasses = "px-5 py-3 text-lg"
-	default:
-		sizeClasses = "px-4 py-2 text-base"
-	}
-
-	// Variant classes - używamy theme.css
-	variantClasses := ""
-	switch props.Variant {
-	case InputVariantDefault:
-		variantClasses = "border-gray-300 focus:ring-primary focus:border-primary"
-	case InputVariantError:
-		variantClasses = "border-danger focus:ring-danger focus:border-danger"
-	case InputVariantSuccess:
-		variantClasses = "border-success focus:ring-success focus:border-success"
-	default:
-		variantClasses = "border-gray-300 focus:ring-primary focus:border-primary"
-	}
-
-	// State classes
-	stateClasses := ""
-	if props.Disabled {
-		stateClasses = "bg-gray-100 cursor-not-allowed opacity-60"
-	} else if props.Readonly {
-		stateClasses = "bg-gray-50 cursor-default"
-	}
-
-	return fmt.Sprintf("%s %s %s %s %s",
-		baseClasses,
-		sizeClasses,
-		variantClasses,
-		stateClasses,
-		props.ClassName,
-	)
+	return p.Size
 }
 
-func getFormInputLabelClasses(size InputSize) string {
-	baseClasses := "block text-gray-700 font-medium mb-2"
-
-	switch size {
-	case InputSizeSmall:
-		return fmt.Sprintf("%s text-sm", baseClasses)
-	case InputSizeMedium:
-		return baseClasses
-	case InputSizeLarge:
-		return fmt.Sprintf("%s text-lg", baseClasses)
-	default:
-		return baseClasses
+func (p FormInputProps) GetVariant() InputVariant {
+	if p.Variant == "" {
+		return InputVariantDefault
 	}
+	return p.Variant
+}
+
+func (p FormInputProps) GetType() string {
+	if p.Type == "" {
+		return "text"
+	}
+	return p.Type
+}
+
+func (p FormInputProps) GetAutocomplete() string {
+	if p.Autocomplete == "" {
+		return "off"
+	}
+	return p.Autocomplete
 }
 
 templ FormInput(props FormInputProps) {
 	<div class="mb-4">
 		if props.Label != "" {
-			<label for={ props.Name } class={ getFormInputLabelClasses(props.Size) }>
+			<label
+				for={ props.Name }
+				class={
+					"block text-gray-700 font-medium mb-2",
+					templ.KV("text-sm", props.GetSize() == InputSizeSmall),
+					templ.KV("text-base", props.GetSize() == InputSizeMedium),
+					templ.KV("text-lg", props.GetSize() == InputSizeLarge),
+				}
+			>
 				{ props.Label }
 				if props.Required {
-					<span class="text-danger">*</span>
+					<span class="text-danger ml-1" aria-label="required">*</span>
 				}
 			</label>
 		}
 		<input
-			type={
-				func() string {
-					if props.Type != "" {
-						return props.Type
-					}
-					return "text"
-				}()
-			}
+			type={ props.GetType() }
 			id={ props.Name }
 			name={ props.Name }
 			placeholder={ props.Placeholder }
 			value={ props.Value }
-			class={ getFormInputClasses(props) }
-			autocomplete={
-				func() string {
-					if props.Autocomplete != "" {
-						return props.Autocomplete
-					}
-					return "off"
-				}()
+			autocomplete={ props.GetAutocomplete() }
+			class={
+				"w-full border rounded-md focus:outline-none focus:ring-2 transition-colors",
+				// Sizes
+				templ.KV("px-3 py-1 text-sm", props.GetSize() == InputSizeSmall),
+				templ.KV("px-4 py-2 text-base", props.GetSize() == InputSizeMedium),
+				templ.KV("px-5 py-3 text-lg", props.GetSize() == InputSizeLarge),
+				// Variants
+				templ.KV("border-gray-300 focus:ring-primary focus:border-primary", props.GetVariant() == InputVariantDefault),
+				templ.KV("border-danger focus:ring-danger focus:border-danger", props.GetVariant() == InputVariantError),
+				templ.KV("border-success focus:ring-success focus:border-success", props.GetVariant() == InputVariantSuccess),
+				// States
+				templ.KV("bg-gray-100 cursor-not-allowed opacity-60", props.Disabled),
+				templ.KV("bg-gray-50 cursor-default", props.Readonly && !props.Disabled),
+				// HTMX loading indicator
+				templ.KV("htmx-request", props.Htmx != nil),
+				// Custom classes
+				props.ClassName,
 			}
 			if props.Pattern != "" {
 				pattern={ props.Pattern }
 			}
 			if props.MinLength > 0 {
-				minlength={ fmt.Sprintf("%d", props.MinLength) }
+				minlength={ templ.JSONString(props.MinLength) }
 			}
 			if props.MaxLength > 0 {
-				maxlength={ fmt.Sprintf("%d", props.MaxLength) }
+				maxlength={ templ.JSONString(props.MaxLength) }
 			}
 			if props.Min != "" {
 				min={ props.Min }
@@ -173,14 +164,66 @@ templ FormInput(props FormInputProps) {
 			if props.Readonly {
 				readonly
 			}
+			if props.AriaLabel != "" {
+				aria-label={ props.AriaLabel }
+			}
+			if props.AriaDescribedBy != "" {
+				aria-describedby={ props.AriaDescribedBy }
+			} else if props.ErrorMsg != "" {
+				aria-describedby={ props.Name + "-error" }
+			} else if props.HelpText != "" {
+				aria-describedby={ props.Name + "-help" }
+			}
+			if props.ErrorMsg != "" {
+				aria-invalid="true"
+			}
+			if props.Htmx != nil && props.Htmx.Get != "" {
+				hx-get={ props.Htmx.Get }
+			}
+			if props.Htmx != nil && props.Htmx.Post != "" {
+				hx-post={ props.Htmx.Post }
+			}
+			if props.Htmx != nil && props.Htmx.Put != "" {
+				hx-put={ props.Htmx.Put }
+			}
+			if props.Htmx != nil && props.Htmx.Patch != "" {
+				hx-patch={ props.Htmx.Patch }
+			}
+			if props.Htmx != nil && props.Htmx.Delete != "" {
+				hx-delete={ props.Htmx.Delete }
+			}
+			if props.Htmx != nil && props.Htmx.Target != "" {
+				hx-target={ props.Htmx.Target }
+			}
+			if props.Htmx != nil && props.Htmx.Swap != "" {
+				hx-swap={ props.Htmx.Swap }
+			}
+			if props.Htmx != nil && props.Htmx.Trigger != "" {
+				hx-trigger={ props.Htmx.Trigger }
+			}
+			if props.Htmx != nil && props.Htmx.Confirm != "" {
+				hx-confirm={ props.Htmx.Confirm }
+			}
+			if props.Htmx != nil && props.Htmx.Indicator != "" {
+				hx-indicator={ props.Htmx.Indicator }
+			}
+			if props.Htmx != nil && props.Htmx.Vals != "" {
+				hx-vals={ props.Htmx.Vals }
+			}
+			if props.Htmx != nil && props.Htmx.Headers != "" {
+				hx-headers={ props.Htmx.Headers }
+			}
+			if props.Htmx != nil && props.Htmx.Include != "" {
+				hx-include={ props.Htmx.Include }
+			}
 		/>
 		if props.ErrorMsg != "" {
-			<p class="mt-1 text-sm text-danger-dark">
+			<p id={ props.Name + "-error" } class="mt-1 text-sm text-danger-dark" role="alert">
 				{ props.ErrorMsg }
 			</p>
 		}
 		if props.HelpText != "" && props.ErrorMsg == "" {
-			<p class="mt-1 text-sm text-secondary">
+			<p id={ props.Name + "-help" } class="mt-1 text-sm text-secondary">
 				{ props.HelpText }
 			</p>
 		}

@@ -1,112 +1,108 @@
 package components
 
-import "fmt"
-
 type SelectOption struct {
 	Value string
 	Label string
 }
 
 type FormSelectProps struct {
-	Name         string
-	Label        string
-	Options      []SelectOption
-	Selected     string
-	Placeholder  string
-	Required     bool
-	Disabled     bool
-	Size         InputSize
-	Variant      InputVariant
-	ClassName    string
-	ErrorMsg     string
-	HelpText     string
-	Autocomplete string 
+	// Core properties
+	Name        string
+	Label       string
+	Options     []SelectOption
+	Selected    string
+	Placeholder string
+	ClassName   string
+	
+	// Validation
+	Required bool
+	
+	// State
+	Disabled bool
+	
+	// Styling
+	Size    InputSize
+	Variant InputVariant
+	
+	// Messages
+	ErrorMsg string
+	HelpText string
+	
+	// Behavior
+	Autocomplete    string
+	AriaLabel       string
+	AriaDescribedBy string
+	
+	// HTMX integration
+	Htmx *HtmxAttrs
 }
 
-func getSelectClasses(props FormSelectProps) string {
-	if props.Size == "" {
-		props.Size = InputSizeMedium
+func (p FormSelectProps) GetSize() InputSize {
+	if p.Size == "" {
+		return InputSizeMedium
 	}
-	if props.Variant == "" {
-		props.Variant = InputVariantDefault
-	}
-
-	baseClasses := "w-full border rounded-md focus:outline-none focus:ring-2 transition-colors bg-white"
-
-	sizeClasses := ""
-	switch props.Size {
-	case InputSizeSmall:
-		sizeClasses = "px-3 py-1 text-sm"
-	case InputSizeMedium:
-		sizeClasses = "px-4 py-2 text-base"
-	case InputSizeLarge:
-		sizeClasses = "px-5 py-3 text-lg"
-	default:
-		sizeClasses = "px-4 py-2 text-base"
-	}
-
-	variantClasses := ""
-	switch props.Variant {
-	case InputVariantDefault:
-		variantClasses = "border-gray-300 focus:ring-primary focus:border-primary"
-	case InputVariantError:
-		variantClasses = "border-danger focus:ring-danger focus:border-danger"
-	case InputVariantSuccess:
-		variantClasses = "border-success focus:ring-success focus:border-success"
-	default:
-		variantClasses = "border-gray-300 focus:ring-primary focus:border-primary"
-	}
-
-	disabledClasses := ""
-	if props.Disabled {
-		disabledClasses = "bg-gray-100 cursor-not-allowed opacity-60"
-	}
-
-	return fmt.Sprintf("%s %s %s %s %s",
-		baseClasses,
-		sizeClasses,
-		variantClasses,
-		disabledClasses,
-		props.ClassName,
-	)
+	return p.Size
 }
 
-func getSelectLabelClasses(size InputSize) string {
-	baseClasses := "block text-gray-700 font-medium mb-2"
-
-	switch size {
-	case InputSizeSmall:
-		return fmt.Sprintf("%s text-sm", baseClasses)
-	case InputSizeMedium:
-		return baseClasses
-	case InputSizeLarge:
-		return fmt.Sprintf("%s text-lg", baseClasses)
-	default:
-		return baseClasses
+func (p FormSelectProps) GetVariant() InputVariant {
+	if p.Variant == "" {
+		return InputVariantDefault
 	}
+	return p.Variant
+}
+
+func (p FormSelectProps) GetAutocomplete() string {
+	if p.Autocomplete == "" {
+		return "off"
+	}
+	return p.Autocomplete
+}
+
+func (p FormSelectProps) GetPlaceholder() string {
+	if p.Placeholder == "" {
+		return "Wybierz..."
+	}
+	return p.Placeholder
 }
 
 templ FormSelect(props FormSelectProps) {
 	<div class="mb-4">
 		if props.Label != "" {
-			<label for={ props.Name } class={ getSelectLabelClasses(props.Size) }>
+			<label
+				for={ props.Name }
+				class={
+					"block text-gray-700 font-medium mb-2",
+					templ.KV("text-sm", props.GetSize() == InputSizeSmall),
+					templ.KV("text-base", props.GetSize() == InputSizeMedium),
+					templ.KV("text-lg", props.GetSize() == InputSizeLarge),
+				}
+			>
 				{ props.Label }
 				if props.Required {
-					<span class="text-danger">*</span>
+					<span class="text-danger ml-1" aria-label="required">*</span>
 				}
 			</label>
 		}
 		<select
 			id={ props.Name }
 			name={ props.Name }
-			class={ getSelectClasses(props) }
-			autocomplete={
-				func() string {
-					if props.Autocomplete != "" {
-						return props.Autocomplete
-					}
-					return "off"
-				}()
+			autocomplete={ props.GetAutocomplete() }
+			class={
+				"w-full border rounded-md focus:outline-none focus:ring-2 transition-colors bg-white",
+				// Sizes
+				templ.KV("px-3 py-1 text-sm", props.GetSize() == InputSizeSmall),
+				templ.KV("px-4 py-2 text-base", props.GetSize() == InputSizeMedium),
+				templ.KV("px-5 py-3 text-lg", props.GetSize() == InputSizeLarge),
+				// Variants
+				templ.KV("border-gray-300 focus:ring-primary focus:border-primary", props.GetVariant() == InputVariantDefault),
+				templ.KV("border-danger focus:ring-danger focus:border-danger", props.GetVariant() == InputVariantError),
+				templ.KV("border-success focus:ring-success focus:border-success", props.GetVariant() == InputVariantSuccess),
+				// States
+				templ.KV("bg-gray-100 cursor-not-allowed opacity-60", props.Disabled),
+				// HTMX loading indicator
+				templ.KV("htmx-request", props.Htmx != nil),
+				// Custom classes
+				props.ClassName,
 			}
 			if props.Required {
 				required
@@ -114,14 +110,60 @@ templ FormSelect(props FormSelectProps) {
 			if props.Disabled {
 				disabled
 			}
+			if props.AriaLabel != "" {
+				aria-label={ props.AriaLabel }
+			}
+			if props.AriaDescribedBy != "" {
+				aria-describedby={ props.AriaDescribedBy }
+			} else if props.ErrorMsg != "" {
+				aria-describedby={ props.Name + "-error" }
+			} else if props.HelpText != "" {
+				aria-describedby={ props.Name + "-help" }
+			}
+			if props.ErrorMsg != "" {
+				aria-invalid="true"
+			}
+			if props.Htmx != nil && props.Htmx.Get != "" {
+				hx-get={ props.Htmx.Get }
+			}
+			if props.Htmx != nil && props.Htmx.Post != "" {
+				hx-post={ props.Htmx.Post }
+			}
+			if props.Htmx != nil && props.Htmx.Put != "" {
+				hx-put={ props.Htmx.Put }
+			}
+			if props.Htmx != nil && props.Htmx.Patch != "" {
+				hx-patch={ props.Htmx.Patch }
+			}
+			if props.Htmx != nil && props.Htmx.Delete != "" {
+				hx-delete={ props.Htmx.Delete }
+			}
+			if props.Htmx != nil && props.Htmx.Target != "" {
+				hx-target={ props.Htmx.Target }
+			}
+			if props.Htmx != nil && props.Htmx.Swap != "" {
+				hx-swap={ props.Htmx.Swap }
+			}
+			if props.Htmx != nil && props.Htmx.Trigger != "" {
+				hx-trigger={ props.Htmx.Trigger }
+			}
+			if props.Htmx != nil && props.Htmx.Confirm != "" {
+				hx-confirm={ props.Htmx.Confirm }
+			}
+			if props.Htmx != nil && props.Htmx.Indicator != "" {
+				hx-indicator={ props.Htmx.Indicator }
+			}
+			if props.Htmx != nil && props.Htmx.Vals != "" {
+				hx-vals={ props.Htmx.Vals }
+			}
+			if props.Htmx != nil && props.Htmx.Headers != "" {
+				hx-headers={ props.Htmx.Headers }
+			}
+			if props.Htmx != nil && props.Htmx.Include != "" {
+				hx-include={ props.Htmx.Include }
+			}
 		>
-			<option value="">
-				if props.Placeholder != "" {
-					{ props.Placeholder }
-				} else {
-					Wybierz...
-				}
-			</option>
+			<option value="">{ props.GetPlaceholder() }</option>
 			for _, option := range props.Options {
 				<option
 					value={ option.Value }
@@ -134,12 +176,12 @@ templ FormSelect(props FormSelectProps) {
 			}
 		</select>
 		if props.ErrorMsg != "" {
-			<p class="mt-1 text-sm text-danger-dark">
+			<p id={ props.Name + "-error" } class="mt-1 text-sm text-danger-dark" role="alert">
 				{ props.ErrorMsg }
 			</p>
 		}
 		if props.HelpText != "" && props.ErrorMsg == "" {
-			<p class="mt-1 text-sm text-secondary">
+			<p id={ props.Name + "-help" } class="mt-1 text-sm text-secondary">
 				{ props.HelpText }
 			</p>
 		}
