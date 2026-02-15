@@ -1,9 +1,5 @@
 package components
 
-import (
-	"fmt"
-)
-
 type CardVariant string
 type CardSize string
 type CardShadow string
@@ -36,6 +32,7 @@ const (
 )
 
 type CardProps struct {
+	// Core properties
 	Title        string
 	Content      string
 	Variant      CardVariant
@@ -43,118 +40,204 @@ type CardProps struct {
 	Shadow       CardShadow
 	BorderRadius CardBorderRadius
 	ClassName    string
-	Header       templ.Component // Custom header content
-	Footer       templ.Component // Custom footer content
-	Image        string          // Image URL
-	ImageAlt     string          // Image alt text
+	
+	// Custom components
+	Header       templ.Component
+	Footer       templ.Component
+	
+	// Image properties
+	Image        string
+	ImageAlt     string
+	
+	// Behavior
+	Clickable    bool
+	Href         string
+	Horizontal   bool
+	
+	// HTMX integration
+	Htmx         *HtmxAttrs
 }
 
-func getCardVariantClasses(variant CardVariant) string {
-	// Klasy z theme.css
-	switch variant {
-	case CardVariantGray:
-		return "bg-secondary-light"
-	case CardVariantWhite:
-		return "bg-white"
-	case CardVariantBlue:
-		return "bg-primary-light"
-	default:
-		return "bg-white"
+func (p CardProps) GetVariant() CardVariant {
+	if p.Variant == "" {
+		return CardVariantWhite
 	}
+	return p.Variant
 }
 
-func getCardShadowClasses(shadow CardShadow) string {
-	switch shadow {
-	case ShadowNone:
-		return "shadow-none"
-	case ShadowSmall:
-		return "shadow-sm"
-	case ShadowMedium:
-		return "shadow-md"
-	case ShadowLarge:
-		return "shadow-lg"
-	default:
-		return "shadow-md"
+func (p CardProps) GetSize() CardSize {
+	if p.Size == "" {
+		return CardSizeMedium
 	}
+	return p.Size
 }
 
-func getCardRadiusClasses(radius CardBorderRadius) string {
-	// Klasy z theme.css
-	switch radius {
-	case RadiusNone:
-		return "rounded-none"
-	case RadiusSmall:
-		return "rounded-sm"
-	case RadiusMedium:
-		return "rounded-md"
-	case RadiusLarge:
-		return "rounded-lg"
-	default:
-		return "rounded-lg"
+func (p CardProps) GetShadow() CardShadow {
+	if p.Shadow == "" {
+		return ShadowMedium
 	}
+	return p.Shadow
 }
 
-func getCardClasses(props CardProps) string {
-	if props.Variant == "" {
-		props.Variant = CardVariantWhite
+func (p CardProps) GetBorderRadius() CardBorderRadius {
+	if p.BorderRadius == "" {
+		return RadiusLarge
 	}
-	if props.Size == "" {
-		props.Size = CardSizeMedium
-	}
-	if props.Shadow == "" {
-		props.Shadow = ShadowMedium
-	}
-	if props.BorderRadius == "" {
-		props.BorderRadius = RadiusLarge
-	}
-
-	// Klasy z theme.css
-	baseClasses := "card-padding border-primary hover:shadow-lg transition-shadow border"
-
-	variantClasses := getCardVariantClasses(props.Variant)
-	shadowClasses := getCardShadowClasses(props.Shadow)
-	radiusClasses := getCardRadiusClasses(props.BorderRadius)
-
-	sizeClasses := ""
-	switch props.Size {
-	case CardSizeSmall:
-		sizeClasses = "w-48 h-48"
-	case CardSizeMedium:
-		sizeClasses = "w-96 h-96"
-	case CardSizeLarge:
-		sizeClasses = "w-full h-auto"
-	case CardSizeFull:
-		sizeClasses = "w-full"
-	case CardSizeHalf:
-		sizeClasses = "w-1/2"
-	}
-
-	return fmt.Sprintf("%s %s %s %s %s %s",
-		baseClasses,
-		variantClasses,
-		sizeClasses,
-		shadowClasses,
-		radiusClasses,
-		props.ClassName,
-	)
+	return p.BorderRadius
 }
 
 templ Card(props CardProps) {
-	<div class={ getCardClasses(props) }>
-		if props.Image != "" {
-			<img
-				src={ props.Image }
-				alt={ props.ImageAlt }
-				class="w-full h-48 object-cover -mt-6 -mx-6 mb-4 rounded-t-lg"
-			/>
+	if props.Clickable && props.Href != "" {
+		<a 
+			href={ templ.SafeURL(props.Href) }
+			class={
+				"block transition-all duration-200",
+				"hover:scale-105",
+			}
+		>
+			@CardContent(props)
+		</a>
+	} else {
+		@CardContent(props)
+	}
+}
+
+templ CardContent(props CardProps) {
+	<div
+		class={
+			"card-padding border-primary border transition-shadow",
+			templ.KV("flex flex-row items-center gap-4", props.Horizontal),
+			// Variants
+			templ.KV("bg-secondary-light", props.GetVariant() == CardVariantGray),
+			templ.KV("bg-white", props.GetVariant() == CardVariantWhite),
+			templ.KV("bg-primary-light", props.GetVariant() == CardVariantBlue),
+			// Sizes
+			templ.KV("w-48 h-48", props.GetSize() == CardSizeSmall),
+			templ.KV("w-96 h-96", props.GetSize() == CardSizeMedium),
+			templ.KV("w-full h-auto", props.GetSize() == CardSizeLarge),
+			templ.KV("w-full", props.GetSize() == CardSizeFull),
+			templ.KV("w-1/2", props.GetSize() == CardSizeHalf),
+			// Shadows
+			templ.KV("shadow-none hover:shadow-md", props.GetShadow() == ShadowNone),
+			templ.KV("shadow-sm hover:shadow-lg", props.GetShadow() == ShadowSmall),
+			templ.KV("shadow-md hover:shadow-lg", props.GetShadow() == ShadowMedium),
+			templ.KV("shadow-lg hover:shadow-xl", props.GetShadow() == ShadowLarge),
+			// Border Radius
+			templ.KV("rounded-none", props.GetBorderRadius() == RadiusNone),
+			templ.KV("rounded-sm", props.GetBorderRadius() == RadiusSmall),
+			templ.KV("rounded-md", props.GetBorderRadius() == RadiusMedium),
+			templ.KV("rounded-lg", props.GetBorderRadius() == RadiusLarge),
+			// HTMX loading indicator
+			templ.KV("htmx-request", props.Htmx != nil),
+			// Custom classes
+			props.ClassName,
 		}
+		if props.Htmx != nil {
+			if props.Htmx.Get != "" {
+				hx-get={ props.Htmx.Get }
+			}
+			if props.Htmx.Post != "" {
+				hx-post={ props.Htmx.Post }
+			}
+			if props.Htmx.Put != "" {
+				hx-put={ props.Htmx.Put }
+			}
+			if props.Htmx.Patch != "" {
+				hx-patch={ props.Htmx.Patch }
+			}
+			if props.Htmx.Delete != "" {
+				hx-delete={ props.Htmx.Delete }
+			}
+			if props.Htmx.Target != "" {
+				hx-target={ props.Htmx.Target }
+			}
+			if props.Htmx.Swap != "" {
+				hx-swap={ props.Htmx.Swap }
+			}
+			if props.Htmx.Trigger != "" {
+				hx-trigger={ props.Htmx.Trigger }
+			}
+			if props.Htmx.Confirm != "" {
+				hx-confirm={ props.Htmx.Confirm }
+			}
+			if props.Htmx.Indicator != "" {
+				hx-indicator={ props.Htmx.Indicator }
+			}
+			if props.Htmx.Vals != "" {
+				hx-vals={ props.Htmx.Vals }
+			}
+			if props.Htmx.Headers != "" {
+				hx-headers={ props.Htmx.Headers }
+			}
+			if props.Htmx.PushUrl != "" {
+				hx-push-url={ props.Htmx.PushUrl }
+			}
+			if props.Htmx.Select != "" {
+				hx-select={ props.Htmx.Select }
+			}
+			if props.Htmx.SwapOob != "" {
+				hx-swap-oob={ props.Htmx.SwapOob }
+			}
+			if props.Htmx.Include != "" {
+				hx-include={ props.Htmx.Include }
+			}
+		}
+	>
+		if props.Horizontal {
+			@HorizontalCardLayout(props)
+		} else {
+			@VerticalCardLayout(props)
+		}
+	</div>
+}
+
+templ VerticalCardLayout(props CardProps) {
+	if props.Image != "" {
+		<img
+			src={ props.Image }
+			alt={ props.ImageAlt }
+			class="w-full h-48 object-cover -mt-6 -mx-6 mb-4 rounded-t-lg"
+		/>
+	}
+	if props.Header != nil {
+		<div class="mb-4">
+			@props.Header
+		</div>
+	}
+	if props.Title != "" {
+		<h3 class="text-xl font-bold mb-3 text-primary-dark">
+			{ props.Title }
+		</h3>
+	}
+	if props.Content != "" {
+		<p class="text-secondary">
+			{ props.Content }
+		</p>
+	}
+	{ children... }
+	if props.Footer != nil {
+		<div class="mt-4 pt-4 border-t border-secondary-light">
+			@props.Footer
+		</div>
+	}
+}
+
+templ HorizontalCardLayout(props CardProps) {
+	if props.Image != "" {
+		<img
+			src={ props.Image }
+			alt={ props.ImageAlt }
+			class="w-32 h-32 object-cover rounded-lg flex-shrink-0"
+		/>
+	}
+	<div class="flex-1">
 		if props.Header != nil {
 			<div class="mb-4">
 				@props.Header
 			</div>
 		}
 		if props.Title != "" {
-			<h3 class="text-xl font-bold mb-3 text-primary-dark">
+			<h3 class="text-xl font-bold mb-2 text-primary-dark">
 				{ props.Title }
 			</h3>
 		}
@@ -172,6 +255,7 @@ templ Card(props CardProps) {
 	</div>
 }
 
+// Helper components
 templ CardHeader() {
 	<div class="flex justify-between items-start mb-4">
 		{ children... }
@@ -213,38 +297,5 @@ templ CardImage(src, alt string) {
 templ CardActions() {
 	<div class="flex gap-2 mt-4">
 		{ children... }
-	</div>
-}
-
-templ ClickableCard(props CardProps, href string) {
-	<a href={ templ.SafeURL(href) } class="block hover:scale-105 transition-transform">
-		@Card(props) {
-			{ children... }
-		}
-	</a>
-}
-
-templ HorizontalCard(props CardProps) {
-	<div class={ getCardClasses(props) + " flex flex-row items-center gap-4" }>
-		if props.Image != "" {
-			<img
-				src={ props.Image }
-				alt={ props.ImageAlt }
-				class="w-32 h-32 object-cover rounded-lg flex-shrink-0"
-			/>
-		}
-		<div class="flex-1">
-			if props.Title != "" {
-				<h3 class="text-xl font-bold mb-2 text-primary-dark">
-					{ props.Title }
-				</h3>
-			}
-			if props.Content != "" {
-				<p class="text-secondary">
-					{ props.Content }
-				</p>
-			}
-			{ children... }
-		</div>
 	</div>
 }
