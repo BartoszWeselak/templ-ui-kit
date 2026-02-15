@@ -1,11 +1,8 @@
 package components
 
-import (
-	"fmt"
-)
-
 type NotificationType string
 type NotificationPosition string
+type NotificationSize string
 
 const (
 	// Types
@@ -21,127 +18,196 @@ const (
 	PositionBottomRight  NotificationPosition = "bottom-right"
 	PositionBottomLeft   NotificationPosition = "bottom-left"
 	PositionBottomCenter NotificationPosition = "bottom-center"
+
+	// Sizes
+	NotificationSizeSmall  NotificationSize = "small"
+	NotificationSizeMedium NotificationSize = "medium"
+	NotificationSizeLarge  NotificationSize = "large"
 )
 
 type NotificationProps struct {
+	// Core properties
 	Title       string
 	Message     string
 	Type        NotificationType
 	Position    NotificationPosition
-	Dismissible bool
-	Duration    int // w sekundach, 0 = nie znika automatycznie
-	OnClose     templ.ComponentScript
+	Size        NotificationSize
 	ClassName   string
+	
+	// Behavior
+	Dismissible bool
+	Duration    int    // w sekundach, 0 = nie znika automatycznie
+	ShowIcon    bool
+	Inline      bool   // inline vs fixed position
+	OnClose     templ.ComponentScript
+	AriaLive    string // "polite", "assertive", "off"
+	
+	// HTMX integration
+	Htmx *HtmxAttrs
 }
 
-func getNotificationClasses(props NotificationProps) string {
-	if props.Type == "" {
-		props.Type = NotificationInfo
+func (p NotificationProps) GetType() NotificationType {
+	if p.Type == "" {
+		return NotificationInfo
 	}
-
-	// Klasy z theme.css: bg-*-light, border-*-light, text-*-dark
-	colorClasses := ""
-	switch props.Type {
-	case NotificationSuccess:
-		colorClasses = "bg-success-light border-success-light text-success-dark"
-	case NotificationError:
-		colorClasses = "bg-danger-light border-danger-light text-danger-dark"
-	case NotificationWarning:
-		colorClasses = "bg-warning-light border-warning-light text-warning-dark"
-	case NotificationInfo:
-		colorClasses = "bg-primary-light border-primary-light text-primary-dark"
-	default:
-		colorClasses = "bg-primary-light border-primary-light text-primary-dark"
-	}
-
-	return fmt.Sprintf("flex items-start gap-3 p-4 rounded-lg shadow-lg border max-w-md w-full transition-all duration-300 %s %s",
-		colorClasses,
-		props.ClassName,
-	)
+	return p.Type
 }
 
-func getNotificationPositionClasses(position NotificationPosition) string {
-	if position == "" {
-		position = PositionTopRight
+func (p NotificationProps) GetPosition() NotificationPosition {
+	if p.Position == "" {
+		return PositionTopRight
 	}
-
-	switch position {
-	case PositionTopRight:
-		return "fixed top-4 right-4 z-50"
-	case PositionTopLeft:
-		return "fixed top-4 left-4 z-50"
-	case PositionTopCenter:
-		return "fixed top-4 left-1/2 transform -translate-x-1/2 z-50"
-	case PositionBottomRight:
-		return "fixed bottom-4 right-4 z-50"
-	case PositionBottomLeft:
-		return "fixed bottom-4 left-4 z-50"
-	case PositionBottomCenter:
-		return "fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50"
-	default:
-		return "fixed top-4 right-4 z-50"
-	}
+	return p.Position
 }
 
-func getNotificationIconClass(notifType NotificationType) string {
-	// Klasy z theme.css: text-success, text-danger, text-warning, text-primary
-	switch notifType {
-	case NotificationSuccess:
-		return "text-success"
-	case NotificationError:
-		return "text-danger"
-	case NotificationWarning:
-		return "text-warning"
-	case NotificationInfo:
-		return "text-primary"
-	default:
-		return "text-primary"
+func (p NotificationProps) GetSize() NotificationSize {
+	if p.Size == "" {
+		return NotificationSizeMedium
 	}
+	return p.Size
 }
 
-templ NotificationIcon(notifType NotificationType) {
-	<div class={ fmt.Sprintf("flex-shrink-0 %s", getNotificationIconClass(notifType)) }>
-		if notifType == NotificationSuccess {
-			<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+func (p NotificationProps) GetAriaLive() string {
+	if p.AriaLive == "" {
+		return "polite"
+	}
+	return p.AriaLive
+}
+
+templ NotificationIcon(props NotificationProps) {
+	<div
+		class={
+			"flex-shrink-0",
+			// Icon colors
+			templ.KV("text-success", props.GetType() == NotificationSuccess),
+			templ.KV("text-danger", props.GetType() == NotificationError),
+			templ.KV("text-warning", props.GetType() == NotificationWarning),
+			templ.KV("text-primary", props.GetType() == NotificationInfo),
+		}
+	>
+		if props.GetType() == NotificationSuccess {
+			<svg
+				class={
+					templ.KV("w-5 h-5", props.GetSize() == NotificationSizeSmall),
+					templ.KV("w-6 h-6", props.GetSize() == NotificationSizeMedium),
+					templ.KV("w-7 h-7", props.GetSize() == NotificationSizeLarge),
+				}
+				fill="none"
+				stroke="currentColor"
+				viewBox="0 0 24 24"
+				xmlns="http://www.w3.org/2000/svg"
+				aria-hidden="true"
+			>
 				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
 			</svg>
-		} else if notifType == NotificationError {
-			<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+		} else if props.GetType() == NotificationError {
+			<svg
+				class={
+					templ.KV("w-5 h-5", props.GetSize() == NotificationSizeSmall),
+					templ.KV("w-6 h-6", props.GetSize() == NotificationSizeMedium),
+					templ.KV("w-7 h-7", props.GetSize() == NotificationSizeLarge),
+				}
+				fill="none"
+				stroke="currentColor"
+				viewBox="0 0 24 24"
+				xmlns="http://www.w3.org/2000/svg"
+				aria-hidden="true"
+			>
 				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
 			</svg>
-		} else if notifType == NotificationWarning {
-			<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+		} else if props.GetType() == NotificationWarning {
+			<svg
+				class={
+					templ.KV("w-5 h-5", props.GetSize() == NotificationSizeSmall),
+					templ.KV("w-6 h-6", props.GetSize() == NotificationSizeMedium),
+					templ.KV("w-7 h-7", props.GetSize() == NotificationSizeLarge),
+				}
+				fill="none"
+				stroke="currentColor"
+				viewBox="0 0 24 24"
+				xmlns="http://www.w3.org/2000/svg"
+				aria-hidden="true"
+			>
 				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
 			</svg>
 		} else {
-			<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+			<svg
+				class={
+					templ.KV("w-5 h-5", props.GetSize() == NotificationSizeSmall),
+					templ.KV("w-6 h-6", props.GetSize() == NotificationSizeMedium),
+					templ.KV("w-7 h-7", props.GetSize() == NotificationSizeLarge),
+				}
+				fill="none"
+				stroke="currentColor"
+				viewBox="0 0 24 24"
+				xmlns="http://www.w3.org/2000/svg"
+				aria-hidden="true"
+			>
 				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
 			</svg>
 		}
 	</div>
 }
 
-templ NotificationCloseButton(onClick templ.ComponentScript) {
+templ NotificationCloseButton(props NotificationProps) {
 	<button
 		type="button"
-		class="flex-shrink-0 ml-auto text-secondary hover:text-secondary-dark transition-colors"
-		onclick={ onClick }
+		class="flex-shrink-0 ml-auto text-secondary hover:text-secondary-dark transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-300 rounded"
+		onclick={ props.OnClose }
+		
 		aria-label="Close notification"
 	>
-		<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+		<svg
+			class={
+				templ.KV("w-4 h-4", props.GetSize() == NotificationSizeSmall),
+				templ.KV("w-5 h-5", props.GetSize() == NotificationSizeMedium),
+				templ.KV("w-6 h-6", props.GetSize() == NotificationSizeLarge),
+			}
+			fill="none"
+			stroke="currentColor"
+			viewBox="0 0 24 24"
+			xmlns="http://www.w3.org/2000/svg"
+		>
 			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
 		</svg>
 	</button>
 }
 
 templ Notification(props NotificationProps) {
-	<div class={ getNotificationPositionClasses(props.Position) }>
+	<div
+		class={
+			templ.KV("fixed z-50", !props.Inline),
+			// Positions (only for non-inline)
+			templ.KV("top-4 right-4", !props.Inline && props.GetPosition() == PositionTopRight),
+			templ.KV("top-4 left-4", !props.Inline && props.GetPosition() == PositionTopLeft),
+			templ.KV("top-4 left-1/2 transform -translate-x-1/2", !props.Inline && props.GetPosition() == PositionTopCenter),
+			templ.KV("bottom-4 right-4", !props.Inline && props.GetPosition() == PositionBottomRight),
+			templ.KV("bottom-4 left-4", !props.Inline && props.GetPosition() == PositionBottomLeft),
+			templ.KV("bottom-4 left-1/2 transform -translate-x-1/2", !props.Inline && props.GetPosition() == PositionBottomCenter),
+		}
+	>
 		<div
-			class={ getNotificationClasses(props) }
+			class={
+				"flex items-start gap-3 rounded-lg shadow-lg border max-w-md w-full transition-all duration-300",
+				// Type colors
+				templ.KV("bg-success-light border-success-light text-success-dark", props.GetType() == NotificationSuccess),
+				templ.KV("bg-danger-light border-danger-light text-danger-dark", props.GetType() == NotificationError),
+				templ.KV("bg-warning-light border-warning-light text-warning-dark", props.GetType() == NotificationWarning),
+				templ.KV("bg-primary-light border-primary-light text-primary-dark", props.GetType() == NotificationInfo),
+				// Sizes
+				templ.KV("p-2", props.GetSize() == NotificationSizeSmall),
+				templ.KV("p-4", props.GetSize() == NotificationSizeMedium),
+				templ.KV("p-6", props.GetSize() == NotificationSizeLarge),
+				// HTMX loading indicator
+				templ.KV("htmx-request", props.Htmx != nil),
+				// Custom classes
+				props.ClassName,
+			}
+			role="alert"
+			aria-live={ props.GetAriaLive() }
 			if props.Duration > 0 {
-				x-data={ fmt.Sprintf("{ show: true }") }
+				x-data="{ show: true }"
 				x-show="show"
-				x-init={ fmt.Sprintf("setTimeout(() => show = false, %d)", props.Duration*1000) }
 				x-transition:enter="transition ease-out duration-300"
 				x-transition:enter-start="opacity-0 transform scale-90"
 				x-transition:enter-end="opacity-100 transform scale-100"
@@ -149,51 +215,150 @@ templ Notification(props NotificationProps) {
 				x-transition:leave-start="opacity-100 transform scale-100"
 				x-transition:leave-end="opacity-0 transform scale-90"
 			}
+			if props.Htmx != nil {
+				if props.Htmx.Get != "" {
+					hx-get={ props.Htmx.Get }
+				}
+				if props.Htmx.Post != "" {
+					hx-post={ props.Htmx.Post }
+				}
+				if props.Htmx.Put != "" {
+					hx-put={ props.Htmx.Put }
+				}
+				if props.Htmx.Patch != "" {
+					hx-patch={ props.Htmx.Patch }
+				}
+				if props.Htmx.Delete != "" {
+					hx-delete={ props.Htmx.Delete }
+				}
+				if props.Htmx.Target != "" {
+					hx-target={ props.Htmx.Target }
+				}
+				if props.Htmx.Swap != "" {
+					hx-swap={ props.Htmx.Swap }
+				}
+				if props.Htmx.Trigger != "" {
+					hx-trigger={ props.Htmx.Trigger }
+				}
+				if props.Htmx.Confirm != "" {
+					hx-confirm={ props.Htmx.Confirm }
+				}
+				if props.Htmx.Indicator != "" {
+					hx-indicator={ props.Htmx.Indicator }
+				}
+				if props.Htmx.Vals != "" {
+					hx-vals={ props.Htmx.Vals }
+				}
+				if props.Htmx.Headers != "" {
+					hx-headers={ props.Htmx.Headers }
+				}
+				if props.Htmx.PushUrl != "" {
+					hx-push-url={ props.Htmx.PushUrl }
+				}
+				if props.Htmx.Select != "" {
+					hx-select={ props.Htmx.Select }
+				}
+				if props.Htmx.SwapOob != "" {
+					hx-swap-oob={ props.Htmx.SwapOob }
+				}
+				if props.Htmx.Include != "" {
+					hx-include={ props.Htmx.Include }
+				}
+			}
 		>
-			@NotificationIcon(props.Type)
+			if props.ShowIcon {
+				@NotificationIcon(props)
+			}
 			<div class="flex-1 min-w-0">
 				if props.Title != "" {
-					<h4 class="font-semibold text-sm mb-1">{ props.Title }</h4>
+					<h4
+						class={
+							"font-semibold mb-1",
+							templ.KV("text-xs", props.GetSize() == NotificationSizeSmall),
+							templ.KV("text-sm", props.GetSize() == NotificationSizeMedium),
+							templ.KV("text-base", props.GetSize() == NotificationSizeLarge),
+						}
+					>
+						{ props.Title }
+					</h4>
 				}
 				if props.Message != "" {
-					<p class="text-sm">{ props.Message }</p>
+					<p
+						class={
+							templ.KV("text-xs", props.GetSize() == NotificationSizeSmall),
+							templ.KV("text-sm", props.GetSize() == NotificationSizeMedium),
+							templ.KV("text-base", props.GetSize() == NotificationSizeLarge),
+						}
+					>
+						{ props.Message }
+					</p>
 				}
+				{ children... }
 			</div>
 			if props.Dismissible {
-				@NotificationCloseButton(props.OnClose)
+				@NotificationCloseButton(props)
 			}
 		</div>
 	</div>
 }
 
+// NotificationContainer for stacking multiple notifications
 templ NotificationContainer(position NotificationPosition) {
-	<div class={ getNotificationPositionClasses(position) }>
+	<div
+		class={
+			"fixed z-50",
+			// Positions
+			templ.KV("top-4 right-4", position == PositionTopRight || position == ""),
+			templ.KV("top-4 left-4", position == PositionTopLeft),
+			templ.KV("top-4 left-1/2 transform -translate-x-1/2", position == PositionTopCenter),
+			templ.KV("bottom-4 right-4", position == PositionBottomRight),
+			templ.KV("bottom-4 left-4", position == PositionBottomLeft),
+			templ.KV("bottom-4 left-1/2 transform -translate-x-1/2", position == PositionBottomCenter),
+		}
+	>
 		<div class="flex flex-col gap-2">
 			{ children... }
 		</div>
 	</div>
 }
 
-templ InlineNotification(props NotificationProps) {
-	<div
-		class={ getNotificationClasses(props) }
-		if props.Duration > 0 {
-			x-data={ fmt.Sprintf("{ show: true }") }
-			x-show="show"
-			x-init={ fmt.Sprintf("setTimeout(() => show = false, %d)", props.Duration*1000) }
-		}
-	>
-		@NotificationIcon(props.Type)
-		<div class="flex-1 min-w-0">
-			if props.Title != "" {
-				<h4 class="font-semibold text-sm mb-1">{ props.Title }</h4>
-			}
-			if props.Message != "" {
-				<p class="text-sm">{ props.Message }</p>
-			}
-		</div>
-		if props.Dismissible {
-			@NotificationCloseButton(props.OnClose)
-		}
-	</div>
+// Helper shortcuts
+templ NotifySuccess(title, message string) {
+	@Notification(NotificationProps{
+		Title:    title,
+		Message:  message,
+		Type:     NotificationSuccess,
+		ShowIcon: true,
+		Dismissible: true,
+	})
+}
+
+templ NotifyError(title, message string) {
+	@Notification(NotificationProps{
+		Title:    title,
+		Message:  message,
+		Type:     NotificationError,
+		ShowIcon: true,
+		Dismissible: true,
+	})
+}
+
+templ NotifyWarning(title, message string) {
+	@Notification(NotificationProps{
+		Title:    title,
+		Message:  message,
+		Type:     NotificationWarning,
+		ShowIcon: true,
+		Dismissible: true,
+	})
+}
+
+templ NotifyInfo(title, message string) {
+	@Notification(NotificationProps{
+		Title:    title,
+		Message:  message,
+		Type:     NotificationInfo,
+		ShowIcon: true,
+		Dismissible: true,
+	})
 }
