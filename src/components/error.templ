@@ -109,6 +109,7 @@ templ ErrorIcon(props ErrorProps) {
 }
 
 templ Error(props ErrorProps) {
+	// Check if error message not empty
 	if props.Message != "" {
 		<div
 			class={
@@ -206,29 +207,3 @@ templ Error(props ErrorProps) {
 	}
 }
 
-// Success alert (shorthand)
-templ Success(message string) {
-	@Error(ErrorProps{
-		Message:  message,
-		Variant:  ErrorVariantInfo,
-		ShowIcon: true,
-	})
-}
-
-// Warning alert (shorthand)
-templ Warning(message string) {
-	@Error(ErrorProps{
-		Message:  message,
-		Variant:  ErrorVariantWarning,
-		ShowIcon: true,
-	})
-}
-
-// Danger alert (shorthand)
-templ Danger(message string) {
-	@Error(ErrorProps{
-		Message:  message,
-		Variant:  ErrorVariantDanger,
-		ShowIcon: true,
-	})
-}

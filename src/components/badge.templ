@@ -1,0 +1,94 @@
+package components
+
+type BadgeVariant string
+type BadgeSize string
+
+const (
+	// Variants
+	BadgeNeutral BadgeVariant = "neutral"
+	BadgeEmpty   BadgeVariant = "empty"
+	BadgeDanger  BadgeVariant = "danger"
+	BadgeWarning BadgeVariant = "warning"
+	BadgeSuccess BadgeVariant = "success"
+	BadgeInfo    BadgeVariant = "info"
+
+	// Sizes
+	BadgeSizeSmall  BadgeSize = "small"
+	BadgeSizeMedium BadgeSize = "medium"
+	BadgeSizeLarge  BadgeSize = "large"
+)
+
+type BadgeProps struct {
+	// Core properties
+	Text      string
+	Variant   BadgeVariant
+	Size      BadgeSize
+	ClassName string
+
+	// Icon properties
+	Icon         templ.Component
+	IconPosition IconPosition
+
+	// Behavior
+	AriaLabel string
+}
+
+func (p BadgeProps) GetVariant() BadgeVariant {
+	if p.Variant == "" {
+		return BadgeNeutral
+	}
+	return p.Variant
+}
+
+func (p BadgeProps) GetSize() BadgeSize {
+	if p.Size == "" {
+		return BadgeSizeMedium
+	}
+	return p.Size
+}
+
+func (p BadgeProps) GetIconPosition() IconPosition {
+	if p.IconPosition == "" {
+		return IconLeft
+	}
+	return p.IconPosition
+}
+
+templ Badge(props BadgeProps) {
+	<span
+		class={
+			"inline-flex items-center justify-center gap-1.5 rounded-full border font-medium",
+			"transition-colors duration-200",
+			// Variants
+			templ.KV("badge-neutral", props.GetVariant() == BadgeNeutral),
+			templ.KV("badge-empty", props.GetVariant() == BadgeEmpty),
+			templ.KV("badge-danger", props.GetVariant() == BadgeDanger),
+			templ.KV("badge-warning", props.GetVariant() == BadgeWarning),
+			templ.KV("badge-success", props.GetVariant() == BadgeSuccess),
+			templ.KV("badge-info", props.GetVariant() == BadgeInfo),
+			// Sizes
+			templ.KV("badge-sm", props.GetSize() == BadgeSizeSmall),
+			templ.KV("badge-md", props.GetSize() == BadgeSizeMedium),
+			templ.KV("badge-lg", props.GetSize() == BadgeSizeLarge),
+			// Custom classes
+			props.ClassName,
+		}
+		if props.AriaLabel != "" {
+			aria-label={ props.AriaLabel }
+		}
+	>
+		if props.GetIconPosition() == IconLeft && props.Icon != nil {
+			<span class="inline-flex">
+				@props.Icon
+			</span>
+		}
+		if props.Text != "" {
+			<span>{ props.Text }</span>
+		}
+		if props.GetIconPosition() == IconRight && props.Icon != nil {
+			<span class="inline-flex">
+				@props.Icon
+			</span>
+		}
+	</span>
+}
