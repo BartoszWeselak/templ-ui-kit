@@ -12,7 +12,6 @@ type BadgeVariant string
 type BadgeSize string
 
 const (
-	// Variants
 	BadgeNeutral BadgeVariant = "neutral"
 	BadgeEmpty   BadgeVariant = "empty"
 	BadgeDanger  BadgeVariant = "danger"
@@ -20,28 +19,20 @@ const (
 	BadgeSuccess BadgeVariant = "success"
 	BadgeInfo    BadgeVariant = "info"
 
-	// Sizes
 	BadgeSizeSmall  BadgeSize = "small"
 	BadgeSizeMedium BadgeSize = "medium"
 	BadgeSizeLarge  BadgeSize = "large"
 )
 
 type BadgeProps struct {
-	// Core properties
-	Text      string
-	Variant   BadgeVariant
-	Size      BadgeSize
-	ClassName string
-
-	// Icon properties
+	Text         string
+	Variant      BadgeVariant
+	Size         BadgeSize
+	ClassName    string
 	Icon         templ.Component
 	IconPosition IconPosition
-
-	// Behavior
-	AriaLabel string
-
-	// Dowolne atrybuty HTML (w tym hx-* z HTMX)
-	Attrs templ.Attributes
+	AriaLabel    string
+	Attrs        templ.Attributes
 }
 
 func (p BadgeProps) GetVariant() BadgeVariant {
@@ -88,18 +79,15 @@ func Badge(props BadgeProps) templ.Component {
 		ctx = templ.ClearChildren(ctx)
 		var templ_7745c5c3_Var2 = []any{"inline-flex items-center justify-center gap-1.5 rounded-full border font-medium",
 			"transition-colors duration-200",
-			// Variants
-			templ.KV("badge-neutral", props.GetVariant() == BadgeNeutral),
-			templ.KV("badge-empty", props.GetVariant() == BadgeEmpty),
-			templ.KV("badge-danger", props.GetVariant() == BadgeDanger),
-			templ.KV("badge-warning", props.GetVariant() == BadgeWarning),
-			templ.KV("badge-success", props.GetVariant() == BadgeSuccess),
-			templ.KV("badge-info", props.GetVariant() == BadgeInfo),
-			// Sizes
+			templ.KV("bg-secondary-light text-secondary border-secondary-light", props.GetVariant() == BadgeNeutral),
+			templ.KV("text-secondary border-secondary-light", props.GetVariant() == BadgeEmpty),
+			templ.KV("bg-danger-light text-danger-dark border-danger-light", props.GetVariant() == BadgeDanger),
+			templ.KV("bg-warning-light text-warning-dark border-warning-light", props.GetVariant() == BadgeWarning),
+			templ.KV("bg-success-light text-success-dark border-success-light", props.GetVariant() == BadgeSuccess),
+			templ.KV("bg-primary-light text-primary-dark border-primary-light", props.GetVariant() == BadgeInfo),
 			templ.KV("badge-sm", props.GetSize() == BadgeSizeSmall),
 			templ.KV("badge-md", props.GetSize() == BadgeSizeMedium),
 			templ.KV("badge-lg", props.GetSize() == BadgeSizeLarge),
-			// Custom classes
 			props.ClassName,
 		}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
@@ -131,7 +119,7 @@ func Badge(props BadgeProps) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(props.AriaLabel)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/badge.templ`, Line: 80, Col: 31}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/badge.templ`, Line: 68, Col: 31}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -172,7 +160,7 @@ func Badge(props BadgeProps) templ.Component {
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(props.Text)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/badge.templ`, Line: 90, Col: 21}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/badge.templ`, Line: 78, Col: 21}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {

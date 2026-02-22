@@ -4,7 +4,6 @@ type BadgeVariant string
 type BadgeSize string
 
 const (
-	// Variants
 	BadgeNeutral BadgeVariant = "neutral"
 	BadgeEmpty   BadgeVariant = "empty"
 	BadgeDanger  BadgeVariant = "danger"
@@ -12,28 +11,20 @@ const (
 	BadgeSuccess BadgeVariant = "success"
 	BadgeInfo    BadgeVariant = "info"
 
-	// Sizes
 	BadgeSizeSmall  BadgeSize = "small"
 	BadgeSizeMedium BadgeSize = "medium"
 	BadgeSizeLarge  BadgeSize = "large"
 )
 
 type BadgeProps struct {
-	// Core properties
-	Text      string
-	Variant   BadgeVariant
-	Size      BadgeSize
-	ClassName string
-
-	// Icon properties
+	Text         string
+	Variant      BadgeVariant
+	Size         BadgeSize
+	ClassName    string
 	Icon         templ.Component
 	IconPosition IconPosition
-
-	// Behavior
-	AriaLabel string
-
-	// Dowolne atrybuty HTML (w tym hx-* z HTMX)
-	Attrs templ.Attributes
+	AriaLabel    string
+	Attrs        templ.Attributes
 }
 
 func (p BadgeProps) GetVariant() BadgeVariant {
@@ -62,18 +53,15 @@ templ Badge(props BadgeProps) {
 		class={
 			"inline-flex items-center justify-center gap-1.5 rounded-full border font-medium",
 			"transition-colors duration-200",
-			// Variants
-			templ.KV("badge-neutral", props.GetVariant() == BadgeNeutral),
-			templ.KV("badge-empty", props.GetVariant() == BadgeEmpty),
-			templ.KV("badge-danger", props.GetVariant() == BadgeDanger),
-			templ.KV("badge-warning", props.GetVariant() == BadgeWarning),
-			templ.KV("badge-success", props.GetVariant() == BadgeSuccess),
-			templ.KV("badge-info", props.GetVariant() == BadgeInfo),
-			// Sizes
+			templ.KV("bg-secondary-light text-secondary border-secondary-light", props.GetVariant() == BadgeNeutral),
+			templ.KV("text-secondary border-secondary-light", props.GetVariant() == BadgeEmpty),
+			templ.KV("bg-danger-light text-danger-dark border-danger-light", props.GetVariant() == BadgeDanger),
+			templ.KV("bg-warning-light text-warning-dark border-warning-light", props.GetVariant() == BadgeWarning),
+			templ.KV("bg-success-light text-success-dark border-success-light", props.GetVariant() == BadgeSuccess),
+			templ.KV("bg-primary-light text-primary-dark border-primary-light", props.GetVariant() == BadgeInfo),
 			templ.KV("badge-sm", props.GetSize() == BadgeSizeSmall),
 			templ.KV("badge-md", props.GetSize() == BadgeSizeMedium),
 			templ.KV("badge-lg", props.GetSize() == BadgeSizeLarge),
-			// Custom classes
 			props.ClassName,
 		}
 		if props.AriaLabel != "" {
