@@ -22,13 +22,13 @@ type ErrorProps struct {
 	Size      ErrorSize
 	ClassName string
 	ShowIcon  bool
-	
+
 	// Behavior
 	Dismissible bool
 	Role        string // "alert", "status", etc.
-	
-	// HTMX integration
-	Htmx *HtmxAttrs
+
+	// Dowolne atrybuty HTML (w tym hx-* z HTMX)
+	Attrs templ.Attributes
 }
 
 func (p ErrorProps) GetVariant() ErrorVariant {
@@ -109,7 +109,6 @@ templ ErrorIcon(props ErrorProps) {
 }
 
 templ Error(props ErrorProps) {
-	// Check if error message not empty
 	if props.Message != "" {
 		<div
 			class={
@@ -124,62 +123,11 @@ templ Error(props ErrorProps) {
 				templ.KV("px-6 py-4 text-lg", props.GetSize() == ErrorSizeLarge),
 				// Dismissible padding adjustment
 				templ.KV("pr-10", props.Dismissible),
-				// HTMX loading indicator
-				templ.KV("htmx-request", props.Htmx != nil),
 				// Custom classes
 				props.ClassName,
 			}
 			role={ props.GetRole() }
-			if props.Htmx != nil {
-				if props.Htmx.Get != "" {
-					hx-get={ props.Htmx.Get }
-				}
-				if props.Htmx.Post != "" {
-					hx-post={ props.Htmx.Post }
-				}
-				if props.Htmx.Put != "" {
-					hx-put={ props.Htmx.Put }
-				}
-				if props.Htmx.Patch != "" {
-					hx-patch={ props.Htmx.Patch }
-				}
-				if props.Htmx.Delete != "" {
-					hx-delete={ props.Htmx.Delete }
-				}
-				if props.Htmx.Target != "" {
-					hx-target={ props.Htmx.Target }
-				}
-				if props.Htmx.Swap != "" {
-					hx-swap={ props.Htmx.Swap }
-				}
-				if props.Htmx.Trigger != "" {
-					hx-trigger={ props.Htmx.Trigger }
-				}
-				if props.Htmx.Confirm != "" {
-					hx-confirm={ props.Htmx.Confirm }
-				}
-				if props.Htmx.Indicator != "" {
-					hx-indicator={ props.Htmx.Indicator }
-				}
-				if props.Htmx.Vals != "" {
-					hx-vals={ props.Htmx.Vals }
-				}
-				if props.Htmx.Headers != "" {
-					hx-headers={ props.Htmx.Headers }
-				}
-				if props.Htmx.PushUrl != "" {
-					hx-push-url={ props.Htmx.PushUrl }
-				}
-				if props.Htmx.Select != "" {
-					hx-select={ props.Htmx.Select }
-				}
-				if props.Htmx.SwapOob != "" {
-					hx-swap-oob={ props.Htmx.SwapOob }
-				}
-				if props.Htmx.Include != "" {
-					hx-include={ props.Htmx.Include }
-				}
-			}
+			{ props.Attrs... }
 		>
 			if props.ShowIcon {
 				@ErrorIcon(props)
@@ -206,4 +154,3 @@ templ Error(props ErrorProps) {
 		</div>
 	}
 }
-

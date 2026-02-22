@@ -1,6 +1,5 @@
 package components
 
-
 type ButtonVariant string
 type ButtonSize string
 type ButtonWidth string
@@ -32,46 +31,25 @@ const (
 	IconRight IconPosition = "right"
 )
 
-// HtmxAttrs separates HTMX concerns from core button props
-type HtmxAttrs struct {
-	Get       string
-	Post      string
-	Put       string
-	Patch     string
-	Delete    string
-	Target    string
-	Swap      string
-	Trigger   string
-	Confirm   string
-	Indicator string
-	Vals      string
-	Headers   string
-	PushUrl   string
-	Select    string
-	SwapOob   string
-	Include   string
-}
-
 type ButtonProps struct {
 	// Core properties
-	Text         string
-	Variant      ButtonVariant
-	Size         ButtonSize
-	Width        ButtonWidth
-	ClassName    string
-	Disabled     bool
-	Loading      bool
-	
+	Text      string
+	Variant   ButtonVariant
+	Size      ButtonSize
+	Width     ButtonWidth
+	ClassName string
+	Disabled  bool
+	Loading   bool
+
 	// Icon properties
 	Icon         templ.Component
 	IconPosition IconPosition
-	
+
 	// Behavior
-	Type         string // "button", "submit", "reset"
-	AriaLabel    string
-	
-	// HTMX integration
-	Htmx         *HtmxAttrs
+	Type      string // "button", "submit", "reset"
+	AriaLabel string
+
+	Attrs templ.Attributes
 }
 
 func (p ButtonProps) GetVariant() ButtonVariant {
@@ -153,8 +131,6 @@ templ Button(props ButtonProps) {
 			templ.KV("min-w-48", props.GetWidth() == WidthMedium),
 			templ.KV("min-w-64", props.GetWidth() == WidthLarge),
 			templ.KV("w-full", props.GetWidth() == WidthFull),
-			// HTMX loading indicator
-			templ.KV("htmx-request", props.Htmx != nil),
 			// Custom classes
 			props.ClassName,
 		}
@@ -169,57 +145,7 @@ templ Button(props ButtonProps) {
 		if props.Loading {
 			aria-busy="true"
 		}
-		HTMX attributes
-		if props.Htmx != nil {
-			if props.Htmx.Get != "" {
-				hx-get={ props.Htmx.Get }
-			}
-			if props.Htmx.Post != "" {
-				hx-post={ props.Htmx.Post }
-			}
-			if props.Htmx.Put != "" {
-				hx-put={ props.Htmx.Put }
-			}
-			if props.Htmx.Patch != "" {
-				hx-patch={ props.Htmx.Patch }
-			}
-			if props.Htmx.Delete != "" {
-				hx-delete={ props.Htmx.Delete }
-			}
-			if props.Htmx.Target != "" {
-				hx-target={ props.Htmx.Target }
-			}
-			if props.Htmx.Swap != "" {
-				hx-swap={ props.Htmx.Swap }
-			}
-			if props.Htmx.Trigger != "" {
-				hx-trigger={ props.Htmx.Trigger }
-			}
-			if props.Htmx.Confirm != "" {
-				hx-confirm={ props.Htmx.Confirm }
-			}
-			if props.Htmx.Indicator != "" {
-				hx-indicator={ props.Htmx.Indicator }
-			}
-			if props.Htmx.Vals != "" {
-				hx-vals={ props.Htmx.Vals }
-			}
-			if props.Htmx.Headers != "" {
-				hx-headers={ props.Htmx.Headers }
-			}
-			if props.Htmx.PushUrl != "" {
-				hx-push-url={ props.Htmx.PushUrl }
-			}
-			if props.Htmx.Select != "" {
-				hx-select={ props.Htmx.Select }
-			}
-			if props.Htmx.SwapOob != "" {
-				hx-swap-oob={ props.Htmx.SwapOob }
-			}
-			if props.Htmx.Include != "" {
-				hx-include={ props.Htmx.Include }
-			}
-		}
+		{ props.Attrs... }
 	>
 		if props.GetIconPosition() == IconLeft {
 			if props.Loading {

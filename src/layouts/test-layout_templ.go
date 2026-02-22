@@ -35,10 +35,11 @@ type (
 	SelectOption         = components.SelectOption
 	PaginationProps      = components.PaginationProps
 	ModalTriggerProps    = components.ModalTriggerProps
-	HtmxAttrs            = components.HtmxAttrs
 	BadgeProps           = components.BadgeProps
 	BadgeVariant         = components.BadgeVariant
 	BadgeSize            = components.BadgeSize
+	// templ.Attributes jest dostępne bezpośrednio przez import templ
+	Attrs = templ.Attributes
 )
 
 // Aliasy dla funkcji komponentów
@@ -158,7 +159,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.GetLanguage(ctx))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 127, Col: 35}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 128, Col: 35}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -171,7 +172,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "app.title"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 131, Col: 31}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 132, Col: 31}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
@@ -215,45 +216,27 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Badge(BadgeProps{
-			Text:    "Neutral",
-			Variant: BadgeNeutral,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Badge(BadgeProps{Text: "Neutral", Variant: BadgeNeutral}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Badge(BadgeProps{
-			Text:    "Empty",
-			Variant: BadgeEmpty,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Badge(BadgeProps{Text: "Empty", Variant: BadgeEmpty}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Badge(BadgeProps{
-			Text:    "Danger",
-			Variant: BadgeDanger,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Badge(BadgeProps{Text: "Danger", Variant: BadgeDanger}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Badge(BadgeProps{
-			Text:    "Warning",
-			Variant: BadgeWarning,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Badge(BadgeProps{Text: "Warning", Variant: BadgeWarning}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Badge(BadgeProps{
-			Text:    "Success",
-			Variant: BadgeSuccess,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Badge(BadgeProps{Text: "Success", Variant: BadgeSuccess}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Badge(BadgeProps{
-			Text:    "Info",
-			Variant: BadgeInfo,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Badge(BadgeProps{Text: "Info", Variant: BadgeInfo}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -261,27 +244,15 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Badge(BadgeProps{
-			Text:    "Small",
-			Size:    BadgeSizeSmall,
-			Variant: BadgeSuccess,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Badge(BadgeProps{Text: "Small", Size: BadgeSizeSmall, Variant: BadgeSuccess}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Badge(BadgeProps{
-			Text:    "Medium",
-			Size:    BadgeSizeMedium,
-			Variant: BadgeSuccess,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Badge(BadgeProps{Text: "Medium", Size: BadgeSizeMedium, Variant: BadgeSuccess}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Badge(BadgeProps{
-			Text:    "Large",
-			Size:    BadgeSizeLarge,
-			Variant: BadgeSuccess,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Badge(BadgeProps{Text: "Large", Size: BadgeSizeLarge, Variant: BadgeSuccess}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -289,40 +260,19 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Badge(BadgeProps{
-			Text:         "Verified",
-			Variant:      BadgeSuccess,
-			Icon:         IconCheck(),
-			IconPosition: IconLeft,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Badge(BadgeProps{Text: "Verified", Variant: BadgeSuccess, Icon: IconCheck(), IconPosition: IconLeft}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Badge(BadgeProps{
-			Text:         "Error",
-			Variant:      BadgeDanger,
-			Icon:         IconX(),
-			IconPosition: IconLeft,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Badge(BadgeProps{Text: "Error", Variant: BadgeDanger, Icon: IconX(), IconPosition: IconLeft}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Badge(BadgeProps{
-			Text:         "New",
-			Variant:      BadgeInfo,
-			Icon:         IconPlus(),
-			IconPosition: IconRight,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Badge(BadgeProps{Text: "New", Variant: BadgeInfo, Icon: IconPlus(), IconPosition: IconRight}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Badge(BadgeProps{
-			Text:         "Delete",
-			Variant:      BadgeWarning,
-			Icon:         IconTrash(),
-			IconPosition: IconLeft,
-			Size:         BadgeSizeLarge,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Badge(BadgeProps{Text: "Delete", Variant: BadgeWarning, Icon: IconTrash(), IconPosition: IconLeft, Size: BadgeSizeLarge}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -330,11 +280,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Badge(BadgeProps{
-			Text:    "Admin",
-			Variant: BadgeInfo,
-			Size:    BadgeSizeSmall,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Badge(BadgeProps{Text: "Admin", Variant: BadgeInfo, Size: BadgeSizeSmall}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -342,18 +288,11 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Badge(BadgeProps{
-			Text:    "Paid",
-			Variant: BadgeSuccess,
-			Icon:    IconCheck(),
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Badge(BadgeProps{Text: "Paid", Variant: BadgeSuccess, Icon: IconCheck()}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Badge(BadgeProps{
-			Text:    "Shipped",
-			Variant: BadgeInfo,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Badge(BadgeProps{Text: "Shipped", Variant: BadgeInfo}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -361,19 +300,11 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Badge(BadgeProps{
-			Text:    "High Priority",
-			Variant: BadgeDanger,
-			Size:    BadgeSizeSmall,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Badge(BadgeProps{Text: "High Priority", Variant: BadgeDanger, Size: BadgeSizeSmall}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Badge(BadgeProps{
-			Text:    "In Progress",
-			Variant: BadgeWarning,
-			Size:    BadgeSizeSmall,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Badge(BadgeProps{Text: "In Progress", Variant: BadgeWarning, Size: BadgeSizeSmall}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -384,7 +315,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "section.buttons"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 322, Col: 65}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 247, Col: 65}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -397,7 +328,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "label.variants"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 325, Col: 57}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 250, Col: 57}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
@@ -407,31 +338,19 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{
-			Text:    t(ctx, "button.primary"),
-			Variant: VariantPrimary,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ButtonProps{Text: t(ctx, "button.primary"), Variant: VariantPrimary}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{
-			Text:    t(ctx, "button.secondary"),
-			Variant: VariantSecondary,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ButtonProps{Text: t(ctx, "button.secondary"), Variant: VariantSecondary}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{
-			Text:    t(ctx, "button.danger"),
-			Variant: VariantDanger,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ButtonProps{Text: t(ctx, "button.danger"), Variant: VariantDanger}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{
-			Text:    t(ctx, "button.buy"),
-			Variant: VariantBuy,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ButtonProps{Text: t(ctx, "button.buy"), Variant: VariantBuy}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -442,7 +361,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "label.sizes"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 346, Col: 54}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 259, Col: 54}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {
@@ -452,31 +371,19 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{
-			Text: t(ctx, "size.small"),
-			Size: SizeSmall,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ButtonProps{Text: t(ctx, "size.small"), Size: SizeSmall}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{
-			Text: t(ctx, "size.medium"),
-			Size: SizeMedium,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ButtonProps{Text: t(ctx, "size.medium"), Size: SizeMedium}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{
-			Text: t(ctx, "size.large"),
-			Size: SizeLarge,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ButtonProps{Text: t(ctx, "size.large"), Size: SizeLarge}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{
-			Text: t(ctx, "size.xlarge"),
-			Size: SizeXLarge,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ButtonProps{Text: t(ctx, "size.xlarge"), Size: SizeXLarge}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -487,7 +394,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "label.icons"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 367, Col: 54}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 268, Col: 54}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
@@ -497,28 +404,15 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{
-			Text:         t(ctx, "button.add"),
-			Icon:         IconPlus(),
-			IconPosition: IconLeft,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ButtonProps{Text: t(ctx, "button.add"), Icon: IconPlus(), IconPosition: IconLeft}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{
-			Text:    t(ctx, "button.delete"),
-			Icon:    IconTrash(),
-			Variant: VariantDanger,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ButtonProps{Text: t(ctx, "button.delete"), Icon: IconTrash(), Variant: VariantDanger}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{
-			Text:         t(ctx, "button.download"),
-			Icon:         IconDownload(),
-			IconPosition: IconRight,
-			Variant:      VariantBuy,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ButtonProps{Text: t(ctx, "button.download"), Icon: IconDownload(), IconPosition: IconRight, Variant: VariantBuy}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -529,7 +423,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		var templ_7745c5c3_Var10 string
 		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "label.states"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 388, Col: 55}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 276, Col: 55}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 		if templ_7745c5c3_Err != nil {
@@ -539,17 +433,11 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{
-			Text:    t(ctx, "button.loading"),
-			Loading: true,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ButtonProps{Text: t(ctx, "button.loading"), Loading: true}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{
-			Text:     t(ctx, "button.disabled"),
-			Disabled: true,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ButtonProps{Text: t(ctx, "button.disabled"), Disabled: true}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -560,7 +448,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		var templ_7745c5c3_Var11 string
 		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "label.widths"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 401, Col: 55}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 283, Col: 55}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 		if templ_7745c5c3_Err != nil {
@@ -570,48 +458,52 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{
-			Text:  t(ctx, "width.small"),
-			Width: WidthSmall,
-		}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = Button(ButtonProps{Text: t(ctx, "width.small"), Width: WidthSmall}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = Button(ButtonProps{Text: t(ctx, "width.medium"), Width: WidthMedium}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = Button(ButtonProps{Text: t(ctx, "width.large"), Width: WidthLarge}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = Button(ButtonProps{Text: t(ctx, "width.full"), Width: WidthFull}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">HTMX (przez Attrs)</div><div class=\"flex gap-2 flex-wrap\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		templ_7745c5c3_Err = Button(ButtonProps{
-			Text:  t(ctx, "width.medium"),
-			Width: WidthMedium,
+			Text:    "Wyślij HTMX",
+			Variant: VariantPrimary,
+			Attrs: templ.Attributes{
+				"hx-post":   "/api/example",
+				"hx-target": "#result",
+				"hx-swap":   "outerHTML",
+			},
 		}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Button(ButtonProps{
-			Text:  t(ctx, "width.large"),
-			Width: WidthLarge,
-		}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = Button(ButtonProps{
-			Text:  t(ctx, "width.full"),
-			Width: WidthFull,
-		}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</div></div></div></section><footer class=\"mt-8 text-center text-gray-600 pb-8\"><p>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</div></div></div></section><footer class=\"mt-8 text-center text-gray-600 pb-8\"><p>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var12 string
 		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "footer.text"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 428, Col: 31}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 308, Col: 31}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</p></footer></div></body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</p></footer></div></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

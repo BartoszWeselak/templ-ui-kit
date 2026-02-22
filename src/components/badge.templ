@@ -31,6 +31,9 @@ type BadgeProps struct {
 
 	// Behavior
 	AriaLabel string
+
+	// Dowolne atrybuty HTML (w tym hx-* z HTMX)
+	Attrs templ.Attributes
 }
 
 func (p BadgeProps) GetVariant() BadgeVariant {
@@ -76,6 +79,7 @@ templ Badge(props BadgeProps) {
 		if props.AriaLabel != "" {
 			aria-label={ props.AriaLabel }
 		}
+		{ props.Attrs... }
 	>
 		if props.GetIconPosition() == IconLeft && props.Icon != nil {
 			<span class="inline-flex">

@@ -20,22 +20,22 @@ const (
 
 type PaginationProps struct {
 	// Core properties
-	CurrentPage   int
-	TotalPages    int
-	BaseURL       string // np. "/products?page="
-	Variant       PaginationVariant
-	Size          PaginationSize
-	ClassName     string
-	
+	CurrentPage int
+	TotalPages  int
+	BaseURL     string // np. "/products?page="
+	Variant     PaginationVariant
+	Size        PaginationSize
+	ClassName   string
+
 	// Display options
 	ShowFirstLast bool // Pokazuj przyciski "First" i "Last"
 	MaxVisible    int  // Maksymalna liczba widocznych numerów stron (domyślnie 5)
-	
+
 	// Behavior
-	AriaLabel     string
-	
-	// HTMX integration
-	Htmx          *HtmxAttrs
+	AriaLabel string
+
+	// Dowolne atrybuty HTML (w tym hx-* z HTMX) - stosowane na każdym linku strony
+	Attrs templ.Attributes
 }
 
 func (p PaginationProps) GetVariant() PaginationVariant {
@@ -142,24 +142,7 @@ templ PaginationItem(url string, text string, isActive bool, isDisabled bool, pr
 				templ.KV("bg-white text-primary border-gray-300 hover:bg-primary-light hover:border-primary", props.GetVariant() == PaginationVariantPrimary),
 				templ.KV("bg-white text-secondary border-gray-300 hover:bg-secondary-light hover:border-secondary", props.GetVariant() == PaginationVariantSecondary),
 			}
-			if props.Htmx != nil && props.Htmx.Get != "" {
-				hx-get={ url }
-			}
-			if props.Htmx != nil && props.Htmx.Post != "" {
-				hx-post={ url }
-			}
-			if props.Htmx != nil && props.Htmx.Target != "" {
-				hx-target={ props.Htmx.Target }
-			}
-			if props.Htmx != nil && props.Htmx.Swap != "" {
-				hx-swap={ props.Htmx.Swap }
-			}
-			if props.Htmx != nil && props.Htmx.PushUrl != "" {
-				hx-push-url={ props.Htmx.PushUrl }
-			}
-			if props.Htmx != nil && props.Htmx.Indicator != "" {
-				hx-indicator={ props.Htmx.Indicator }
-			}
+			{ props.Attrs... }
 		>
 			{ text }
 		</a>
@@ -187,7 +170,7 @@ templ Pagination(props PaginationProps) {
 		// First button
 		if props.ShowFirstLast {
 			@PaginationItem(
-				props.BaseURL + "1",
+				props.BaseURL+"1",
 				"First",
 				false,
 				props.CurrentPage == 1,
@@ -196,7 +179,7 @@ templ Pagination(props PaginationProps) {
 		}
 		// Previous button
 		@PaginationItem(
-			props.BaseURL + strconv.Itoa(props.CurrentPage-1),
+			props.BaseURL+strconv.Itoa(props.CurrentPage-1),
 			"←",
 			false,
 			props.CurrentPage == 1,
@@ -204,13 +187,13 @@ templ Pagination(props PaginationProps) {
 		)
 		// Ellipsis na początku (jeśli potrzebna)
 		if props.TotalPages > props.GetMaxVisible() && props.CurrentPage > (props.GetMaxVisible()/2)+1 {
-			@PaginationItem(props.BaseURL + "1", "1", false, false, props)
+			@PaginationItem(props.BaseURL+"1", "1", false, false, props)
 			@PaginationEllipsis(props)
 		}
 		// Page numbers
 		for _, page := range getVisiblePages(props.CurrentPage, props.TotalPages, props.GetMaxVisible()) {
 			@PaginationItem(
-				props.BaseURL + strconv.Itoa(page),
+				props.BaseURL+strconv.Itoa(page),
 				strconv.Itoa(page),
 				page == props.CurrentPage,
 				false,
@@ -221,7 +204,7 @@ templ Pagination(props PaginationProps) {
 		if props.TotalPages > props.GetMaxVisible() && props.CurrentPage < props.TotalPages-(props.GetMaxVisible()/2) {
 			@PaginationEllipsis(props)
 			@PaginationItem(
-				props.BaseURL + strconv.Itoa(props.TotalPages),
+				props.BaseURL+strconv.Itoa(props.TotalPages),
 				strconv.Itoa(props.TotalPages),
 				false,
 				false,
@@ -230,7 +213,7 @@ templ Pagination(props PaginationProps) {
 		}
 		// Next button
 		@PaginationItem(
-			props.BaseURL + strconv.Itoa(props.CurrentPage+1),
+			props.BaseURL+strconv.Itoa(props.CurrentPage+1),
 			"→",
 			false,
 			props.CurrentPage == props.TotalPages,
@@ -239,7 +222,7 @@ templ Pagination(props PaginationProps) {
 		// Last button
 		if props.ShowFirstLast {
 			@PaginationItem(
-				props.BaseURL + strconv.Itoa(props.TotalPages),
+				props.BaseURL+strconv.Itoa(props.TotalPages),
 				"Last",
 				false,
 				props.CurrentPage == props.TotalPages,
@@ -265,18 +248,7 @@ templ SimplePagination(props PaginationProps) {
 					templ.KV("bg-white text-primary border-gray-300 hover:bg-primary-light hover:border-primary", props.GetVariant() == PaginationVariantPrimary),
 					templ.KV("bg-white text-secondary border-gray-300 hover:bg-secondary-light hover:border-secondary", props.GetVariant() == PaginationVariantSecondary),
 				}
-				if props.Htmx != nil && props.Htmx.Get != "" {
-					hx-get={ props.BaseURL + strconv.Itoa(props.CurrentPage-1) }
-				}
-				if props.Htmx != nil && props.Htmx.Target != "" {
-					hx-target={ props.Htmx.Target }
-				}
-				if props.Htmx != nil && props.Htmx.Swap != "" {
-					hx-swap={ props.Htmx.Swap }
-				}
-				if props.Htmx != nil && props.Htmx.PushUrl != "" {
-					hx-push-url={ props.Htmx.PushUrl }
-				}
+				{ props.Attrs... }
 			>
 				← Previous
 			</a>
@@ -309,18 +281,7 @@ templ SimplePagination(props PaginationProps) {
 					templ.KV("bg-white text-primary border-gray-300 hover:bg-primary-light hover:border-primary", props.GetVariant() == PaginationVariantPrimary),
 					templ.KV("bg-white text-secondary border-gray-300 hover:bg-secondary-light hover:border-secondary", props.GetVariant() == PaginationVariantSecondary),
 				}
-				if props.Htmx != nil && props.Htmx.Get != "" {
-					hx-get={ props.BaseURL + strconv.Itoa(props.CurrentPage+1) }
-				}
-				if props.Htmx != nil && props.Htmx.Target != "" {
-					hx-target={ props.Htmx.Target }
-				}
-				if props.Htmx != nil && props.Htmx.Swap != "" {
-					hx-swap={ props.Htmx.Swap }
-				}
-				if props.Htmx != nil && props.Htmx.PushUrl != "" {
-					hx-push-url={ props.Htmx.PushUrl }
-				}
+				{ props.Attrs... }
 			>
 				Next →
 			</a>
@@ -364,19 +325,4 @@ templ PaginationWithInfo(props PaginationProps, totalItems int, itemsPerPage int
 		</div>
 		@Pagination(props)
 	</div>
-}
-
-// Helper component for HTMX pagination
-templ HtmxPagination(currentPage, totalPages int, targetSelector string) {
-	@Pagination(PaginationProps{
-		CurrentPage: currentPage,
-		TotalPages:  totalPages,
-		BaseURL:     "?page=",
-		Htmx: &HtmxAttrs{
-			Get:     "?page=",
-			Target:  targetSelector,
-			Swap:    "innerHTML",
-			PushUrl: "true",
-		},
-	})
 }

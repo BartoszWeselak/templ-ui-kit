@@ -27,23 +27,23 @@ const (
 
 type NotificationProps struct {
 	// Core properties
-	Title       string
-	Message     string
-	Type        NotificationType
-	Position    NotificationPosition
-	Size        NotificationSize
-	ClassName   string
-	
+	Title     string
+	Message   string
+	Type      NotificationType
+	Position  NotificationPosition
+	Size      NotificationSize
+	ClassName string
+
 	// Behavior
 	Dismissible bool
-	Duration    int    // w sekundach, 0 = nie znika automatycznie
+	Duration    int // w sekundach, 0 = nie znika automatycznie
 	ShowIcon    bool
-	Inline      bool   // inline vs fixed position
+	Inline      bool // inline vs fixed position
 	OnClose     templ.ComponentScript
 	AriaLive    string // "polite", "assertive", "off"
-	
-	// HTMX integration
-	Htmx *HtmxAttrs
+
+	// Dowolne atrybuty HTML (w tym hx-* z HTMX)
+	Attrs templ.Attributes
 }
 
 func (p NotificationProps) GetType() NotificationType {
@@ -154,7 +154,6 @@ templ NotificationCloseButton(props NotificationProps) {
 		type="button"
 		class="flex-shrink-0 ml-auto text-secondary hover:text-secondary-dark transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-300 rounded"
 		onclick={ props.OnClose }
-		
 		aria-label="Close notification"
 	>
 		<svg
@@ -198,8 +197,6 @@ templ Notification(props NotificationProps) {
 				templ.KV("p-2", props.GetSize() == NotificationSizeSmall),
 				templ.KV("p-4", props.GetSize() == NotificationSizeMedium),
 				templ.KV("p-6", props.GetSize() == NotificationSizeLarge),
-				// HTMX loading indicator
-				templ.KV("htmx-request", props.Htmx != nil),
 				// Custom classes
 				props.ClassName,
 			}
@@ -215,56 +212,7 @@ templ Notification(props NotificationProps) {
 				x-transition:leave-start="opacity-100 transform scale-100"
 				x-transition:leave-end="opacity-0 transform scale-90"
 			}
-			if props.Htmx != nil {
-				if props.Htmx.Get != "" {
-					hx-get={ props.Htmx.Get }
-				}
-				if props.Htmx.Post != "" {
-					hx-post={ props.Htmx.Post }
-				}
-				if props.Htmx.Put != "" {
-					hx-put={ props.Htmx.Put }
-				}
-				if props.Htmx.Patch != "" {
-					hx-patch={ props.Htmx.Patch }
-				}
-				if props.Htmx.Delete != "" {
-					hx-delete={ props.Htmx.Delete }
-				}
-				if props.Htmx.Target != "" {
-					hx-target={ props.Htmx.Target }
-				}
-				if props.Htmx.Swap != "" {
-					hx-swap={ props.Htmx.Swap }
-				}
-				if props.Htmx.Trigger != "" {
-					hx-trigger={ props.Htmx.Trigger }
-				}
-				if props.Htmx.Confirm != "" {
-					hx-confirm={ props.Htmx.Confirm }
-				}
-				if props.Htmx.Indicator != "" {
-					hx-indicator={ props.Htmx.Indicator }
-				}
-				if props.Htmx.Vals != "" {
-					hx-vals={ props.Htmx.Vals }
-				}
-				if props.Htmx.Headers != "" {
-					hx-headers={ props.Htmx.Headers }
-				}
-				if props.Htmx.PushUrl != "" {
-					hx-push-url={ props.Htmx.PushUrl }
-				}
-				if props.Htmx.Select != "" {
-					hx-select={ props.Htmx.Select }
-				}
-				if props.Htmx.SwapOob != "" {
-					hx-swap-oob={ props.Htmx.SwapOob }
-				}
-				if props.Htmx.Include != "" {
-					hx-include={ props.Htmx.Include }
-				}
-			}
+			{ props.Attrs... }
 		>
 			if props.ShowIcon {
 				@NotificationIcon(props)
@@ -325,40 +273,40 @@ templ NotificationContainer(position NotificationPosition) {
 // Helper shortcuts
 templ NotifySuccess(title, message string) {
 	@Notification(NotificationProps{
-		Title:    title,
-		Message:  message,
-		Type:     NotificationSuccess,
-		ShowIcon: true,
+		Title:       title,
+		Message:     message,
+		Type:        NotificationSuccess,
+		ShowIcon:    true,
 		Dismissible: true,
 	})
 }
 
 templ NotifyError(title, message string) {
 	@Notification(NotificationProps{
-		Title:    title,
-		Message:  message,
-		Type:     NotificationError,
-		ShowIcon: true,
+		Title:       title,
+		Message:     message,
+		Type:        NotificationError,
+		ShowIcon:    true,
 		Dismissible: true,
 	})
 }
 
 templ NotifyWarning(title, message string) {
 	@Notification(NotificationProps{
-		Title:    title,
-		Message:  message,
-		Type:     NotificationWarning,
-		ShowIcon: true,
+		Title:       title,
+		Message:     message,
+		Type:        NotificationWarning,
+		ShowIcon:    true,
 		Dismissible: true,
 	})
 }
 
 templ NotifyInfo(title, message string) {
 	@Notification(NotificationProps{
-		Title:    title,
-		Message:  message,
-		Type:     NotificationInfo,
-		ShowIcon: true,
+		Title:       title,
+		Message:     message,
+		Type:        NotificationInfo,
+		ShowIcon:    true,
 		Dismissible: true,
 	})
 }

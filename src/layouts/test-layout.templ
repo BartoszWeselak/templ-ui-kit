@@ -8,112 +8,113 @@ import (
 
 // Aliasy dla ułatwienia
 type (
-	ButtonProps = components.ButtonProps
-	ButtonVariant = components.ButtonVariant
-	ButtonSize = components.ButtonSize
-	ButtonWidth = components.ButtonWidth
-	IconPosition = components.IconPosition
-	CardProps = components.CardProps
-	ErrorProps = components.ErrorProps
-	ErrorVariant = components.ErrorVariant
-	NotificationProps = components.NotificationProps
-	NotificationType = components.NotificationType
+	ButtonProps          = components.ButtonProps
+	ButtonVariant        = components.ButtonVariant
+	ButtonSize           = components.ButtonSize
+	ButtonWidth          = components.ButtonWidth
+	IconPosition         = components.IconPosition
+	CardProps            = components.CardProps
+	ErrorProps           = components.ErrorProps
+	ErrorVariant         = components.ErrorVariant
+	NotificationProps    = components.NotificationProps
+	NotificationType     = components.NotificationType
 	NotificationPosition = components.NotificationPosition
-	NotificationSize = components.NotificationSize
-	FormInputProps = components.FormInputProps
-	InputSize = components.InputSize
-	InputVariant = components.InputVariant
-	FormSelectProps = components.FormSelectProps
-	SelectOption = components.SelectOption
-	PaginationProps = components.PaginationProps
-	ModalTriggerProps = components.ModalTriggerProps
-	HtmxAttrs = components.HtmxAttrs
-	BadgeProps = components.BadgeProps
-	BadgeVariant = components.BadgeVariant
-	BadgeSize = components.BadgeSize
+	NotificationSize     = components.NotificationSize
+	FormInputProps       = components.FormInputProps
+	InputSize            = components.InputSize
+	InputVariant         = components.InputVariant
+	FormSelectProps      = components.FormSelectProps
+	SelectOption         = components.SelectOption
+	PaginationProps      = components.PaginationProps
+	ModalTriggerProps    = components.ModalTriggerProps
+	BadgeProps           = components.BadgeProps
+	BadgeVariant         = components.BadgeVariant
+	BadgeSize            = components.BadgeSize
+	// templ.Attributes jest dostępne bezpośrednio przez import templ
+	Attrs = templ.Attributes
 )
 
 // Aliasy dla funkcji komponentów
 var (
-	Button = components.Button
-	Card = components.Card
-	Error = components.Error
+	Button       = components.Button
+	Card         = components.Card
+	Error        = components.Error
 	Notification = components.Notification
-	FormInput = components.FormInput
-	FormSelect = components.FormSelect
-	IconPlus = components.IconPlus
-	IconTrash = components.IconTrash
+	FormInput    = components.FormInput
+	FormSelect   = components.FormSelect
+	IconPlus     = components.IconPlus
+	IconTrash    = components.IconTrash
 	IconDownload = components.IconDownload
-	IconCheck = components.IconCheck
-	IconX = components.IconX
-	Pagination = components.Pagination
+	IconCheck    = components.IconCheck
+	IconX        = components.IconX
+	Pagination   = components.Pagination
 	ModalTrigger = components.ModalTrigger
-	ModalBody = components.ModalBody
-	ModalFooter = components.ModalFooter
-	ModalScript = components.ModalScript
-	Badge = components.Badge
+	ModalBody    = components.ModalBody
+	ModalFooter  = components.ModalFooter
+	ModalScript  = components.ModalScript
+	Badge        = components.Badge
 )
 
 // Aliasy dla stałych
 const (
-	VariantPrimary = components.VariantPrimary
+	VariantPrimary   = components.VariantPrimary
 	VariantSecondary = components.VariantSecondary
-	VariantDanger = components.VariantDanger
-	VariantBuy = components.VariantBuy
-	
-	SizeSmall = components.SizeSmall
+	VariantDanger    = components.VariantDanger
+	VariantBuy       = components.VariantBuy
+
+	SizeSmall  = components.SizeSmall
 	SizeMedium = components.SizeMedium
-	SizeLarge = components.SizeLarge
+	SizeLarge  = components.SizeLarge
 	SizeXLarge = components.SizeXLarge
-	
-	WidthAuto = components.WidthAuto
-	WidthSmall = components.WidthSmall
+
+	WidthAuto   = components.WidthAuto
+	WidthSmall  = components.WidthSmall
 	WidthMedium = components.WidthMedium
-	WidthLarge = components.WidthLarge
-	WidthFull = components.WidthFull
-	
-	IconLeft = components.IconLeft
+	WidthLarge  = components.WidthLarge
+	WidthFull   = components.WidthFull
+
+	IconLeft  = components.IconLeft
 	IconRight = components.IconRight
-	
-	CardVariantGray = components.CardVariantGray
+
+	CardVariantGray  = components.CardVariantGray
 	CardVariantWhite = components.CardVariantWhite
-	CardVariantBlue = components.CardVariantBlue
-	CardSizeMedium = components.CardSizeMedium
-	CardSizeFull = components.CardSizeFull
-	
-	ErrorVariantDanger = components.ErrorVariantDanger
+	CardVariantBlue  = components.CardVariantBlue
+	CardSizeMedium   = components.CardSizeMedium
+	CardSizeFull     = components.CardSizeFull
+
+	ErrorVariantDanger  = components.ErrorVariantDanger
 	ErrorVariantWarning = components.ErrorVariantWarning
-	ErrorVariantInfo = components.ErrorVariantInfo
-	
+	ErrorVariantInfo    = components.ErrorVariantInfo
+
 	NotificationSuccess = components.NotificationSuccess
-	NotificationError = components.NotificationError
+	NotificationError   = components.NotificationError
 	NotificationWarning = components.NotificationWarning
-	NotificationInfo = components.NotificationInfo
-	
+	NotificationInfo    = components.NotificationInfo
+
 	PositionTopRight = components.PositionTopRight
-	
-	InputSizeSmall = components.InputSizeSmall
+
+	InputSizeSmall  = components.InputSizeSmall
 	InputSizeMedium = components.InputSizeMedium
-	InputSizeLarge = components.InputSizeLarge
-	
+	InputSizeLarge  = components.InputSizeLarge
+
 	InputVariantDefault = components.InputVariantDefault
-	InputVariantError = components.InputVariantError
+	InputVariantError   = components.InputVariantError
 	InputVariantSuccess = components.InputVariantSuccess
-	
-	NotificationSizeSmall = components.NotificationSizeSmall
+
+	NotificationSizeSmall  = components.NotificationSizeSmall
 	NotificationSizeMedium = components.NotificationSizeMedium
-	NotificationSizeLarge = components.NotificationSizeLarge
-	
+	NotificationSizeLarge  = components.NotificationSizeLarge
+
 	BadgeNeutral = components.BadgeNeutral
-	BadgeEmpty = components.BadgeEmpty
-	BadgeDanger = components.BadgeDanger
+	BadgeEmpty   = components.BadgeEmpty
+	BadgeDanger  = components.BadgeDanger
 	BadgeWarning = components.BadgeWarning
 	BadgeSuccess = components.BadgeSuccess
-	BadgeInfo = components.BadgeInfo
-	
-	BadgeSizeSmall = components.BadgeSizeSmall
+	BadgeInfo    = components.BadgeInfo
+
+	BadgeSizeSmall  = components.BadgeSizeSmall
 	BadgeSizeMedium = components.BadgeSizeMedium
-	BadgeSizeLarge = components.BadgeSizeLarge
+	BadgeSizeLarge  = components.BadgeSizeLarge
 )
 
 // t helper function for translations
@@ -174,12 +175,10 @@ templ TestLayoutI18n(ctx context.Context) {
 					<a href="?lang=pl" class="px-3 py-1 bg-white border rounded hover:bg-gray-50">Polski</a>
 					<a href="?lang=de" class="px-3 py-1 bg-white border rounded hover:bg-gray-50">Deutsch</a>
 				</div>
-				
 				<header class="mb-8">
 					<h1 class="text-4xl font-bold text-gray-900 mb-2">{ t(ctx, "app.title") }</h1>
 					<p class="text-gray-600">{ t(ctx, "app.subtitle") }</p>
 				</header>
-				
 				// BADGES
 				<section class="component-section">
 					<h2 class="component-title">🏷️ Badges</h2>
@@ -187,111 +186,46 @@ templ TestLayoutI18n(ctx context.Context) {
 						<div class="demo-item">
 							<div class="demo-label">Badge Variants</div>
 							<div class="flex gap-2 flex-wrap items-center">
-								@Badge(BadgeProps{
-									Text: "Neutral",
-									Variant: BadgeNeutral,
-								})
-								@Badge(BadgeProps{
-									Text: "Empty",
-									Variant: BadgeEmpty,
-								})
-								@Badge(BadgeProps{
-									Text: "Danger",
-									Variant: BadgeDanger,
-								})
-								@Badge(BadgeProps{
-									Text: "Warning",
-									Variant: BadgeWarning,
-								})
-								@Badge(BadgeProps{
-									Text: "Success",
-									Variant: BadgeSuccess,
-								})
-								@Badge(BadgeProps{
-									Text: "Info",
-									Variant: BadgeInfo,
-								})
+								@Badge(BadgeProps{Text: "Neutral", Variant: BadgeNeutral})
+								@Badge(BadgeProps{Text: "Empty", Variant: BadgeEmpty})
+								@Badge(BadgeProps{Text: "Danger", Variant: BadgeDanger})
+								@Badge(BadgeProps{Text: "Warning", Variant: BadgeWarning})
+								@Badge(BadgeProps{Text: "Success", Variant: BadgeSuccess})
+								@Badge(BadgeProps{Text: "Info", Variant: BadgeInfo})
 							</div>
 						</div>
-						
 						<div class="demo-item">
 							<div class="demo-label">Badge Sizes</div>
 							<div class="flex gap-2 items-center flex-wrap">
-								@Badge(BadgeProps{
-									Text: "Small",
-									Size: BadgeSizeSmall,
-									Variant: BadgeSuccess,
-								})
-								@Badge(BadgeProps{
-									Text: "Medium",
-									Size: BadgeSizeMedium,
-									Variant: BadgeSuccess,
-								})
-								@Badge(BadgeProps{
-									Text: "Large",
-									Size: BadgeSizeLarge,
-									Variant: BadgeSuccess,
-								})
+								@Badge(BadgeProps{Text: "Small", Size: BadgeSizeSmall, Variant: BadgeSuccess})
+								@Badge(BadgeProps{Text: "Medium", Size: BadgeSizeMedium, Variant: BadgeSuccess})
+								@Badge(BadgeProps{Text: "Large", Size: BadgeSizeLarge, Variant: BadgeSuccess})
 							</div>
 						</div>
-						
 						<div class="demo-item">
 							<div class="demo-label">Badges with Icons</div>
 							<div class="flex gap-2 flex-wrap items-center">
-								@Badge(BadgeProps{
-									Text: "Verified",
-									Variant: BadgeSuccess,
-									Icon: IconCheck(),
-									IconPosition: IconLeft,
-								})
-								@Badge(BadgeProps{
-									Text: "Error",
-									Variant: BadgeDanger,
-									Icon: IconX(),
-									IconPosition: IconLeft,
-								})
-								@Badge(BadgeProps{
-									Text: "New",
-									Variant: BadgeInfo,
-									Icon: IconPlus(),
-									IconPosition: IconRight,
-								})
-								@Badge(BadgeProps{
-									Text: "Delete",
-									Variant: BadgeWarning,
-									Icon: IconTrash(),
-									IconPosition: IconLeft,
-									Size: BadgeSizeLarge,
-								})
+								@Badge(BadgeProps{Text: "Verified", Variant: BadgeSuccess, Icon: IconCheck(), IconPosition: IconLeft})
+								@Badge(BadgeProps{Text: "Error", Variant: BadgeDanger, Icon: IconX(), IconPosition: IconLeft})
+								@Badge(BadgeProps{Text: "New", Variant: BadgeInfo, Icon: IconPlus(), IconPosition: IconRight})
+								@Badge(BadgeProps{Text: "Delete", Variant: BadgeWarning, Icon: IconTrash(), IconPosition: IconLeft, Size: BadgeSizeLarge})
 							</div>
 						</div>
-						
 						<div class="demo-item">
 							<div class="demo-label">Practical Examples</div>
 							<div class="space-y-4">
 								<div class="p-4 bg-gray-50 rounded">
 									<div class="flex items-center justify-between">
 										<span class="font-medium">John Doe</span>
-										@Badge(BadgeProps{
-											Text: "Admin",
-											Variant: BadgeInfo,
-											Size: BadgeSizeSmall,
-										})
+										@Badge(BadgeProps{Text: "Admin", Variant: BadgeInfo, Size: BadgeSizeSmall})
 									</div>
 								</div>
 								<div class="p-4 bg-gray-50 rounded">
 									<div class="flex items-center justify-between">
 										<span class="font-medium">Order #1234</span>
 										<div class="flex gap-2">
-											@Badge(BadgeProps{
-												Text: "Paid",
-												Variant: BadgeSuccess,
-												Icon: IconCheck(),
-											})
-											@Badge(BadgeProps{
-												Text: "Shipped",
-												Variant: BadgeInfo,
-											})
+											@Badge(BadgeProps{Text: "Paid", Variant: BadgeSuccess, Icon: IconCheck()})
+											@Badge(BadgeProps{Text: "Shipped", Variant: BadgeInfo})
 										</div>
 									</div>
 								</div>
@@ -299,16 +233,8 @@ templ TestLayoutI18n(ctx context.Context) {
 									<div class="flex items-center justify-between">
 										<span class="font-medium">Task Item</span>
 										<div class="flex gap-2">
-											@Badge(BadgeProps{
-												Text: "High Priority",
-												Variant: BadgeDanger,
-												Size: BadgeSizeSmall,
-											})
-											@Badge(BadgeProps{
-												Text: "In Progress",
-												Variant: BadgeWarning,
-												Size: BadgeSizeSmall,
-											})
+											@Badge(BadgeProps{Text: "High Priority", Variant: BadgeDanger, Size: BadgeSizeSmall})
+											@Badge(BadgeProps{Text: "In Progress", Variant: BadgeWarning, Size: BadgeSizeSmall})
 										</div>
 									</div>
 								</div>
@@ -316,7 +242,6 @@ templ TestLayoutI18n(ctx context.Context) {
 						</div>
 					</div>
 				</section>
-				
 				// BUTTONS
 				<section class="component-section">
 					<h2 class="component-title">🔘 { t(ctx, "section.buttons") }</h2>
@@ -324,106 +249,61 @@ templ TestLayoutI18n(ctx context.Context) {
 						<div class="demo-item">
 							<div class="demo-label">{ t(ctx, "label.variants") }</div>
 							<div class="flex gap-2 flex-wrap">
-								@Button(ButtonProps{
-									Text: t(ctx, "button.primary"),
-									Variant: VariantPrimary,
-								})
-								@Button(ButtonProps{
-									Text: t(ctx, "button.secondary"),
-									Variant: VariantSecondary,
-								})
-								@Button(ButtonProps{
-									Text: t(ctx, "button.danger"),
-									Variant: VariantDanger,
-								})
-								@Button(ButtonProps{
-									Text: t(ctx, "button.buy"),
-									Variant: VariantBuy,
-								})
+								@Button(ButtonProps{Text: t(ctx, "button.primary"), Variant: VariantPrimary})
+								@Button(ButtonProps{Text: t(ctx, "button.secondary"), Variant: VariantSecondary})
+								@Button(ButtonProps{Text: t(ctx, "button.danger"), Variant: VariantDanger})
+								@Button(ButtonProps{Text: t(ctx, "button.buy"), Variant: VariantBuy})
 							</div>
 						</div>
 						<div class="demo-item">
 							<div class="demo-label">{ t(ctx, "label.sizes") }</div>
 							<div class="flex gap-2 items-center flex-wrap">
-								@Button(ButtonProps{
-									Text: t(ctx, "size.small"),
-									Size: SizeSmall,
-								})
-								@Button(ButtonProps{
-									Text: t(ctx, "size.medium"),
-									Size: SizeMedium,
-								})
-								@Button(ButtonProps{
-									Text: t(ctx, "size.large"),
-									Size: SizeLarge,
-								})
-								@Button(ButtonProps{
-									Text: t(ctx, "size.xlarge"),
-									Size: SizeXLarge,
-								})
+								@Button(ButtonProps{Text: t(ctx, "size.small"), Size: SizeSmall})
+								@Button(ButtonProps{Text: t(ctx, "size.medium"), Size: SizeMedium})
+								@Button(ButtonProps{Text: t(ctx, "size.large"), Size: SizeLarge})
+								@Button(ButtonProps{Text: t(ctx, "size.xlarge"), Size: SizeXLarge})
 							</div>
 						</div>
 						<div class="demo-item">
 							<div class="demo-label">{ t(ctx, "label.icons") }</div>
 							<div class="flex gap-2 flex-wrap">
-								@Button(ButtonProps{
-									Text: t(ctx, "button.add"),
-									Icon: IconPlus(),
-									IconPosition: IconLeft,
-								})
-								@Button(ButtonProps{
-									Text: t(ctx, "button.delete"),
-									Icon: IconTrash(),
-									Variant: VariantDanger,
-								})
-								@Button(ButtonProps{
-									Text: t(ctx, "button.download"),
-									Icon: IconDownload(),
-									IconPosition: IconRight,
-									Variant: VariantBuy,
-								})
+								@Button(ButtonProps{Text: t(ctx, "button.add"), Icon: IconPlus(), IconPosition: IconLeft})
+								@Button(ButtonProps{Text: t(ctx, "button.delete"), Icon: IconTrash(), Variant: VariantDanger})
+								@Button(ButtonProps{Text: t(ctx, "button.download"), Icon: IconDownload(), IconPosition: IconRight, Variant: VariantBuy})
 							</div>
 						</div>
 						<div class="demo-item">
 							<div class="demo-label">{ t(ctx, "label.states") }</div>
 							<div class="flex gap-2 flex-wrap">
-								@Button(ButtonProps{
-									Text: t(ctx, "button.loading"),
-									Loading: true,
-								})
-								@Button(ButtonProps{
-									Text: t(ctx, "button.disabled"),
-									Disabled: true,
-								})
+								@Button(ButtonProps{Text: t(ctx, "button.loading"), Loading: true})
+								@Button(ButtonProps{Text: t(ctx, "button.disabled"), Disabled: true})
 							</div>
 						</div>
 						<div class="demo-item">
 							<div class="demo-label">{ t(ctx, "label.widths") }</div>
 							<div class="space-y-2">
+								@Button(ButtonProps{Text: t(ctx, "width.small"), Width: WidthSmall})
+								@Button(ButtonProps{Text: t(ctx, "width.medium"), Width: WidthMedium})
+								@Button(ButtonProps{Text: t(ctx, "width.large"), Width: WidthLarge})
+								@Button(ButtonProps{Text: t(ctx, "width.full"), Width: WidthFull})
+							</div>
+						</div>
+						<div class="demo-item">
+							<div class="demo-label">HTMX (przez Attrs)</div>
+							<div class="flex gap-2 flex-wrap">
 								@Button(ButtonProps{
-									Text: t(ctx, "width.small"),
-									Width: WidthSmall,
-								})
-								@Button(ButtonProps{
-									Text: t(ctx, "width.medium"),
-									Width: WidthMedium,
-								})
-								@Button(ButtonProps{
-									Text: t(ctx, "width.large"),
-									Width: WidthLarge,
-								})
-								@Button(ButtonProps{
-									Text: t(ctx, "width.full"),
-									Width: WidthFull,
+									Text:    "Wyślij HTMX",
+									Variant: VariantPrimary,
+									Attrs: templ.Attributes{
+										"hx-post":   "/api/example",
+										"hx-target": "#result",
+										"hx-swap":   "outerHTML",
+									},
 								})
 							</div>
 						</div>
 					</div>
 				</section>
-				
-				// Rest of sections remain the same...
-				// CARDS, FORM INPUTS, etc.
-				
 				<footer class="mt-8 text-center text-gray-600 pb-8">
 					<p>{ t(ctx, "footer.text") }</p>
 				</footer>

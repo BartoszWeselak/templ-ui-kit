@@ -33,8 +33,8 @@ type ModalProps struct {
 	ClassName string
 	ShowClose bool
 
-	// HTMX attributes for dynamic content loading
-	Htmx *HtmxAttrs
+	// Dowolne atrybuty HTML (w tym hx-* z HTMX)
+	Attrs templ.Attributes
 }
 
 type ModalTriggerProps struct {
@@ -46,8 +46,8 @@ type ModalTriggerProps struct {
 	ClassName string
 	Icon      templ.Component
 
-	// HTMX attributes to load modal content
-	Htmx *HtmxAttrs
+	// Dowolne atrybuty HTML (w tym hx-* z HTMX)
+	Attrs templ.Attributes
 }
 
 type ConfirmationModalProps struct {
@@ -193,25 +193,7 @@ templ ModalTrigger(props ModalTriggerProps) {
 			props.ClassName,
 		}
 		data-modal-trigger={ props.ModalID }
-		if props.Htmx != nil {
-			if props.Htmx.Get != "" {
-				hx-get={ props.Htmx.Get }
-			}
-			if props.Htmx.Post != "" {
-				hx-post={ props.Htmx.Post }
-			}
-			if props.Htmx.Target != "" {
-				hx-target={ props.Htmx.Target }
-			} else if props.Htmx != nil && (props.Htmx.Get != "" || props.Htmx.Post != "") {
-				hx-target={ "#" + props.ModalID + "-content" }
-			}
-			if props.Htmx.Swap != "" {
-				hx-swap={ props.Htmx.Swap }
-			}
-			if props.Htmx.Trigger != "" {
-				hx-trigger={ props.Htmx.Trigger }
-			}
-		}
+		{ props.Attrs... }
 	>
 		if props.Icon != nil {
 			@props.Icon
@@ -247,57 +229,32 @@ templ ConfirmationModalContent(props ConfirmationModalProps) {
 			Variant: VariantSecondary,
 			Size:    SizeMedium,
 			Type:    "button",
-			Htmx: &HtmxAttrs{},
 		})
-		if props.Method == MethodDELETE {
-			@Button(ButtonProps{
-				Text:    props.GetConfirmText(),
-				Variant: props.GetConfirmVariant(),
-				Size:    SizeMedium,
-				Type:    "button",
-				Htmx: &HtmxAttrs{
-					Delete: props.ConfirmAction,
-				},
-			})
-		} else if props.Method == MethodPOST {
-			@Button(ButtonProps{
-				Text:    props.GetConfirmText(),
-				Variant: props.GetConfirmVariant(),
-				Size:    SizeMedium,
-				Type:    "button",
-				Htmx: &HtmxAttrs{
-					Post: props.ConfirmAction,
-				},
-			})
-		} else if props.Method == MethodPUT {
-			@Button(ButtonProps{
-				Text:    props.GetConfirmText(),
-				Variant: props.GetConfirmVariant(),
-				Size:    SizeMedium,
-				Type:    "button",
-				Htmx: &HtmxAttrs{
-					Put: props.ConfirmAction,
-				},
-			})
-		} else if props.Method == MethodPATCH {
-			@Button(ButtonProps{
-				Text:    props.GetConfirmText(),
-				Variant: props.GetConfirmVariant(),
-				Size:    SizeMedium,
-				Type:    "button",
-				Htmx: &HtmxAttrs{
-					Patch: props.ConfirmAction,
-				},
-			})
-		} else {
-			@Button(ButtonProps{
-				Text:    props.GetConfirmText(),
-				Variant: props.GetConfirmVariant(),
-				Size:    SizeMedium,
-				Type:    "button",
-			})
-		}
+		@confirmButton(props)
 	}
+}
+
+templ confirmButton(props ConfirmationModalProps) {
+	{{
+		var attrs templ.Attributes
+		switch props.Method {
+		case MethodDELETE:
+			attrs = templ.Attributes{"hx-delete": props.ConfirmAction}
+		case MethodPOST:
+			attrs = templ.Attributes{"hx-post": props.ConfirmAction}
+		case MethodPUT:
+			attrs = templ.Attributes{"hx-put": props.ConfirmAction}
+		case MethodPATCH:
+			attrs = templ.Attributes{"hx-patch": props.ConfirmAction}
+		}
+	}}
+	@Button(ButtonProps{
+		Text:    props.GetConfirmText(),
+		Variant: props.GetConfirmVariant(),
+		Size:    SizeMedium,
+		Type:    "button",
+		Attrs:   attrs,
+	})
 }
 
 // Form modal content
@@ -327,4 +284,3 @@ templ CloseModalButton(modalID string, text string, variant ButtonVariant) {
 		<span>{ text }</span>
 	</button>
 }
-    

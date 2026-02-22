@@ -35,7 +35,7 @@ type FormInputProps struct {
 	Label       string
 	Value       string
 	ClassName   string
-	
+
 	// Validation
 	Required  bool
 	Pattern   string
@@ -44,26 +44,26 @@ type FormInputProps struct {
 	Min       string
 	Max       string
 	Step      string
-	
+
 	// State
 	Disabled bool
 	Readonly bool
-	
+
 	// Styling
 	Size    InputSize
 	Variant InputVariant
-	
+
 	// Messages
 	ErrorMsg string
 	HelpText string
-	
+
 	// Behavior
-	Autocomplete string
-	AriaLabel    string
+	Autocomplete    string
+	AriaLabel       string
 	AriaDescribedBy string
-	
-	// HTMX integration
-	Htmx *HtmxAttrs
+
+	// Dowolne atrybuty HTML (w tym hx-* z HTMX)
+	Attrs templ.Attributes
 }
 
 func (p FormInputProps) GetSize() InputSize {
@@ -132,8 +132,6 @@ templ FormInput(props FormInputProps) {
 				// States
 				templ.KV("bg-gray-100 cursor-not-allowed opacity-60", props.Disabled),
 				templ.KV("bg-gray-50 cursor-default", props.Readonly && !props.Disabled),
-				// HTMX loading indicator
-				templ.KV("htmx-request", props.Htmx != nil),
 				// Custom classes
 				props.ClassName,
 			}
@@ -177,45 +175,7 @@ templ FormInput(props FormInputProps) {
 			if props.ErrorMsg != "" {
 				aria-invalid="true"
 			}
-			if props.Htmx != nil && props.Htmx.Get != "" {
-				hx-get={ props.Htmx.Get }
-			}
-			if props.Htmx != nil && props.Htmx.Post != "" {
-				hx-post={ props.Htmx.Post }
-			}
-			if props.Htmx != nil && props.Htmx.Put != "" {
-				hx-put={ props.Htmx.Put }
-			}
-			if props.Htmx != nil && props.Htmx.Patch != "" {
-				hx-patch={ props.Htmx.Patch }
-			}
-			if props.Htmx != nil && props.Htmx.Delete != "" {
-				hx-delete={ props.Htmx.Delete }
-			}
-			if props.Htmx != nil && props.Htmx.Target != "" {
-				hx-target={ props.Htmx.Target }
-			}
-			if props.Htmx != nil && props.Htmx.Swap != "" {
-				hx-swap={ props.Htmx.Swap }
-			}
-			if props.Htmx != nil && props.Htmx.Trigger != "" {
-				hx-trigger={ props.Htmx.Trigger }
-			}
-			if props.Htmx != nil && props.Htmx.Confirm != "" {
-				hx-confirm={ props.Htmx.Confirm }
-			}
-			if props.Htmx != nil && props.Htmx.Indicator != "" {
-				hx-indicator={ props.Htmx.Indicator }
-			}
-			if props.Htmx != nil && props.Htmx.Vals != "" {
-				hx-vals={ props.Htmx.Vals }
-			}
-			if props.Htmx != nil && props.Htmx.Headers != "" {
-				hx-headers={ props.Htmx.Headers }
-			}
-			if props.Htmx != nil && props.Htmx.Include != "" {
-				hx-include={ props.Htmx.Include }
-			}
+			{ props.Attrs... }
 		/>
 		if props.ErrorMsg != "" {
 			<p id={ props.Name + "-error" } class="mt-1 text-sm text-danger-dark" role="alert">
