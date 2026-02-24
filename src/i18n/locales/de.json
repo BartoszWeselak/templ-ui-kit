@@ -140,5 +140,24 @@
   
   "profile.title": "Profil bearbeiten",
   
-  "footer.text": "Test Layout für Templ Komponenten • Alle Komponenten an einem Ort"
+  "footer.text": "Test Layout für Templ Komponenten • Alle Komponenten an einem Ort",
+  "todo.title": "Aufgabenliste",
+  "todo.add": "Aufgabe hinzufügen",
+  "todo.list": "Aufgaben",
+  "todo.submit": "Hinzufügen",
+  "todo.empty": "Keine Aufgaben.",
+  "todo.delete": "Löschen",
+  "todo.delete.confirm": "Diese Aufgabe löschen?",
+  "todo.toggle": "Umschalten",
+  "todo.field.title": "Titel",
+  "todo.field.title.placeholder": "z.B. Einkaufen",
+  "todo.field.priority": "Priorität",
+  "todo.field.actions": "Aktionen",
+  "priority.low": "Niedrig",
+  "priority.medium": "Mittel",
+  "priority.high": "Hoch",
+  "nav.back": "Zurück zur Demo",
+  "required": "Dieses Feld ist erforderlich.",
+  "min": "Mindestens %d Zeichen.",
+  "invalid": "Ungültiger Wert."
 }

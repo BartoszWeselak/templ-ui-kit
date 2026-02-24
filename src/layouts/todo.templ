@@ -1,0 +1,332 @@
+package layouts
+
+import (
+	"context"
+	"fmt"
+	"templ-ui-kit/src/components"
+	"templ-ui-kit/src/i18n"
+)
+
+// ── Domain ────────────────────────────────────────────────────────────────────
+
+type TodoPriority int
+
+const (
+	TodoPriorityLow    TodoPriority = 1
+	TodoPriorityMedium TodoPriority = 2
+	TodoPriorityHigh   TodoPriority = 3
+)
+
+func (p TodoPriority) Label() string {
+	switch p {
+	case TodoPriorityLow:
+		return "Low"
+	case TodoPriorityMedium:
+		return "Medium"
+	case TodoPriorityHigh:
+		return "High"
+	default:
+		return "Unknown"
+	}
+}
+
+func (p TodoPriority) BadgeVariant() components.BadgeVariant {
+	switch p {
+	case TodoPriorityHigh:
+		return components.BadgeDanger
+	case TodoPriorityMedium:
+		return components.BadgeWarning
+	default:
+		return components.BadgeSuccess
+	}
+}
+
+type TodoItem struct {
+	ID       int
+	Title    string
+	Priority TodoPriority
+	Done     bool
+}
+
+// ── Form data (Raw / Parsed pattern) ─────────────────────────────────────────
+
+type TodoFormData struct {
+	Problems map[string][]string
+	Valid    bool
+	Raw      struct {
+		Title    string
+		Priority string
+	}
+	Parsed struct {
+		Title    string
+		Priority int
+	}
+}
+
+func NewTodoFormData() TodoFormData {
+	return TodoFormData{Problems: make(map[string][]string)}
+}
+
+func (d TodoFormData) FieldError(field string) string {
+	if errs, ok := d.Problems[field]; ok && len(errs) > 0 {
+		return errs[0]
+	}
+	return ""
+}
+
+func (d TodoFormData) FieldVariant(field string) components.InputVariant {
+	if d.FieldError(field) != "" {
+		return components.InputVariantError
+	}
+	return components.InputVariantDefault
+}
+
+func (d TodoFormData) GenericErrors() []string {
+	return d.Problems["_generic"]
+}
+
+// ── Page layout ───────────────────────────────────────────────────────────────
+
+templ TodoLayout(ctx context.Context, todos []TodoItem, data TodoFormData, page int, totalPages int) {
+	<!DOCTYPE html>
+	<html lang={ i18n.GetLanguage(ctx) }>
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>Todos — { t(ctx, "app.title") }</title>
+			<script src="https://cdn.tailwindcss.com"></script>
+			<script src="https://unpkg.com/htmx.org@1.9.12"></script>
+			<link rel="stylesheet" href="/static/theme.css"/>
+			<style>
+				.component-section {
+					margin-bottom: 2rem;
+					padding: 2rem;
+					background: #f9fafb;
+					border-radius: 0.5rem;
+				}
+				.component-title {
+					font-size: 1.5rem;
+					font-weight: bold;
+					margin-bottom: 1.5rem;
+					color: #1f2937;
+					border-bottom: 2px solid #3b82f6;
+					padding-bottom: 0.5rem;
+				}
+				@keyframes slideIn {
+					from { opacity: 0; transform: translateY(-6px); }
+					to   { opacity: 1; transform: translateY(0); }
+				}
+				.todo-item { animation: slideIn 180ms ease-out; }
+				.htmx-indicator { opacity: 0; transition: opacity 150ms ease-in-out; }
+				.htmx-request .htmx-indicator,
+				.htmx-request.htmx-indicator { opacity: 1; }
+			</style>
+		</head>
+		<body class="bg-gray-100 p-8 min-h-screen">
+			<div class="max-w-3xl mx-auto">
+
+				<div class="mb-4 flex justify-end gap-2">
+					<a href="?lang=en" class="px-3 py-1 bg-white border rounded hover:bg-gray-50 text-sm">English</a>
+					<a href="?lang=pl" class="px-3 py-1 bg-white border rounded hover:bg-gray-50 text-sm">Polski</a>
+					<a href="?lang=de" class="px-3 py-1 bg-white border rounded hover:bg-gray-50 text-sm">Deutsch</a>
+				</div>
+
+				<header class="mb-8">
+					<h1 class="text-4xl font-bold text-gray-900 mb-1">📝 { t(ctx, "todo.title") }</h1>
+					<p class="text-gray-600">{ t(ctx, "app.subtitle") }</p>
+				</header>
+
+				<section class="component-section">
+					<h2 class="component-title">{ t(ctx, "todo.add") }</h2>
+					@TodoForm(ctx, data)
+				</section>
+
+				<section class="component-section">
+					<h2 class="component-title">{ t(ctx, "todo.list") }</h2>
+					@TodoTable(ctx, todos, page, totalPages)
+				</section>
+
+				<footer class="mt-4 text-center text-gray-600 pb-8 text-sm">
+					<a href="/" class="text-blue-500 hover:underline">← { t(ctx, "nav.back") }</a>
+				</footer>
+
+			</div>
+		</body>
+	</html>
+}
+
+// ── Generic errors ────────────────────────────────────────────────────────────
+
+templ TodoGenericErrors(errors []string) {
+	if len(errors) > 0 {
+		<div id="generic-errors" class="mb-4 space-y-2">
+			for _, err := range errors {
+				@components.Notification(components.NotificationProps{
+					Message:  err,
+					Type:     components.NotificationError,
+					ShowIcon: true,
+					Inline:   true,
+				})
+			}
+		</div>
+	}
+}
+
+// ── Form ──────────────────────────────────────────────────────────────────────
+
+templ TodoForm(ctx context.Context, data TodoFormData) {
+	<form
+		id="todo-form"
+		hx-post="/todos"
+		hx-target="#todo-form"
+		hx-swap="outerHTML"
+	>
+		@TodoGenericErrors(data.GenericErrors())
+
+		@components.FormInput(components.FormInputProps{
+			Name:        "title",
+			Label:       t(ctx, "todo.field.title"),
+			Type:        "text",
+			Placeholder: t(ctx, "todo.field.title.placeholder"),
+			Value:       data.Raw.Title,
+			Required:    true,
+			Variant:     data.FieldVariant("title"),
+			ErrorMsg:    data.FieldError("title"),
+		})
+
+		@components.FormSelect(components.FormSelectProps{
+			Name:     "priority",
+			Label:    t(ctx, "todo.field.priority"),
+			Required: true,
+			Selected: data.Raw.Priority,
+			Variant:  data.FieldVariant("priority"),
+			ErrorMsg: data.FieldError("priority"),
+			Options: []components.SelectOption{
+				{Value: "1", Label: t(ctx, "priority.low")},
+				{Value: "2", Label: t(ctx, "priority.medium")},
+				{Value: "3", Label: t(ctx, "priority.high")},
+			},
+		})
+
+		<div class="flex items-center gap-3 mt-2">
+			@components.Button(components.ButtonProps{
+				Text:    t(ctx, "todo.submit"),
+				Type:    "submit",
+				Variant: components.VariantPrimary,
+				Icon:    components.IconPlus(),
+			})
+			<svg class="animate-spin w-5 h-5 text-blue-500 htmx-indicator" fill="none" viewBox="0 0 24 24">
+				<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+				<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+			</svg>
+		</div>
+	</form>
+}
+
+// ── After successful POST ─────────────────────────────────────────────────────
+
+templ TodoCreateSuccess(ctx context.Context, todos []TodoItem, page int, totalPages int) {
+	<div id="todo-table" hx-swap-oob="true">
+		@TodoTableInner(ctx, todos, page, totalPages)
+	</div>
+	@TodoForm(ctx, NewTodoFormData())
+}
+
+// ── Table ─────────────────────────────────────────────────────────────────────
+
+templ TodoTable(ctx context.Context, todos []TodoItem, page int, totalPages int) {
+	<div id="todo-table">
+		@TodoTableInner(ctx, todos, page, totalPages)
+	</div>
+}
+
+templ TodoTableInner(ctx context.Context, todos []TodoItem, page int, totalPages int) {
+	if len(todos) == 0 {
+		<p class="text-gray-400 text-sm text-center py-8">{ t(ctx, "todo.empty") }</p>
+	} else {
+		<div class="overflow-x-auto rounded-lg border border-gray-200">
+			<table class="w-full text-sm text-left">
+				<thead class="bg-gray-100 text-gray-600 uppercase text-xs">
+					<tr>
+						<th class="px-4 py-3 w-8"></th>
+						<th class="px-4 py-3">{ t(ctx, "todo.field.title") }</th>
+						<th class="px-4 py-3">{ t(ctx, "todo.field.priority") }</th>
+						<th class="px-4 py-3 text-right">{ t(ctx, "todo.field.actions") }</th>
+					</tr>
+				</thead>
+				<tbody class="divide-y divide-gray-100 bg-white">
+					for _, todo := range todos {
+						<tr
+							class={
+								"todo-item transition-colors",
+								templ.KV("hover:bg-gray-50", !todo.Done),
+								templ.KV("bg-gray-50", todo.Done),
+							}
+						>
+							<td class="px-4 py-3">
+								<button
+									hx-patch={ fmt.Sprintf("/todos/%d/toggle", todo.ID) }
+									hx-target="#todo-table"
+									hx-swap="outerHTML"
+									class={
+										"w-5 h-5 rounded border-2 flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1",
+										templ.KV("border-gray-300 bg-white hover:border-blue-400 focus:ring-blue-300", !todo.Done),
+										templ.KV("border-green-500 bg-green-500 focus:ring-green-300", todo.Done),
+									}
+									aria-label={ t(ctx, "todo.toggle") }
+								>
+									if todo.Done {
+										@components.IconCheck()
+									}
+								</button>
+							</td>
+
+							<td class={
+								"px-4 py-3",
+								templ.KV("text-gray-800", !todo.Done),
+								templ.KV("text-gray-400 line-through", todo.Done),
+							}>
+								{ todo.Title }
+							</td>
+
+							<td class="px-4 py-3">
+								@components.Badge(components.BadgeProps{
+									Text:    todo.Priority.Label(),
+									Variant: todo.Priority.BadgeVariant(),
+									Size:    components.BadgeSizeSmall,
+								})
+							</td>
+
+							<td class="px-4 py-3">
+								<div class="flex justify-end gap-2">
+									@components.Button(components.ButtonProps{
+										Variant:   components.VariantDanger,
+										Size:      components.SizeSmall,
+										Icon:      components.IconTrash(),
+										AriaLabel: t(ctx, "todo.delete"),
+										Attrs: templ.Attributes{
+											"hx-delete":  fmt.Sprintf("/todos/%d", todo.ID),
+											"hx-target":  "#todo-table",
+											"hx-swap":    "outerHTML",
+											"hx-confirm": t(ctx, "todo.delete.confirm"),
+										},
+									})
+								</div>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+
+		if totalPages > 1 {
+			<div class="mt-4">
+				@components.Pagination(components.PaginationProps{
+					CurrentPage: page,
+					TotalPages:  totalPages,
+					BaseURL:     "/todos",
+				})
+			</div>
+		}
+	}
+}

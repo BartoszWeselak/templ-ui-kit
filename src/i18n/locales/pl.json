@@ -139,6 +139,24 @@
   "modal.triggers": "Przełączniki Okien",
   
   "profile.title": "Edytuj Profil",
-  
+  "todo.title": "Lista zadań",
+  "todo.add": "Dodaj zadanie",
+  "todo.list": "Zadania",
+  "todo.submit": "Dodaj",
+  "todo.empty": "Brak zadań.",
+  "todo.delete": "Usuń",
+  "todo.delete.confirm": "Usunąć to zadanie?",
+  "todo.toggle": "Przełącz",
+  "todo.field.title": "Tytuł",
+  "todo.field.title.placeholder": "np. Kup zakupy",
+  "todo.field.priority": "Priorytet",
+  "todo.field.actions": "Akcje",
+  "priority.low": "Niski",
+  "priority.medium": "Średni",
+  "priority.high": "Wysoki",
+  "nav.back": "Wróć do demo",
+  "required": "To pole jest wymagane.",
+  "min": "Minimum %d znaków.",
+  "invalid": "Nieprawidłowa wartość.",
   "footer.text": "Układ Testowy dla Komponentów Templ • Wszystkie komponenty w jednym miejscu"
 }

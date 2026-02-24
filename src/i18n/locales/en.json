@@ -140,5 +140,27 @@
 
   "profile.title": "Edit Profile",
 
-  "footer.text": "Test Layout for Templ Components • All components in one place"
+  "footer.text": "Test Layout for Templ Components • All components in one place",
+
+  "todo.title": "Todo List",
+  "todo.add": "Add task",
+  "todo.list": "Tasks",
+  "todo.submit": "Add",
+  "todo.empty": "No tasks yet.",
+  "todo.delete": "Delete",
+  "todo.delete.confirm": "Delete this task?",
+  "todo.toggle": "Toggle done",
+  "todo.field.title": "Title",
+  "todo.field.title.placeholder": "e.g. Buy groceries",
+  "todo.field.priority": "Priority",
+  "todo.field.actions": "Actions",
+  "priority.low": "Low",
+  "priority.medium": "Medium",
+  "priority.high": "High",
+  "nav.back": "Back to demo",
+  "required": "This field is required.",
+  "min": "Minimum %d characters.",
+  "invalid": "Invalid value."
+
+
 }
