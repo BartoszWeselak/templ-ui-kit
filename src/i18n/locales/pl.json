@@ -158,5 +158,17 @@
   "required": "To pole jest wymagane.",
   "min": "Minimum %d znaków.",
   "invalid": "Nieprawidłowa wartość.",
-  "footer.text": "Układ Testowy dla Komponentów Templ • Wszystkie komponenty w jednym miejscu"
+  "footer.text": "Układ Testowy dla Komponentów Templ • Wszystkie komponenty w jednym miejscu",
+
+  "nav.home": "Strona główna",
+  "nav.back": "Wróć",
+  "error.generic": "Coś poszło nie tak. Spróbuj ponownie.",
+  "error.internal": "Wystąpił nieoczekiwany błąd.",
+  "error.render": "Nie udało się załadować strony.",
+  "error.contact_support": "Jeśli problem nadal występuje, skontaktuj się z pomocą techniczną.",
+  "error.404.title": "Nie znaleziono strony",
+  "error.403.title": "Brak dostępu",
+  "error.401.title": "Nieautoryzowany dostęp",
+  "error.400.title": "Nieprawidłowe żądanie",
+  "error.500.title": "Wewnętrzny błąd serwera"
 }

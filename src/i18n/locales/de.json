@@ -159,5 +159,17 @@
   "nav.back": "Zurück zur Demo",
   "required": "Dieses Feld ist erforderlich.",
   "min": "Mindestens %d Zeichen.",
-  "invalid": "Ungültiger Wert."
+  "invalid": "Ungültiger Wert.",
+
+  "nav.home": "Zur Startseite",
+  "nav.back": "Zurück",
+  "error.generic": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+  "error.internal": "Ein unerwarteter Fehler ist aufgetreten.",
+  "error.render": "Die Seite konnte nicht geladen werden.",
+  "error.contact_support": "Wenn das Problem weiterhin besteht, wende dich bitte an den Support.",
+  "error.404.title": "Seite nicht gefunden",
+  "error.403.title": "Zugriff verweigert",
+  "error.401.title": "Nicht autorisiert",
+  "error.400.title": "Ungültige Anfrage",
+  "error.500.title": "Interner Serverfehler"
 }

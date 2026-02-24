@@ -160,7 +160,18 @@
   "nav.back": "Back to demo",
   "required": "This field is required.",
   "min": "Minimum %d characters.",
-  "invalid": "Invalid value."
+  "invalid": "Invalid value.",
 
-
+  
+  "nav.home": "Go Home",
+  "nav.back": "Go Back",
+  "error.generic": "Something went wrong. Please try again.",
+  "error.internal": "An unexpected error occurred.",
+  "error.render": "Failed to render the page.",
+  "error.contact_support": "If this problem persists, please contact support.",
+  "error.404.title": "Page Not Found",
+  "error.403.title": "Forbidden",
+  "error.401.title": "Unauthorized",
+  "error.400.title": "Bad Request",
+  "error.500.title": "Internal Server Error"
 }

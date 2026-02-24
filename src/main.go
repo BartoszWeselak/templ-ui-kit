@@ -1,14 +1,16 @@
 package main
 
 import (
-	"log"
 	"net/http"
 	"strconv"
 	"strings"
 	"sync"
-
+	"templ-ui-kit/src/apperrors"
 	"templ-ui-kit/src/i18n"
 	"templ-ui-kit/src/layouts"
+
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 // ── In-memory store ───────────────────────────────────────────────────────────
@@ -104,20 +106,20 @@ func toggleTodo(id int) {
 
 // ── Form parsing ──────────────────────────────────────────────────────────────
 
-func parseTodoForm(r *http.Request) layouts.TodoFormData {
-	ctx := r.Context()
+func parseTodoForm(c echo.Context) layouts.TodoFormData {
+	ctx := c.Request().Context()
 	lang := i18n.GetLanguage(ctx)
 	tr := i18n.GetTranslator()
 
 	data := layouts.NewTodoFormData()
 
-	if err := r.ParseForm(); err != nil {
+	if err := c.Request().ParseForm(); err != nil {
 		data.Problems["_generic"] = []string{err.Error()}
 		return data
 	}
 
-	data.Raw.Title = r.PostFormValue("title")
-	data.Raw.Priority = r.PostFormValue("priority")
+	data.Raw.Title = c.FormValue("title")
+	data.Raw.Priority = c.FormValue("priority")
 
 	data.Parsed.Title = strings.TrimSpace(data.Raw.Title)
 	if len(data.Parsed.Title) == 0 {
@@ -142,105 +144,76 @@ func parseTodoForm(r *http.Request) layouts.TodoFormData {
 	return data
 }
 
+// ── Middleware ────────────────────────────────────────────────────────────────
+
+func i18nMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		lang := i18n.DetectLanguage(c.Request())
+		ctx := i18n.WithLanguage(c.Request().Context(), lang)
+		c.SetRequest(c.Request().WithContext(ctx))
+		return next(c)
+	}
+}
+
 // ── Handlers ──────────────────────────────────────────────────────────────────
 
-func handleIndex(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	if err := layouts.TestLayoutI18n(ctx).Render(ctx, w); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
+func handleIndex(c echo.Context) error {
+	ctx := c.Request().Context()
+	return apperrors.RenderTempl(c, http.StatusOK, layouts.TestLayoutI18n(ctx))
 }
 
-func handleTodos(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
-	case http.MethodGet:
-		handleTodoIndex(w, r)
-	case http.MethodPost:
-		handleTodoCreate(w, r)
-	default:
-		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
-	}
-}
-
-func handleTodoIndex(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	page, _ := strconv.Atoi(r.URL.Query().Get("page"))
+func handleTodoIndex(c echo.Context) error {
+	ctx := c.Request().Context()
+	page, _ := strconv.Atoi(c.QueryParam("page"))
 	todos, totalPages := pagedTodos(page)
 	data := layouts.NewTodoFormData()
-	if err := layouts.TodoLayout(ctx, todos, data, page, totalPages).Render(ctx, w); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
+	return apperrors.RenderTempl(c, http.StatusOK, layouts.TodoLayout(ctx, todos, data, page, totalPages))
 }
 
-func handleTodoCreate(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	data := parseTodoForm(r)
+func handleTodoCreate(c echo.Context) error {
+	ctx := c.Request().Context()
+	data := parseTodoForm(c)
 
 	if !data.Valid {
-		w.WriteHeader(http.StatusUnprocessableEntity)
-		if err := layouts.TodoForm(ctx, data).Render(ctx, w); err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-		}
-		return
+		return apperrors.RenderTempl(c, http.StatusUnprocessableEntity, layouts.TodoForm(ctx, data))
 	}
 
 	addTodo(data)
-
 	todos, totalPages := pagedTodos(1)
-	if err := layouts.TodoCreateSuccess(ctx, todos, 1, totalPages).Render(ctx, w); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
+	return apperrors.RenderTempl(c, http.StatusOK, layouts.TodoCreateSuccess(ctx, todos, 1, totalPages))
 }
 
-func handleTodoByID(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
-	case http.MethodDelete:
-		handleTodoDelete(w, r)
-	case http.MethodPatch:
-		// /todos/{id}/toggle — sprawdź suffix
-		handleTodoToggle(w, r)
-	default:
-		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
-	}
-}
-
-func handleTodoDelete(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	id, err := strconv.Atoi(r.PathValue("id"))
+func handleTodoDelete(c echo.Context) error {
+	ctx := c.Request().Context()
+	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		http.Error(w, "invalid id", http.StatusBadRequest)
-		return
+		return echo.NewHTTPError(http.StatusBadRequest, "error.bad_request")
 	}
 	deleteTodo(id)
-	page, _ := strconv.Atoi(r.URL.Query().Get("page"))
+	page, _ := strconv.Atoi(c.QueryParam("page"))
 	todos, totalPages := pagedTodos(page)
-	if err := layouts.TodoTableInner(ctx, todos, page, totalPages).Render(ctx, w); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
+	return apperrors.RenderTempl(c, http.StatusOK, layouts.TodoTableInner(ctx, todos, page, totalPages))
 }
 
-func handleTodoToggle(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-	id, err := strconv.Atoi(r.PathValue("id"))
+func handleTodoToggle(c echo.Context) error {
+	ctx := c.Request().Context()
+	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		http.Error(w, "invalid id", http.StatusBadRequest)
-		return
+		return echo.NewHTTPError(http.StatusBadRequest, "error.bad_request")
 	}
 	toggleTodo(id)
-	page, _ := strconv.Atoi(r.URL.Query().Get("page"))
+	page, _ := strconv.Atoi(c.QueryParam("page"))
 	todos, totalPages := pagedTodos(page)
-	if err := layouts.TodoTableInner(ctx, todos, page, totalPages).Render(ctx, w); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
+	return apperrors.RenderTempl(c, http.StatusOK, layouts.TodoTableInner(ctx, todos, page, totalPages))
 }
 
-func handleSetLanguage(w http.ResponseWriter, r *http.Request) {
-	lang := r.URL.Query().Get("lang")
+func handleSetLanguage(c echo.Context) error {
+	lang := c.QueryParam("lang")
 	if lang == "" {
 		lang = "en"
 	}
-	i18n.SetLanguageCookie(w, lang)
-	http.Redirect(w, r, r.Header.Get("Referer"), http.StatusSeeOther)
+	i18n.SetLanguageCookie(c.Response().Writer, lang)
+	return c.Redirect(http.StatusSeeOther, c.Request().Referer())
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
@@ -248,22 +221,21 @@ func handleSetLanguage(w http.ResponseWriter, r *http.Request) {
 func main() {
 	_ = i18n.GetTranslator()
 
-	mux := http.NewServeMux()
-	lang := i18n.LanguageMiddleware
+	e := echo.New()
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+	e.Use(i18nMiddleware)
+	e.HTTPErrorHandler = apperrors.Handler
 
-	// Components demo
-	mux.Handle("/", lang(http.HandlerFunc(handleIndex)))
-	mux.HandleFunc("/set-language", handleSetLanguage)
+	e.Static("/static", "src/static")
 
-	// Todo — bez metody w ścieżce, dispatch ręcznie
-	mux.Handle("/todos", lang(http.HandlerFunc(handleTodos)))
-	mux.Handle("/todos/{id}", lang(http.HandlerFunc(handleTodoByID)))
-	mux.Handle("/todos/{id}/toggle", lang(http.HandlerFunc(handleTodoToggle)))
+	e.GET("/", handleIndex)
+	e.GET("/set-language", handleSetLanguage)
 
-	// Static
-	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("src/static"))))
+	e.GET("/todos", handleTodoIndex)
+	e.POST("/todos", handleTodoCreate)
+	e.DELETE("/todos/:id", handleTodoDelete)
+	e.PATCH("/todos/:id/toggle", handleTodoToggle)
 
-	log.Println("Server  → http://localhost:8080")
-	log.Println("Todos   → http://localhost:8080/todos")
-	log.Fatal(http.ListenAndServe(":8080", mux))
+	e.Logger.Fatal(e.Start(":8080"))
 }

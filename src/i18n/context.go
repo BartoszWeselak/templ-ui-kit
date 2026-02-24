@@ -72,3 +72,7 @@ func SetLanguageCookie(w http.ResponseWriter, lang string) {
 	}
 	http.SetCookie(w, cookie)
 }
+
+func DetectLanguage(r *http.Request) string {
+	return detectLanguage(r)
+}

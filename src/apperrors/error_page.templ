@@ -1,0 +1,62 @@
+package apperrors
+
+import (
+	"fmt"
+	"templ-ui-kit/src/components"
+	"templ-ui-kit/src/i18n"
+)
+
+templ ErrorPage(code int, messageKey string) {
+	{{
+		lang := i18n.GetLanguage(ctx)
+		title := StatusTitle(lang, code)
+		message := StatusMessage(lang, messageKey)
+	}}
+	<!DOCTYPE html>
+	<html lang={ lang }>
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>{ fmt.Sprintf("%d — %s", code, title) }</title>
+			<script src="https://cdn.tailwindcss.com"></script>
+			<link rel="stylesheet" href="/static/theme.css"/>
+		</head>
+		<body class="bg-gray-100 min-h-screen flex items-center justify-center p-8">
+			<div class="max-w-md w-full space-y-6">
+				<div class="text-center text-6xl">{ StatusEmoji(code) }</div>
+				@components.Notification(components.NotificationProps{
+					Title:    fmt.Sprintf("%d — %s", code, title),
+					Message:  message,
+					Type:     notifType(code),
+					ShowIcon: true,
+					Inline:   true,
+					Size:     components.NotificationSizeLarge,
+				})
+				<div class="flex gap-3 justify-center">
+					@components.Button(components.ButtonProps{
+						Text:    Tr(lang, "nav.home"),
+						Variant: components.VariantPrimary,
+						Attrs:   templ.Attributes{"onclick": "window.location='/'"},
+					})
+					@components.Button(components.ButtonProps{
+						Text:    Tr(lang, "nav.back"),
+						Variant: components.VariantSecondary,
+						Attrs:   templ.Attributes{"onclick": "history.back()"},
+					})
+				</div>
+				if code >= 500 {
+					<p class="text-center text-xs text-gray-400">
+						{ Tr(lang, "error.contact_support") }
+					</p>
+				}
+			</div>
+		</body>
+	</html>
+}
+
+func notifType(code int) components.NotificationType {
+	if code >= 500 {
+		return components.NotificationError
+	}
+	return components.NotificationWarning
+}
