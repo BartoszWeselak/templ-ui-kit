@@ -1,0 +1,395 @@
+package components
+
+// FormFieldType determines how a field is rendered
+type FormFieldType string
+
+const (
+	FormFieldText     FormFieldType = "text"
+	FormFieldEmail    FormFieldType = "email"
+	FormFieldPassword FormFieldType = "password"
+	FormFieldNumber   FormFieldType = "number"
+	FormFieldDate     FormFieldType = "date"
+	FormFieldTime     FormFieldType = "time"
+	FormFieldUrl      FormFieldType = "url"
+	FormFieldTel      FormFieldType = "tel"
+	FormFieldSelect   FormFieldType = "select"
+	FormFieldTextarea FormFieldType = "textarea"
+	FormFieldCheckbox FormFieldType = "checkbox"
+	FormFieldHidden   FormFieldType = "hidden"
+)
+
+// FormField defines a single form field
+type FormField struct {
+	Name        string
+	Label       string
+	Type        FormFieldType
+	Value       string
+	Placeholder string
+	HelpText    string
+	ErrorMsg    string
+	Options     []SelectOption // for FormFieldSelect
+	Required    bool
+	Disabled    bool
+	Readonly    bool
+	Rows        int    // for FormFieldTextarea, default 3
+	ClassName   string
+	Attrs       templ.Attributes
+}
+
+// UpdateFormProps configures the update form
+type UpdateFormProps struct {
+	ResourceID string
+
+	Fields []FormField
+
+	Action string
+	Method string
+
+	HXTarget string
+	HXSwap string
+
+	Title string
+
+	SubmitLabel string
+	CancelLabel string
+	CancelHref string
+
+	Loading bool
+
+	ErrorMsg string
+
+	SuccessMsg string
+
+	ClassName string
+}
+
+func (p UpdateFormProps) GetMethod() string {
+	if p.Method == "" {
+		return "put"
+	}
+	return p.Method
+}
+
+func (p UpdateFormProps) GetHXSwap() string {
+	if p.HXSwap == "" {
+		return "outerHTML"
+	}
+	return p.HXSwap
+}
+
+func (p UpdateFormProps) GetSubmitLabel() string {
+	if p.SubmitLabel == "" {
+		return "Zapisz zmiany"
+	}
+	return p.SubmitLabel
+}
+
+func (p UpdateFormProps) GetCancelLabel() string {
+	if p.CancelLabel == "" {
+		return "Anuluj"
+	}
+	return p.CancelLabel
+}
+
+func (f FormField) GetRows() int {
+	if f.Rows <= 0 {
+		return 3
+	}
+	return f.Rows
+}
+
+func (f FormField) GetVariant() InputVariant {
+	if f.ErrorMsg != "" {
+		return InputVariantError
+	}
+	return InputVariantDefault
+}
+
+
+templ updateFormFieldInput(f FormField) {
+	<input
+		type={ string(f.Type) }
+		id={ f.Name }
+		name={ f.Name }
+		value={ f.Value }
+		class={
+			"w-full border rounded-md focus:outline-none focus:ring-2 transition-colors px-4 py-2 text-base",
+			templ.KV("border-gray-300 focus:ring-primary focus:border-primary", f.GetVariant() == InputVariantDefault),
+			templ.KV("border-danger focus:ring-danger focus:border-danger", f.GetVariant() == InputVariantError),
+			templ.KV("bg-gray-100 cursor-not-allowed opacity-60", f.Disabled),
+			templ.KV("bg-gray-50 cursor-default", f.Readonly && !f.Disabled),
+			f.ClassName,
+		}
+		if f.Placeholder != "" {
+			placeholder={ f.Placeholder }
+		}
+		if f.Required {
+			required
+		}
+		if f.Disabled {
+			disabled
+		}
+		if f.Readonly {
+			readonly
+		}
+		if f.ErrorMsg != "" {
+			aria-invalid="true"
+			aria-describedby={ f.Name + "-error" }
+		} else if f.HelpText != "" {
+			aria-describedby={ f.Name + "-help" }
+		}
+		{ f.Attrs... }
+	/>
+}
+
+templ updateFormFieldSelect(f FormField) {
+	<select
+		id={ f.Name }
+		name={ f.Name }
+		class={
+			"w-full border rounded-md focus:outline-none focus:ring-2 transition-colors bg-white px-4 py-2 text-base",
+			templ.KV("border-gray-300 focus:ring-primary focus:border-primary", f.GetVariant() == InputVariantDefault),
+			templ.KV("border-danger focus:ring-danger focus:border-danger", f.GetVariant() == InputVariantError),
+			templ.KV("bg-gray-100 cursor-not-allowed opacity-60", f.Disabled),
+			f.ClassName,
+		}
+		if f.Required {
+			required
+		}
+		if f.Disabled {
+			disabled
+		}
+		if f.ErrorMsg != "" {
+			aria-invalid="true"
+			aria-describedby={ f.Name + "-error" }
+		} else if f.HelpText != "" {
+			aria-describedby={ f.Name + "-help" }
+		}
+		{ f.Attrs... }
+	>
+		if f.Placeholder != "" {
+			<option value="">{ f.Placeholder }</option>
+		}
+		for _, opt := range f.Options {
+			<option
+				value={ opt.Value }
+				if opt.Value == f.Value {
+					selected
+				}
+			>{ opt.Label }</option>
+		}
+	</select>
+}
+
+templ updateFormFieldTextarea(f FormField) {
+	<textarea
+		id={ f.Name }
+		name={ f.Name }
+		rows={ templ.JSONString(f.GetRows()) }
+		class={
+			"w-full border rounded-md focus:outline-none focus:ring-2 transition-colors px-4 py-2 text-base resize-y",
+			templ.KV("border-gray-300 focus:ring-primary focus:border-primary", f.GetVariant() == InputVariantDefault),
+			templ.KV("border-danger focus:ring-danger focus:border-danger", f.GetVariant() == InputVariantError),
+			templ.KV("bg-gray-100 cursor-not-allowed opacity-60", f.Disabled),
+			templ.KV("bg-gray-50 cursor-default", f.Readonly && !f.Disabled),
+			f.ClassName,
+		}
+		if f.Placeholder != "" {
+			placeholder={ f.Placeholder }
+		}
+		if f.Required {
+			required
+		}
+		if f.Disabled {
+			disabled
+		}
+		if f.Readonly {
+			readonly
+		}
+		if f.ErrorMsg != "" {
+			aria-invalid="true"
+			aria-describedby={ f.Name + "-error" }
+		} else if f.HelpText != "" {
+			aria-describedby={ f.Name + "-help" }
+		}
+		{ f.Attrs... }
+	>{ f.Value }</textarea>
+}
+
+templ updateFormFieldCheckbox(f FormField) {
+	<label class="inline-flex items-center gap-2 cursor-pointer">
+		<input
+			type="checkbox"
+			id={ f.Name }
+			name={ f.Name }
+			value="true"
+			class="rounded border-gray-300 text-primary focus:ring-primary"
+			if f.Value == "true" || f.Value == "1" || f.Value == "on" {
+				checked
+			}
+			if f.Required {
+				required
+			}
+			if f.Disabled {
+				disabled
+			}
+			{ f.Attrs... }
+		/>
+		<span class="text-base text-gray-700">{ f.Label }</span>
+	</label>
+}
+
+// updateFormField dispatches to the right renderer and wraps it in a label + messages
+templ updateFormField(f FormField) {
+	if f.Type == FormFieldHidden {
+		<input type="hidden" name={ f.Name } value={ f.Value }/>
+	} else if f.Type == FormFieldCheckbox {
+		<div class="mb-4">
+			@updateFormFieldCheckbox(f)
+			if f.ErrorMsg != "" {
+				<p id={ f.Name + "-error" } class="mt-1 text-sm text-danger-dark" role="alert">{ f.ErrorMsg }</p>
+			}
+			if f.HelpText != "" && f.ErrorMsg == "" {
+				<p id={ f.Name + "-help" } class="mt-1 text-sm text-secondary">{ f.HelpText }</p>
+			}
+		</div>
+	} else {
+		<div class="mb-4">
+			if f.Label != "" {
+				<label for={ f.Name } class="block text-gray-700 font-medium mb-2 text-base">
+					{ f.Label }
+					if f.Required {
+						<span class="text-danger ml-1" aria-hidden="true">*</span>
+					}
+				</label>
+			}
+			if f.Type == FormFieldSelect {
+				@updateFormFieldSelect(f)
+			} else if f.Type == FormFieldTextarea {
+				@updateFormFieldTextarea(f)
+			} else {
+				@updateFormFieldInput(f)
+			}
+			if f.ErrorMsg != "" {
+				<p id={ f.Name + "-error" } class="mt-1 text-sm text-danger-dark" role="alert">{ f.ErrorMsg }</p>
+			}
+			if f.HelpText != "" && f.ErrorMsg == "" {
+				<p id={ f.Name + "-help" } class="mt-1 text-sm text-secondary">{ f.HelpText }</p>
+			}
+		</div>
+	}
+}
+
+
+// UpdateForm renders a pre-filled edit form that submits via HTMX hx-put (or hx-post).
+templ UpdateForm(props UpdateFormProps) {
+	<div
+		id={ "update-form-" + props.ResourceID }
+		class={
+			"bg-white border border-primary/20 rounded-lg shadow-sm p-6",
+			props.ClassName,
+		}
+	>
+		if props.Title != "" {
+			<h2 class="text-xl font-bold text-primary-dark mb-6">{ props.Title }</h2>
+		}
+		if props.ErrorMsg != "" {
+			<div class="mb-4 rounded-md border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-danger-dark" role="alert">
+				{ props.ErrorMsg }
+			</div>
+		}
+		<form
+			if props.GetMethod() == "post" {
+				hx-post={ props.Action }
+			} else {
+				hx-put={ props.Action }
+			}
+			if props.HXTarget != "" {
+				hx-target={ props.HXTarget }
+			} else {
+				hx-target={ "#update-form-" + props.ResourceID }
+			}
+			hx-swap={ props.GetHXSwap() }
+			hx-disabled-elt="[data-submit]"
+			novalidate
+			aria-label={ props.Title }
+		>
+			for _, field := range props.Fields {
+				@updateFormField(field)
+			}
+			<div class="flex items-center gap-3 mt-6 pt-4 border-t border-primary/10">
+				<button
+					type="submit"
+					data-submit
+					class={
+						"inline-flex items-center gap-2 rounded-md px-5 py-2 text-sm font-medium text-white",
+						"bg-primary hover:opacity-90 transition-opacity duration-200",
+						"focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-300",
+						"disabled:opacity-60 disabled:cursor-not-allowed",
+					}
+					if props.Loading {
+						disabled
+						aria-busy="true"
+					}
+				>
+					if props.Loading {
+						@LoadingSpinner(SizeMedium)
+					}
+					{ props.GetSubmitLabel() }
+				</button>
+				if props.CancelHref != "" {
+					<a
+						href={ templ.SafeURL(props.CancelHref) }
+						class={
+							"inline-flex items-center rounded-md px-5 py-2 text-sm font-medium",
+							"text-secondary border border-secondary/30 bg-secondary-light",
+							"hover:bg-secondary hover:text-white transition-colors duration-200",
+							"focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-300",
+						}
+					>
+						{ props.GetCancelLabel() }
+					</a>
+				} else {
+					<button
+						type="button"
+						class={
+							"inline-flex items-center rounded-md px-5 py-2 text-sm font-medium",
+							"text-secondary border border-secondary/30 bg-secondary-light",
+							"hover:bg-secondary hover:text-white transition-colors duration-200",
+							"focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-300",
+						}
+						onclick="history.back()"
+					>
+						{ props.GetCancelLabel() }
+					</button>
+				}
+			</div>
+		</form>
+	</div>
+}
+
+// UpdateFormSuccess renders a confirmation panel after a successful save.
+// Swap this in via HTMX from the server after processing the PUT/POST.
+templ UpdateFormSuccess(resourceID, message, backHref string) {
+	<div
+		id={ "update-form-" + resourceID }
+		class="bg-white border border-success/30 rounded-lg shadow-sm p-6"
+		role="status"
+	>
+		<div class="flex items-start gap-3">
+			<svg class="w-6 h-6 text-success flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+			</svg>
+			<div>
+				<p class="font-medium text-success-dark">{ message }</p>
+				if backHref != "" {
+					<a
+						href={ templ.SafeURL(backHref) }
+						class="mt-3 inline-flex items-center text-sm text-primary hover:underline"
+					>
+					</a>
+				}
+			</div>
+		</div>
+	</div>
+}
