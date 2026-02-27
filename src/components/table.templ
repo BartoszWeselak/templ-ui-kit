@@ -1,0 +1,513 @@
+package components
+
+type ColumnType string
+
+type TableVariant string
+
+type TableSize string
+
+const (
+	// Column types
+	ColumnTypeText     ColumnType = "text"
+	ColumnTypeNumber   ColumnType = "number"
+	ColumnTypeEmail    ColumnType = "email"
+	ColumnTypeDate     ColumnType = "date"
+	ColumnTypeSelect   ColumnType = "select"
+	ColumnTypeCheckbox ColumnType = "checkbox"
+
+	// Table variants
+	TableVariantDefault  TableVariant = "default"
+	TableVariantStriped  TableVariant = "striped"
+	TableVariantBordered TableVariant = "bordered"
+
+	// Table sizes
+	TableSizeSmall  TableSize = "small"
+	TableSizeMedium TableSize = "medium"
+	TableSizeLarge  TableSize = "large"
+)
+
+type TableColumn struct {
+	Key string
+	Label string
+	Type ColumnType
+	Options []SelectOption
+	Width string
+	Sortable bool
+	Editable bool
+	Required bool
+	Placeholder string
+}
+
+type TableCell struct {
+	Value string
+	DisplayValue string
+	ClassName string
+}
+
+type TableRow struct {
+	ID string
+	Cells map[string]TableCell
+	ClassName string
+	Attrs templ.Attributes
+}
+
+type TableProps struct {
+	Columns []TableColumn
+	Rows []TableRow
+	Variant TableVariant
+	Size TableSize
+	Caption string
+	ClassName string
+	EmptyMessage string
+	EditMode bool
+	SaveURL string
+	HTTPMethod string
+	ShowDelete bool
+	DeleteURL string
+	Selectable bool
+}
+
+func (p TableProps) GetVariant() TableVariant {
+	if p.Variant == "" {
+		return TableVariantDefault
+	}
+	return p.Variant
+}
+
+func (p TableProps) GetSize() TableSize {
+	if p.Size == "" {
+		return TableSizeMedium
+	}
+	return p.Size
+}
+
+func (p TableProps) GetEmptyMessage() string {
+	if p.EmptyMessage == "" {
+		return "Brak danych do wyświetlenia."
+	}
+	return p.EmptyMessage
+}
+
+func (p TableProps) GetHTTPMethod() string {
+	if p.HTTPMethod == "" {
+		return "put"
+	}
+	return p.HTTPMethod
+}
+
+// cellDisplayValue returns the value to show in read-only mode
+func cellDisplayValue(cell TableCell) string {
+	if cell.DisplayValue != "" {
+		return cell.DisplayValue
+	}
+	return cell.Value
+}
+
+// replaceID returns a URL with {id} replaced by the given row ID.
+// Implemented as a Go helper so templ templates stay clean.
+func replaceID(url, id string) string {
+	result := ""
+	placeholder := "{id}"
+	plen := len(placeholder)
+	for i := 0; i <= len(url)-plen; {
+		if url[i:i+plen] == placeholder {
+			result += id
+			i += plen
+		} else {
+			result += string(url[i])
+			i++
+		}
+	}
+	// append remainder if url shorter than placeholder
+	if len(result) == 0 {
+		return url
+	}
+	return result
+}
+
+
+templ IconEdit() {
+	<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+		<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+	</svg>
+}
+
+
+// TableEditInput renders the appropriate input element for a cell in edit mode
+templ TableEditInput(col TableColumn, cell TableCell, rowID string) {
+	if col.Type == ColumnTypeSelect {
+		<select
+			name={ col.Key }
+			class={
+				"w-full rounded-md border border-primary px-2 py-1 text-sm",
+				"bg-white text-primary-dark",
+				"focus:outline-none focus:ring-2 focus:ring-primary-300",
+				"transition-colors duration-150",
+			}
+			if col.Required {
+				required
+			}
+		>
+			for _, opt := range col.Options {
+				<option
+					value={ opt.Value }
+					if opt.Value == cell.Value {
+						selected
+					}
+				>{ opt.Label }</option>
+			}
+		</select>
+	} else if col.Type == ColumnTypeCheckbox {
+		<input
+			type="checkbox"
+			name={ col.Key }
+			value="true"
+			class="rounded border-primary text-primary focus:ring-primary-300"
+			if cell.Value == "true" || cell.Value == "1" || cell.Value == "on" {
+				checked
+			}
+		/>
+	} else {
+		<input
+			type={ string(col.Type) }
+			name={ col.Key }
+			value={ cell.Value }
+			class={
+				"w-full rounded-md border border-primary px-2 py-1 text-sm",
+				"bg-white text-primary-dark",
+				"focus:outline-none focus:ring-2 focus:ring-primary-300",
+				"transition-colors duration-150",
+				"disabled:bg-secondary-light disabled:cursor-not-allowed",
+			}
+			if col.Required {
+				required
+			}
+			if col.Placeholder != "" {
+				placeholder={ col.Placeholder }
+			}
+		/>
+	}
+}
+
+// TableRowView renders a single row in read-only mode
+templ TableRowView(props TableProps, row TableRow, rowIndex int) {
+	<tr
+		id={ "row-" + row.ID }
+		class={
+			"border-b border-primary transition-colors duration-150",
+			"hover:bg-primary-light/30",
+			templ.KV("bg-secondary-light/40", props.GetVariant() == TableVariantStriped && rowIndex%2 != 0),
+			row.ClassName,
+		}
+		{ row.Attrs... }
+	>
+		if props.Selectable {
+			<td class={ tableCellClass(props.GetSize()) }>
+				<input
+					type="checkbox"
+					name="selected"
+					value={ row.ID }
+					class="rounded border-primary text-primary focus:ring-primary-300"
+					aria-label="Zaznacz wiersz"
+				/>
+			</td>
+		}
+		for _, col := range props.Columns {
+			<td
+				class={
+					tableCellClass(props.GetSize()),
+					templ.KV("border border-primary/30", props.GetVariant() == TableVariantBordered),
+					row.Cells[col.Key].ClassName,
+				}
+			>
+				{ cellDisplayValue(row.Cells[col.Key]) }
+			</td>
+		}
+		if props.EditMode || props.ShowDelete {
+			<td class={ tableCellClass(props.GetSize()) + " text-right" }>
+				<div class="flex items-center justify-end gap-2">
+					if props.EditMode {
+						<button
+							type="button"
+							class={
+								"inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium",
+								"bg-secondary-light text-primary border border-primary/30",
+								"hover:bg-primary hover:text-white transition-colors duration-150",
+								"focus:outline-none focus:ring-2 focus:ring-primary-300",
+							}
+							hx-get={ "javascript:void(0)" }
+							onclick={ switchToEditMode(row.ID) }
+							aria-label={ "Edytuj wiersz " + row.ID }
+						>
+							@IconEdit()
+							<span>Edytuj</span>
+						</button>
+					}
+					if props.ShowDelete && props.DeleteURL != "" {
+						<button
+							type="button"
+							class={
+								"inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium",
+								"bg-danger/10 text-danger border border-danger/30",
+								"hover:bg-danger hover:text-white transition-colors duration-150",
+								"focus:outline-none focus:ring-2 focus:ring-danger-300",
+							}
+							hx-delete={ replaceID(props.DeleteURL, row.ID) }
+							hx-target={ "#row-" + row.ID }
+							hx-swap="outerHTML"
+							hx-confirm="Czy na pewno chcesz usunąć ten wiersz?"
+							aria-label={ "Usuń wiersz " + row.ID }
+						>
+							@IconTrash()
+							<span>Usuń</span>
+						</button>
+					}
+				</div>
+			</td>
+		}
+	</tr>
+}
+
+// TableRowEdit renders a single row in edit mode
+templ TableRowEdit(props TableProps, row TableRow) {
+	<tr
+		id={ "row-" + row.ID }
+		class={
+			"border-b border-primary bg-primary-light/20",
+			"ring-2 ring-inset ring-primary/40",
+		}
+	>
+		if props.Selectable {
+			<td class={ tableCellClass(props.GetSize()) }>
+				<input
+					type="checkbox"
+					name="selected"
+					value={ row.ID }
+					class="rounded border-primary text-primary focus:ring-primary-300"
+					aria-label="Zaznacz wiersz"
+				/>
+			</td>
+		}
+		for _, col := range props.Columns {
+			<td
+				class={
+					tableCellClass(props.GetSize()),
+					templ.KV("border border-primary/30", props.GetVariant() == TableVariantBordered),
+				}
+			>
+				if col.Editable {
+					@TableEditInput(col, row.Cells[col.Key], row.ID)
+				} else {
+					<span class="text-secondary text-sm">{ cellDisplayValue(row.Cells[col.Key]) }</span>
+				}
+			</td>
+		}
+		<td class={ tableCellClass(props.GetSize()) + " text-right" }>
+			<div class="flex items-center justify-end gap-2">
+				if props.SaveURL != "" {
+					<button
+						type="button"
+						class={
+							"inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium",
+							"bg-success text-white",
+							"hover:opacity-90 transition-opacity duration-150",
+							"focus:outline-none focus:ring-2 focus:ring-success-300",
+						}
+						if props.GetHTTPMethod() == "post" {
+							hx-post={ replaceID(props.SaveURL, row.ID) }
+						} else {
+							hx-put={ replaceID(props.SaveURL, row.ID) }
+						}
+						hx-target={ "#row-" + row.ID }
+						hx-swap="outerHTML"
+						hx-include={ "closest tr" }
+						aria-label="Zapisz zmiany"
+					>
+						@IconCheck()
+						<span>Zapisz</span>
+					</button>
+				}
+				<button
+					type="button"
+					class={
+						"inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium",
+						"bg-secondary-light text-secondary border border-secondary/30",
+						"hover:bg-secondary hover:text-white transition-colors duration-150",
+						"focus:outline-none focus:ring-2 focus:ring-secondary-300",
+					}
+					onclick={ switchToViewMode(row.ID) }
+					aria-label="Anuluj edycję"
+				>
+					@IconX()
+					<span>Anuluj</span>
+				</button>
+			</div>
+		</td>
+	</tr>
+}
+
+// Table is the main component
+templ Table(props TableProps) {
+	<div
+		class={
+			"w-full overflow-x-auto rounded-lg border border-primary/20 shadow-sm",
+			props.ClassName,
+		}
+	>
+		<table class="w-full border-collapse text-sm text-primary-dark">
+			if props.Caption != "" {
+				<caption class="px-4 py-2 text-left text-base font-semibold text-primary-dark">
+					{ props.Caption }
+				</caption>
+			}
+			<thead>
+				<tr class="bg-secondary-light border-b-2 border-primary/20">
+					if props.Selectable {
+						<th class={ tableHeadCellClass(props.GetSize()) + " w-10" }>
+							<input
+								type="checkbox"
+								class="rounded border-primary text-primary focus:ring-primary-300"
+								aria-label="Zaznacz wszystkie"
+								onclick="this.closest('table').querySelectorAll('tbody input[type=checkbox]').forEach(cb => cb.checked = this.checked)"
+							/>
+						</th>
+					}
+					for _, col := range props.Columns {
+						<th
+							class={
+								tableHeadCellClass(props.GetSize()),
+								templ.KV("border border-primary/30", props.GetVariant() == TableVariantBordered),
+								col.Width,
+							}
+							scope="col"
+						>
+							<div class="flex items-center gap-1">
+								{ col.Label }
+								if col.Sortable {
+									<button
+										type="button"
+										class="ml-1 text-secondary hover:text-primary transition-colors"
+										aria-label={ "Sortuj według " + col.Label }
+									>
+										<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+										</svg>
+									</button>
+								}
+							</div>
+						</th>
+					}
+					if props.EditMode || props.ShowDelete {
+						<th class={ tableHeadCellClass(props.GetSize()) + " text-right" } scope="col">
+							Akcje
+						</th>
+					}
+				</tr>
+			</thead>
+			<tbody>
+				if len(props.Rows) == 0 {
+					<tr>
+						<td
+							colspan="100"
+							class="px-4 py-8 text-center text-secondary italic"
+						>
+							{ props.GetEmptyMessage() }
+						</td>
+					</tr>
+				} else {
+					for i, row := range props.Rows {
+						@TableRowView(props, row, i)
+					}
+				}
+			</tbody>
+		</table>
+	</div>
+}
+
+
+func tableCellClass(size TableSize) string {
+	switch size {
+	case TableSizeSmall:
+		return "px-3 py-1.5 align-middle"
+	case TableSizeLarge:
+		return "px-6 py-4 align-middle"
+	default: // medium
+		return "px-4 py-3 align-middle"
+	}
+}
+
+func tableHeadCellClass(size TableSize) string {
+	switch size {
+	case TableSizeSmall:
+		return "px-3 py-2 text-left text-xs font-semibold uppercase tracking-wide text-secondary"
+	case TableSizeLarge:
+		return "px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-secondary"
+	default:
+		return "px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-secondary"
+	}
+}
+
+
+script switchToEditMode(rowID string) {
+	const row = document.getElementById("row-" + rowID);
+	if (!row) return;
+	// Ask HTMX to swap in the edit version via a custom event,
+	// OR use a simple JS approach: toggle a data attribute and rely on CSS.
+	// Here we use a lightweight vanilla approach – dispatch a custom event
+	// that the server can respond to, or swap content directly.
+	//
+	// If using HTMX server-side swap, replace the body below with:
+	//   htmx.trigger(row, "edit");
+	//
+	// For a fully client-side demo without a server round-trip we toggle
+	// every <td> between its display text and an <input>.
+	row.querySelectorAll("td[data-key]").forEach(td => {
+		const key   = td.dataset.key;
+		const value = td.dataset.value || td.textContent.trim();
+		const type  = td.dataset.type  || "text";
+
+		if (type === "select") {
+			const opts = JSON.parse(td.dataset.options || "[]");
+			let html = `<select name="${key}" class="w-full rounded-md border border-primary px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-primary-300">`;
+			opts.forEach(o => {
+				const sel = o.value === value ? " selected" : "";
+				html += `<option value="${o.value}"${sel}>${o.label}</option>`;
+			});
+			html += "</select>";
+			td.innerHTML = html;
+		} else if (type === "checkbox") {
+			const checked = (value === "true" || value === "1" || value === "on") ? " checked" : "";
+			td.innerHTML = `<input type="checkbox" name="${key}" value="true"${checked} class="rounded border-primary text-primary focus:ring-primary-300" />`;
+		} else {
+			td.innerHTML = `<input type="${type}" name="${key}" value="${value}" class="w-full rounded-md border border-primary px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-primary-300" />`;
+		}
+	});
+
+	// Swap action buttons
+	const actions = row.querySelector("[data-actions='view']");
+	if (actions) actions.style.display = "none";
+	const editActions = row.querySelector("[data-actions='edit']");
+	if (editActions) editActions.style.display = "flex";
+
+	row.classList.add("bg-primary-light/20", "ring-2", "ring-inset", "ring-primary/40");
+}
+
+script switchToViewMode(rowID string) {
+	const row = document.getElementById("row-" + rowID);
+	if (!row) return;
+
+	row.querySelectorAll("td[data-key]").forEach(td => {
+		const input = td.querySelector("input, select, textarea");
+		if (input) {
+			const display = td.dataset.display || (input.type === "checkbox" ? (input.checked ? "true" : "false") : input.value);
+			td.innerHTML = display;
+		}
+	});
+
+	const actions = row.querySelector("[data-actions='view']");
+	if (actions) actions.style.display = "flex";
+	const editActions = row.querySelector("[data-actions='edit']");
+	if (editActions) editActions.style.display = "none";
+
+	row.classList.remove("bg-primary-light/20", "ring-2", "ring-inset", "ring-primary/40");
+}
