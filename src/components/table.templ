@@ -100,7 +100,6 @@ func cellDisplay(cell TableCell) string {
 	return cell.Value
 }
 
-// replaceID zastępuje placeholder {id} w URL rzeczywistym ID wiersza
 func replaceID(url, id string) string {
 	const ph = "{id}"
 	out := ""
