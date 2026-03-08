@@ -12,7 +12,10 @@
   "section.tabs": "Registerkarten",
   "section.modals": "Modale Fenster",
   "section.combined": "Kombiniertes Beispiel - Profilformular",
-  
+  "section.search": "Suchformular",
+  "section.create_form": "Erstellungsformular",
+  "section.update_form": "Bearbeitungsformular",
+
   "button.primary": "Primäre Schaltfläche",
   "button.secondary": "Sekundäre Schaltfläche",
   "button.danger": "Gefährliche Schaltfläche",
@@ -98,7 +101,14 @@
   "form.yourname": "Ihr Name",
   "form.yourname.placeholder": "Geben Sie Ihren Namen ein",
   "form.message": "Nachricht",
-  
+  "form.success": "Erfolgszustand",
+  "form.create.basic": "Einfaches Erstellungsformular",
+  "form.create.title": "Neues Element",
+  "form.create.success": "Element wurde erfolgreich erstellt.",
+  "form.update.basic": "Einfaches Bearbeitungsformular",
+  "form.update.title": "Element bearbeiten",
+  "form.update.success": "Änderungen wurden gespeichert.",
+
   "select.country": "Land",
   "select.country.placeholder": "Land auswählen...",
   "select.country.poland": "Polen",
@@ -118,7 +128,22 @@
   "select.role.admin": "Administrator",
   "select.role.user": "Benutzer",
   "select.role.guest": "Gast",
-  
+
+  "search.simple": "Einfache Suche",
+  "search.inline": "Horizontales Layout",
+  "search.stacked": "Vertikales Layout mit Titel",
+  "search.sidebar": "Seitenleisten-Layout mit Live-Suche",
+  "search.placeholder": "Suchen...",
+  "search.submit": "Suchen",
+  "search.reset": "Zurücksetzen",
+  "search.filters": "Filter",
+  "search.field.phrase": "Suchbegriff",
+  "search.field.date_from": "Datum von",
+  "search.field.date_to": "Datum bis",
+  "search.field.category": "Kategorie",
+  "search.category.a": "Kategorie A",
+  "search.category.b": "Kategorie B",
+
   "pagination.title": "Interaktives Paginierungs-Beispiel",
   "pagination.description": "Klicken Sie auf Seitenzahlen, um dynamische Inhalte zu sehen",
   "pagination.page": "Seite",
@@ -139,8 +164,9 @@
   "modal.triggers": "Modal-Schalter",
   
   "profile.title": "Profil bearbeiten",
-  
+
   "footer.text": "Test Layout für Templ Komponenten • Alle Komponenten an einem Ort",
+
   "todo.title": "Aufgabenliste",
   "todo.add": "Aufgabe hinzufügen",
   "todo.list": "Aufgaben",
@@ -156,13 +182,12 @@
   "priority.low": "Niedrig",
   "priority.medium": "Mittel",
   "priority.high": "Hoch",
-  "nav.back": "Zurück zur Demo",
-  "required": "Dieses Feld ist erforderlich.",
-  "min": "Mindestens %d Zeichen.",
-  "invalid": "Ungültiger Wert.",
 
   "nav.home": "Zur Startseite",
   "nav.back": "Zurück",
+  "required": "Dieses Feld ist erforderlich.",
+  "min": "Mindestens %d Zeichen.",
+  "invalid": "Ungültiger Wert.",
   "error.generic": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
   "error.internal": "Ein unerwarteter Fehler ist aufgetreten.",
   "error.render": "Die Seite konnte nicht geladen werden.",

@@ -16,51 +16,93 @@ import (
 
 // Aliasy dla ułatwienia
 type (
-	ButtonProps          = components.ButtonProps
-	ButtonVariant        = components.ButtonVariant
-	ButtonSize           = components.ButtonSize
-	ButtonWidth          = components.ButtonWidth
-	IconPosition         = components.IconPosition
-	CardProps            = components.CardProps
-	ErrorProps           = components.ErrorProps
-	ErrorVariant         = components.ErrorVariant
-	NotificationProps    = components.NotificationProps
-	NotificationType     = components.NotificationType
-	NotificationPosition = components.NotificationPosition
-	NotificationSize     = components.NotificationSize
-	FormInputProps       = components.FormInputProps
-	InputSize            = components.InputSize
-	InputVariant         = components.InputVariant
-	FormSelectProps      = components.FormSelectProps
-	SelectOption         = components.SelectOption
-	PaginationProps      = components.PaginationProps
-	ModalTriggerProps    = components.ModalTriggerProps
-	BadgeProps           = components.BadgeProps
-	BadgeVariant         = components.BadgeVariant
-	BadgeSize            = components.BadgeSize
+	ButtonProps            = components.ButtonProps
+	ButtonVariant          = components.ButtonVariant
+	ButtonSize             = components.ButtonSize
+	ButtonWidth            = components.ButtonWidth
+	IconPosition           = components.IconPosition
+	CardProps              = components.CardProps
+	ErrorProps             = components.ErrorProps
+	ErrorVariant           = components.ErrorVariant
+	NotificationProps      = components.NotificationProps
+	NotificationType       = components.NotificationType
+	NotificationPosition   = components.NotificationPosition
+	NotificationSize       = components.NotificationSize
+	FormInputProps         = components.FormInputProps
+	InputSize              = components.InputSize
+	InputVariant           = components.InputVariant
+	FormSelectProps        = components.FormSelectProps
+	SelectOption           = components.SelectOption
+	PaginationProps        = components.PaginationProps
+	PaginationVariant      = components.PaginationVariant
+	PaginationSize         = components.PaginationSize
+	ModalProps             = components.ModalProps
+	ModalTriggerProps      = components.ModalTriggerProps
+	ModalSize              = components.ModalSize
+	ModalPosition          = components.ModalPosition
+	ConfirmationModalProps = components.ConfirmationModalProps
+	HttpMethod             = components.HttpMethod
+	BadgeProps             = components.BadgeProps
+	BadgeVariant           = components.BadgeVariant
+	BadgeSize              = components.BadgeSize
+	TableProps             = components.TableProps
+	TableColumn            = components.TableColumn
+	TableRow               = components.TableRow
+	TableCell              = components.TableCell
+	TableVariant           = components.TableVariant
+	TableSize              = components.TableSize
+	ColumnType             = components.ColumnType
+	FormField              = components.FormField
+	FormFieldType          = components.FormFieldType
+	UpdateFormProps        = components.UpdateFormProps
+	CreateFormProps        = components.CreateFormProps
+	SearchFormProps        = components.SearchFormProps
+	SearchField            = components.SearchField
+	SearchFormLayout       = components.SearchFormLayout
 	// templ.Attributes jest dostępne bezpośrednio przez import templ
 	Attrs = templ.Attributes
 )
 
 // Aliasy dla funkcji komponentów
 var (
-	Button       = components.Button
-	Card         = components.Card
-	Error        = components.Error
-	Notification = components.Notification
-	FormInput    = components.FormInput
-	FormSelect   = components.FormSelect
-	IconPlus     = components.IconPlus
-	IconTrash    = components.IconTrash
-	IconDownload = components.IconDownload
-	IconCheck    = components.IconCheck
-	IconX        = components.IconX
-	Pagination   = components.Pagination
-	ModalTrigger = components.ModalTrigger
-	ModalBody    = components.ModalBody
-	ModalFooter  = components.ModalFooter
-	ModalScript  = components.ModalScript
-	Badge        = components.Badge
+	Button                   = components.Button
+	Card                     = components.Card
+	Error                    = components.Error
+	Notification             = components.Notification
+	NotifySuccess            = components.NotifySuccess
+	NotifyError              = components.NotifyError
+	NotifyWarning            = components.NotifyWarning
+	NotifyInfo               = components.NotifyInfo
+	NotificationContainer    = components.NotificationContainer
+	FormInput                = components.FormInput
+	FormSelect               = components.FormSelect
+	IconPlus                 = components.IconPlus
+	IconTrash                = components.IconTrash
+	IconDownload             = components.IconDownload
+	IconCheck                = components.IconCheck
+	IconX                    = components.IconX
+	IconEdit                 = components.IconEdit
+	IconSearch               = components.IconSearch
+	Pagination               = components.Pagination
+	SimplePagination         = components.SimplePagination
+	PaginationWithInfo       = components.PaginationWithInfo
+	ModalTrigger             = components.ModalTrigger
+	ModalBody                = components.ModalBody
+	ModalFooter              = components.ModalFooter
+	ModalScript              = components.ModalScript
+	ConfirmationModalContent = components.ConfirmationModalContent
+	FormModalContent         = components.FormModalContent
+	CloseModalButton         = components.CloseModalButton
+	Badge                    = components.Badge
+	Table                    = components.Table
+	TableRowView             = components.TableRowView
+	TableRowEdit             = components.TableRowEdit
+	UpdateForm               = components.UpdateForm
+	UpdateFormSuccess        = components.UpdateFormSuccess
+	CreateForm               = components.CreateForm
+	CreateFormSuccess        = components.CreateFormSuccess
+	SearchForm               = components.SearchForm
+	SimpleSearch             = components.SimpleSearch
 )
 
 // Aliasy dla stałych
@@ -99,7 +141,12 @@ const (
 	NotificationWarning = components.NotificationWarning
 	NotificationInfo    = components.NotificationInfo
 
-	PositionTopRight = components.PositionTopRight
+	PositionTopRight     = components.PositionTopRight
+	PositionTopLeft      = components.PositionTopLeft
+	PositionTopCenter    = components.PositionTopCenter
+	PositionBottomRight  = components.PositionBottomRight
+	PositionBottomLeft   = components.PositionBottomLeft
+	PositionBottomCenter = components.PositionBottomCenter
 
 	InputSizeSmall  = components.InputSizeSmall
 	InputSizeMedium = components.InputSizeMedium
@@ -113,6 +160,27 @@ const (
 	NotificationSizeMedium = components.NotificationSizeMedium
 	NotificationSizeLarge  = components.NotificationSizeLarge
 
+	PaginationVariantPrimary   = components.PaginationVariantPrimary
+	PaginationVariantSecondary = components.PaginationVariantSecondary
+	PaginationSizeSmall        = components.PaginationSizeSmall
+	PaginationSizeMedium       = components.PaginationSizeMedium
+	PaginationSizeLarge        = components.PaginationSizeLarge
+
+	ModalSizeSmall  = components.ModalSizeSmall
+	ModalSizeMedium = components.ModalSizeMedium
+	ModalSizeLarge  = components.ModalSizeLarge
+	ModalSizeFull   = components.ModalSizeFull
+
+	ModalPositionTop    = components.ModalPositionTop
+	ModalPositionCenter = components.ModalPositionCenter
+	ModalPositionBottom = components.ModalPositionBottom
+
+	MethodGET    = components.MethodGET
+	MethodPOST   = components.MethodPOST
+	MethodPUT    = components.MethodPUT
+	MethodPATCH  = components.MethodPATCH
+	MethodDELETE = components.MethodDELETE
+
 	BadgeNeutral = components.BadgeNeutral
 	BadgeEmpty   = components.BadgeEmpty
 	BadgeDanger  = components.BadgeDanger
@@ -123,6 +191,38 @@ const (
 	BadgeSizeSmall  = components.BadgeSizeSmall
 	BadgeSizeMedium = components.BadgeSizeMedium
 	BadgeSizeLarge  = components.BadgeSizeLarge
+
+	TableVariantDefault  = components.TableVariantDefault
+	TableVariantStriped  = components.TableVariantStriped
+	TableVariantBordered = components.TableVariantBordered
+
+	TableSizeSmall  = components.TableSizeSmall
+	TableSizeMedium = components.TableSizeMedium
+	TableSizeLarge  = components.TableSizeLarge
+
+	ColumnTypeText     = components.ColumnTypeText
+	ColumnTypeNumber   = components.ColumnTypeNumber
+	ColumnTypeEmail    = components.ColumnTypeEmail
+	ColumnTypeDate     = components.ColumnTypeDate
+	ColumnTypeSelect   = components.ColumnTypeSelect
+	ColumnTypeCheckbox = components.ColumnTypeCheckbox
+
+	FormFieldText     = components.FormFieldText
+	FormFieldEmail    = components.FormFieldEmail
+	FormFieldPassword = components.FormFieldPassword
+	FormFieldNumber   = components.FormFieldNumber
+	FormFieldDate     = components.FormFieldDate
+	FormFieldTime     = components.FormFieldTime
+	FormFieldUrl      = components.FormFieldUrl
+	FormFieldTel      = components.FormFieldTel
+	FormFieldSelect   = components.FormFieldSelect
+	FormFieldTextarea = components.FormFieldTextarea
+	FormFieldCheckbox = components.FormFieldCheckbox
+	FormFieldHidden   = components.FormFieldHidden
+
+	SearchFormLayoutInline  = components.SearchFormLayoutInline
+	SearchFormLayoutStacked = components.SearchFormLayoutStacked
+	SearchFormLayoutSidebar = components.SearchFormLayoutSidebar
 )
 
 // t helper function for translations
@@ -159,7 +259,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.GetLanguage(ctx))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 128, Col: 35}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/test-layout.templ`, Line: 228, Col: 35}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -172,7 +272,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "app.title"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 132, Col: 31}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/test-layout.templ`, Line: 232, Col: 31}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
@@ -193,7 +293,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "app.title"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 179, Col: 76}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/test-layout.templ`, Line: 279, Col: 76}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -206,7 +306,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "app.subtitle"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 180, Col: 54}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/test-layout.templ`, Line: 280, Col: 54}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
@@ -315,7 +415,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "section.buttons"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 247, Col: 65}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/test-layout.templ`, Line: 347, Col: 65}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -328,7 +428,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "label.variants"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 250, Col: 57}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/test-layout.templ`, Line: 350, Col: 57}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
@@ -361,7 +461,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "label.sizes"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 259, Col: 54}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/test-layout.templ`, Line: 359, Col: 54}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {
@@ -394,7 +494,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "label.icons"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 268, Col: 54}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/test-layout.templ`, Line: 368, Col: 54}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
@@ -423,7 +523,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		var templ_7745c5c3_Var10 string
 		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "label.states"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 276, Col: 55}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/test-layout.templ`, Line: 376, Col: 55}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 		if templ_7745c5c3_Err != nil {
@@ -448,7 +548,7 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		var templ_7745c5c3_Var11 string
 		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "label.widths"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 283, Col: 55}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/test-layout.templ`, Line: 383, Col: 55}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 		if templ_7745c5c3_Err != nil {
@@ -474,12 +574,12 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">HTMX (przez Attrs)</div><div class=\"flex gap-2 flex-wrap\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</div></div><div class=\"demo-item\"><div class=\"demo-label\">HTMX (via Attrs)</div><div class=\"flex gap-2 flex-wrap\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		templ_7745c5c3_Err = Button(ButtonProps{
-			Text:    "Wyślij HTMX",
+			Text:    t(ctx, "button.send"),
 			Variant: VariantPrimary,
 			Attrs: templ.Attributes{
 				"hx-post":   "/api/example",
@@ -490,20 +590,308 @@ func TestLayoutI18n(ctx context.Context) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</div></div></div></section><footer class=\"mt-8 text-center text-gray-600 pb-8\"><p>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</div></div></div></section><section class=\"component-section\"><h2 class=\"component-title\">🔍 ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var12 string
-		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "footer.text"))
+		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "section.search"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layouts/test-layout.templ`, Line: 308, Col: 31}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/test-layout.templ`, Line: 409, Col: 64}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</p></footer></div></body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var13 string
+		templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "search.simple"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/test-layout.templ`, Line: 412, Col: 56}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = SimpleSearch("q", t(ctx, "search.placeholder"), "", "/search", "#results").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</div><div class=\"demo-item\"><div class=\"demo-label\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var14 string
+		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "search.inline"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/test-layout.templ`, Line: 416, Col: 56}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = SearchForm(SearchFormProps{
+			Action:      "/search",
+			HXTarget:    "#results",
+			SearchLabel: t(ctx, "search.submit"),
+			Fields: []SearchField{
+				{Name: "q", Type: FormFieldText, Placeholder: t(ctx, "search.placeholder")},
+				{
+					Name:    "status",
+					Type:    FormFieldSelect,
+					Options: []SelectOption{{Value: "active", Label: t(ctx, "select.status.active")}, {Value: "inactive", Label: t(ctx, "select.status.inactive")}},
+				},
+			},
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "</div><div class=\"demo-item\"><div class=\"demo-label\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var15 string
+		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "search.stacked"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/test-layout.templ`, Line: 432, Col: 57}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "</div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = SearchForm(SearchFormProps{
+			Action:      "/search",
+			HXTarget:    "#results",
+			Layout:      SearchFormLayoutStacked,
+			Title:       t(ctx, "search.filters"),
+			SearchLabel: t(ctx, "search.submit"),
+			ResetLabel:  t(ctx, "search.reset"),
+			Fields: []SearchField{
+				{Name: "q", Label: t(ctx, "search.field.phrase"), Type: FormFieldText, Placeholder: t(ctx, "search.placeholder")},
+				{Name: "date_from", Label: t(ctx, "search.field.date_from"), Type: FormFieldDate},
+				{Name: "date_to", Label: t(ctx, "search.field.date_to"), Type: FormFieldDate},
+				{
+					Name:    "category",
+					Label:   t(ctx, "search.field.category"),
+					Type:    FormFieldSelect,
+					Options: []SelectOption{{Value: "a", Label: t(ctx, "search.category.a")}, {Value: "b", Label: t(ctx, "search.category.b")}},
+				},
+			},
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</div><div class=\"demo-item\"><div class=\"demo-label\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var16 string
+		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "search.sidebar"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/test-layout.templ`, Line: 454, Col: 57}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = SearchForm(SearchFormProps{
+			Action:      "/search",
+			HXTarget:    "#results",
+			Layout:      SearchFormLayoutSidebar,
+			HXTrigger:   "input delay:300ms, submit",
+			SearchLabel: t(ctx, "search.submit"),
+			ResetLabel:  t(ctx, "search.reset"),
+			ResetHref:   "/search",
+			Fields: []SearchField{
+				{Name: "q", Label: t(ctx, "search.field.phrase"), Type: FormFieldText, Placeholder: t(ctx, "search.placeholder")},
+				{
+					Name:    "status",
+					Label:   t(ctx, "select.status"),
+					Type:    FormFieldSelect,
+					Options: []SelectOption{{Value: "active", Label: t(ctx, "select.status.active")}, {Value: "inactive", Label: t(ctx, "select.status.inactive")}},
+				},
+			},
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "</div></div></section><section class=\"component-section\"><h2 class=\"component-title\">➕ ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var17 string
+		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "section.create_form"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/test-layout.templ`, Line: 478, Col: 68}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var18 string
+		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "form.create.basic"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/test-layout.templ`, Line: 481, Col: 60}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = CreateForm(CreateFormProps{
+			Action:      "/api/items",
+			Title:       t(ctx, "form.create.title"),
+			SubmitLabel: t(ctx, "button.submit"),
+			CancelLabel: t(ctx, "button.cancel"),
+			Fields: []FormField{
+				{Name: "name", Label: t(ctx, "form.username"), Type: FormFieldText, Placeholder: t(ctx, "form.username.placeholder"), Required: true},
+				{Name: "email", Label: t(ctx, "form.email"), Type: FormFieldEmail, Placeholder: t(ctx, "form.email.placeholder")},
+				{
+					Name:    "status",
+					Label:   t(ctx, "select.status"),
+					Type:    FormFieldSelect,
+					Options: []SelectOption{{Value: "active", Label: t(ctx, "select.status.active")}, {Value: "inactive", Label: t(ctx, "select.status.inactive")}},
+				},
+				{Name: "description", Label: t(ctx, "form.message"), Type: FormFieldTextarea, Rows: 4},
+			},
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "</div><div class=\"demo-item\"><div class=\"demo-label\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var19 string
+		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "form.success"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/test-layout.templ`, Line: 501, Col: 55}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "</div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = CreateFormSuccess("create-form-demo", t(ctx, "form.create.success"), "/items").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "</div></div></section><section class=\"component-section\"><h2 class=\"component-title\">✏️ ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var20 string
+		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "section.update_form"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/test-layout.templ`, Line: 508, Col: 71}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "</h2><div class=\"demo-grid\"><div class=\"demo-item\"><div class=\"demo-label\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var21 string
+		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "form.update.basic"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/test-layout.templ`, Line: 511, Col: 60}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "</div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = UpdateForm(UpdateFormProps{
+			ResourceID:  "123",
+			Action:      "/api/items/123",
+			Title:       t(ctx, "form.update.title"),
+			SubmitLabel: t(ctx, "button.save"),
+			CancelLabel: t(ctx, "button.cancel"),
+			Fields: []FormField{
+				{Name: "name", Label: t(ctx, "form.username"), Type: FormFieldText, Value: "John Doe", Required: true},
+				{Name: "email", Label: t(ctx, "form.email"), Type: FormFieldEmail, Value: "john@example.com"},
+				{
+					Name:    "status",
+					Label:   t(ctx, "select.status"),
+					Type:    FormFieldSelect,
+					Value:   "active",
+					Options: []SelectOption{{Value: "active", Label: t(ctx, "select.status.active")}, {Value: "inactive", Label: t(ctx, "select.status.inactive")}},
+				},
+				{Name: "description", Label: t(ctx, "form.message"), Type: FormFieldTextarea, Value: "...", Rows: 4},
+			},
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "</div><div class=\"demo-item\"><div class=\"demo-label\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var22 string
+		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "form.success"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/test-layout.templ`, Line: 533, Col: 55}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "</div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = UpdateFormSuccess("123", t(ctx, "form.update.success"), "/items").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "</div></div></section><footer class=\"mt-8 text-center text-gray-600 pb-8\"><p>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var23 string
+		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(t(ctx, "footer.text"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `layouts/test-layout.templ`, Line: 539, Col: 31}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "</p></footer></div></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

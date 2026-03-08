@@ -3,9 +3,9 @@ package components
 type SearchFormLayout string
 
 const (
-	SearchFormLayoutInline   SearchFormLayout = "inline"  
-	SearchFormLayoutStacked  SearchFormLayout = "stacked"  
-	SearchFormLayoutSidebar  SearchFormLayout = "sidebar" 
+	SearchFormLayoutInline  SearchFormLayout = "inline"
+	SearchFormLayoutStacked SearchFormLayout = "stacked"
+	SearchFormLayoutSidebar SearchFormLayout = "sidebar"
 )
 
 type SearchField struct {
@@ -14,29 +14,28 @@ type SearchField struct {
 	Type        FormFieldType
 	Value       string
 	Placeholder string
-	Options     []SelectOption
+	Options     []SelectOption // dla FormFieldSelect
 	ClassName   string
 
+	// Dowolne atrybuty HTML (w tym hx-* z HTMX)
 	Attrs templ.Attributes
 }
 
 type SearchFormProps struct {
-	// Core properties
-	Fields    []SearchField
-	Action    string 
-	HXTarget  string
-	HXSwap    string
-	HXTrigger string 
-	Layout    SearchFormLayout
-	Title     string
-	ClassName string
-
-	SearchLabel string 
+	Fields      []SearchField
+	Action      string // URL do hx-get
+	HXTarget    string
+	HXSwap      string
+	HXTrigger   string
+	Layout      SearchFormLayout
+	Title       string
+	SearchLabel string
 	ResetLabel  string
-	ResetHref   string 
+	ResetHref   string
+	Loading     bool
+	ClassName   string
 
-	Loading bool
-
+	// Dowolne atrybuty HTML (w tym hx-* z HTMX)
 	Attrs templ.Attributes
 }
 
@@ -59,20 +58,6 @@ func (p SearchFormProps) getLayout() SearchFormLayout {
 		return SearchFormLayoutInline
 	}
 	return p.Layout
-}
-
-func (p SearchFormProps) getSearchLabel() string {
-	if p.SearchLabel == "" {
-		return "Szukaj"
-	}
-	return p.SearchLabel
-}
-
-func (p SearchFormProps) getResetLabel() string {
-	if p.ResetLabel == "" {
-		return "Wyczyść"
-	}
-	return p.ResetLabel
 }
 
 templ searchField(f SearchField, layout SearchFormLayout) {
@@ -113,6 +98,37 @@ templ searchField(f SearchField, layout SearchFormLayout) {
 	}
 }
 
+templ searchButtons(props SearchFormProps) {
+	@Button(ButtonProps{
+		Text:     props.SearchLabel,
+		Variant:  VariantPrimary,
+		Size:     SizeMedium,
+		Type:     "submit",
+		Loading:  props.Loading,
+		Disabled: props.Loading,
+		Icon:     IconSearch(),
+		Attrs:    templ.Attributes{"data-submit": ""},
+	})
+	if props.ResetLabel != "" {
+		if props.ResetHref != "" {
+			@Button(ButtonProps{
+				Text:    props.ResetLabel,
+				Variant: VariantSecondary,
+				Size:    SizeMedium,
+				Type:    "button",
+				Attrs:   templ.Attributes{"onclick": "window.location.href='" + props.ResetHref + "'"},
+			})
+		} else {
+			@Button(ButtonProps{
+				Text:    props.ResetLabel,
+				Variant: VariantSecondary,
+				Size:    SizeMedium,
+				Type:    "reset",
+			})
+		}
+	}
+}
+
 templ SearchForm(props SearchFormProps) {
 	<div
 		class={
@@ -140,32 +156,7 @@ templ SearchForm(props SearchFormProps) {
 						@searchField(field, props.getLayout())
 					}
 					<div class="flex items-center gap-2 pb-4">
-						@Button(ButtonProps{
-							Text:     props.getSearchLabel(),
-							Variant:  VariantPrimary,
-							Size:     SizeMedium,
-							Type:     "submit",
-							Loading:  props.Loading,
-							Disabled: props.Loading,
-							Icon:     IconSearch(),
-							Attrs:    templ.Attributes{"data-submit": ""},
-						})
-						if props.ResetHref != "" {
-							@Button(ButtonProps{
-								Text:    props.getResetLabel(),
-								Variant: VariantSecondary,
-								Size:    SizeMedium,
-								Type:    "button",
-								Attrs:   templ.Attributes{"onclick": "window.location.href='" + props.ResetHref + "'"},
-							})
-						} else {
-							@Button(ButtonProps{
-								Text:    props.getResetLabel(),
-								Variant: VariantSecondary,
-								Size:    SizeMedium,
-								Type:    "reset",
-							})
-						}
+						@searchButtons(props)
 					</div>
 				</div>
 			} else {
@@ -185,32 +176,7 @@ templ SearchForm(props SearchFormProps) {
 							templ.KV("mt-6 pt-4 border-t border-primary/10", props.getLayout() == SearchFormLayoutStacked),
 						}
 					>
-						@Button(ButtonProps{
-							Text:     props.getSearchLabel(),
-							Variant:  VariantPrimary,
-							Size:     SizeMedium,
-							Type:     "submit",
-							Loading:  props.Loading,
-							Disabled: props.Loading,
-							Icon:     IconSearch(),
-							Attrs:    templ.Attributes{"data-submit": ""},
-						})
-						if props.ResetHref != "" {
-							@Button(ButtonProps{
-								Text:    props.getResetLabel(),
-								Variant: VariantSecondary,
-								Size:    SizeMedium,
-								Type:    "button",
-								Attrs:   templ.Attributes{"onclick": "window.location.href='" + props.ResetHref + "'"},
-							})
-						} else {
-							@Button(ButtonProps{
-								Text:    props.getResetLabel(),
-								Variant: VariantSecondary,
-								Size:    SizeMedium,
-								Type:    "reset",
-							})
-						}
+						@searchButtons(props)
 					</div>
 				</div>
 			}
@@ -230,9 +196,7 @@ templ SimpleSearch(name, placeholder, value, action, hxTarget string) {
 	>
 		<div class="relative flex-1">
 			<span class="absolute inset-y-0 left-3 flex items-center pointer-events-none text-gray-400" aria-hidden="true">
-				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z"></path>
-				</svg>
+				@IconSearch()
 			</span>
 			<input
 				type="search"
@@ -245,7 +209,7 @@ templ SimpleSearch(name, placeholder, value, action, hxTarget string) {
 			/>
 		</div>
 		@Button(ButtonProps{
-			Text:    "Szukaj",
+			Icon:    IconSearch(),
 			Variant: VariantPrimary,
 			Size:    SizeMedium,
 			Type:    "submit",

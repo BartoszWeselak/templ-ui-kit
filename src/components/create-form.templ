@@ -1,9 +1,9 @@
 package components
 
 type CreateFormProps struct {
-	FormID      string 
+	FormID      string
 	Fields      []FormField
-	Action      string 
+	Action      string // URL do hx-post
 	HXTarget    string
 	HXSwap      string
 	Title       string
@@ -14,6 +14,7 @@ type CreateFormProps struct {
 	ErrorMsg    string
 	ClassName   string
 
+	// Dowolne atrybuty HTML (w tym hx-* z HTMX)
 	Attrs templ.Attributes
 }
 
@@ -29,20 +30,6 @@ func (p CreateFormProps) getHXSwap() string {
 		return "outerHTML"
 	}
 	return p.HXSwap
-}
-
-func (p CreateFormProps) getSubmitLabel() string {
-	if p.SubmitLabel == "" {
-		return "Utwórz"
-	}
-	return p.SubmitLabel
-}
-
-func (p CreateFormProps) getCancelLabel() string {
-	if p.CancelLabel == "" {
-		return "Anuluj"
-	}
-	return p.CancelLabel
 }
 
 templ createFormField(f FormField) {
@@ -191,7 +178,7 @@ templ CreateForm(props CreateFormProps) {
 			}
 			<div class="flex items-center gap-3 mt-6 pt-4 border-t border-primary/10">
 				@Button(ButtonProps{
-					Text:     props.getSubmitLabel(),
+					Text:     props.SubmitLabel,
 					Variant:  VariantPrimary,
 					Size:     SizeMedium,
 					Type:     "submit",
@@ -199,22 +186,24 @@ templ CreateForm(props CreateFormProps) {
 					Disabled: props.Loading,
 					Attrs:    templ.Attributes{"data-submit": ""},
 				})
-				if props.CancelHref != "" {
-					@Button(ButtonProps{
-						Text:    props.getCancelLabel(),
-						Variant: VariantSecondary,
-						Size:    SizeMedium,
-						Type:    "button",
-						Attrs:   templ.Attributes{"onclick": "window.location.href='" + props.CancelHref + "'"},
-					})
-				} else {
-					@Button(ButtonProps{
-						Text:    props.getCancelLabel(),
-						Variant: VariantSecondary,
-						Size:    SizeMedium,
-						Type:    "button",
-						Attrs:   templ.Attributes{"onclick": "history.back()"},
-					})
+				if props.CancelLabel != "" {
+					if props.CancelHref != "" {
+						@Button(ButtonProps{
+							Text:    props.CancelLabel,
+							Variant: VariantSecondary,
+							Size:    SizeMedium,
+							Type:    "button",
+							Attrs:   templ.Attributes{"onclick": "window.location.href='" + props.CancelHref + "'"},
+						})
+					} else {
+						@Button(ButtonProps{
+							Text:    props.CancelLabel,
+							Variant: VariantSecondary,
+							Size:    SizeMedium,
+							Type:    "button",
+							Attrs:   templ.Attributes{"onclick": "history.back()"},
+						})
+					}
 				}
 			</div>
 		</form>
@@ -235,7 +224,6 @@ templ CreateFormSuccess(formID, message, backHref string) {
 				<p class="font-medium text-success-dark">{ message }</p>
 				if backHref != "" {
 					<a href={ templ.SafeURL(backHref) } class="mt-3 inline-flex items-center text-sm text-primary hover:underline">
-						Wróć do listy
 					</a>
 				}
 			</div>

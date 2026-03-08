@@ -26,33 +26,75 @@ type (
 	FormSelectProps      = components.FormSelectProps
 	SelectOption         = components.SelectOption
 	PaginationProps      = components.PaginationProps
+	PaginationVariant    = components.PaginationVariant
+	PaginationSize       = components.PaginationSize
+	ModalProps           = components.ModalProps
 	ModalTriggerProps    = components.ModalTriggerProps
+	ModalSize            = components.ModalSize
+	ModalPosition        = components.ModalPosition
+	ConfirmationModalProps = components.ConfirmationModalProps
+	HttpMethod           = components.HttpMethod
 	BadgeProps           = components.BadgeProps
 	BadgeVariant         = components.BadgeVariant
 	BadgeSize            = components.BadgeSize
+	TableProps           = components.TableProps
+	TableColumn          = components.TableColumn
+	TableRow             = components.TableRow
+	TableCell            = components.TableCell
+	TableVariant         = components.TableVariant
+	TableSize            = components.TableSize
+	ColumnType           = components.ColumnType
+	FormField            = components.FormField
+	FormFieldType        = components.FormFieldType
+	UpdateFormProps      = components.UpdateFormProps
+	CreateFormProps      = components.CreateFormProps
+	SearchFormProps      = components.SearchFormProps
+	SearchField          = components.SearchField
+	SearchFormLayout     = components.SearchFormLayout
 	// templ.Attributes jest dostępne bezpośrednio przez import templ
 	Attrs = templ.Attributes
 )
 
 // Aliasy dla funkcji komponentów
 var (
-	Button       = components.Button
-	Card         = components.Card
-	Error        = components.Error
-	Notification = components.Notification
-	FormInput    = components.FormInput
-	FormSelect   = components.FormSelect
-	IconPlus     = components.IconPlus
-	IconTrash    = components.IconTrash
-	IconDownload = components.IconDownload
-	IconCheck    = components.IconCheck
-	IconX        = components.IconX
-	Pagination   = components.Pagination
-	ModalTrigger = components.ModalTrigger
-	ModalBody    = components.ModalBody
-	ModalFooter  = components.ModalFooter
-	ModalScript  = components.ModalScript
-	Badge        = components.Badge
+	Button                  = components.Button
+	Card                    = components.Card
+	Error                   = components.Error
+	Notification            = components.Notification
+	NotifySuccess           = components.NotifySuccess
+	NotifyError             = components.NotifyError
+	NotifyWarning           = components.NotifyWarning
+	NotifyInfo              = components.NotifyInfo
+	NotificationContainer   = components.NotificationContainer
+	FormInput               = components.FormInput
+	FormSelect              = components.FormSelect
+	IconPlus                = components.IconPlus
+	IconTrash               = components.IconTrash
+	IconDownload            = components.IconDownload
+	IconCheck               = components.IconCheck
+	IconX                   = components.IconX
+	IconEdit                = components.IconEdit
+	IconSearch              = components.IconSearch
+	Pagination              = components.Pagination
+	SimplePagination        = components.SimplePagination
+	PaginationWithInfo      = components.PaginationWithInfo
+	ModalTrigger            = components.ModalTrigger
+	ModalBody               = components.ModalBody
+	ModalFooter             = components.ModalFooter
+	ModalScript             = components.ModalScript
+	ConfirmationModalContent = components.ConfirmationModalContent
+	FormModalContent        = components.FormModalContent
+	CloseModalButton        = components.CloseModalButton
+	Badge                   = components.Badge
+	Table                   = components.Table
+	TableRowView            = components.TableRowView
+	TableRowEdit            = components.TableRowEdit
+	UpdateForm              = components.UpdateForm
+	UpdateFormSuccess       = components.UpdateFormSuccess
+	CreateForm              = components.CreateForm
+	CreateFormSuccess       = components.CreateFormSuccess
+	SearchForm              = components.SearchForm
+	SimpleSearch            = components.SimpleSearch
 )
 
 // Aliasy dla stałych
@@ -91,7 +133,12 @@ const (
 	NotificationWarning = components.NotificationWarning
 	NotificationInfo    = components.NotificationInfo
 
-	PositionTopRight = components.PositionTopRight
+	PositionTopRight     = components.PositionTopRight
+	PositionTopLeft      = components.PositionTopLeft
+	PositionTopCenter    = components.PositionTopCenter
+	PositionBottomRight  = components.PositionBottomRight
+	PositionBottomLeft   = components.PositionBottomLeft
+	PositionBottomCenter = components.PositionBottomCenter
 
 	InputSizeSmall  = components.InputSizeSmall
 	InputSizeMedium = components.InputSizeMedium
@@ -105,6 +152,27 @@ const (
 	NotificationSizeMedium = components.NotificationSizeMedium
 	NotificationSizeLarge  = components.NotificationSizeLarge
 
+	PaginationVariantPrimary   = components.PaginationVariantPrimary
+	PaginationVariantSecondary = components.PaginationVariantSecondary
+	PaginationSizeSmall        = components.PaginationSizeSmall
+	PaginationSizeMedium       = components.PaginationSizeMedium
+	PaginationSizeLarge        = components.PaginationSizeLarge
+
+	ModalSizeSmall  = components.ModalSizeSmall
+	ModalSizeMedium = components.ModalSizeMedium
+	ModalSizeLarge  = components.ModalSizeLarge
+	ModalSizeFull   = components.ModalSizeFull
+
+	ModalPositionTop    = components.ModalPositionTop
+	ModalPositionCenter = components.ModalPositionCenter
+	ModalPositionBottom = components.ModalPositionBottom
+
+	MethodGET    = components.MethodGET
+	MethodPOST   = components.MethodPOST
+	MethodPUT    = components.MethodPUT
+	MethodPATCH  = components.MethodPATCH
+	MethodDELETE = components.MethodDELETE
+
 	BadgeNeutral = components.BadgeNeutral
 	BadgeEmpty   = components.BadgeEmpty
 	BadgeDanger  = components.BadgeDanger
@@ -115,6 +183,38 @@ const (
 	BadgeSizeSmall  = components.BadgeSizeSmall
 	BadgeSizeMedium = components.BadgeSizeMedium
 	BadgeSizeLarge  = components.BadgeSizeLarge
+
+	TableVariantDefault  = components.TableVariantDefault
+	TableVariantStriped  = components.TableVariantStriped
+	TableVariantBordered = components.TableVariantBordered
+
+	TableSizeSmall  = components.TableSizeSmall
+	TableSizeMedium = components.TableSizeMedium
+	TableSizeLarge  = components.TableSizeLarge
+
+	ColumnTypeText     = components.ColumnTypeText
+	ColumnTypeNumber   = components.ColumnTypeNumber
+	ColumnTypeEmail    = components.ColumnTypeEmail
+	ColumnTypeDate     = components.ColumnTypeDate
+	ColumnTypeSelect   = components.ColumnTypeSelect
+	ColumnTypeCheckbox = components.ColumnTypeCheckbox
+
+	FormFieldText     = components.FormFieldText
+	FormFieldEmail    = components.FormFieldEmail
+	FormFieldPassword = components.FormFieldPassword
+	FormFieldNumber   = components.FormFieldNumber
+	FormFieldDate     = components.FormFieldDate
+	FormFieldTime     = components.FormFieldTime
+	FormFieldUrl      = components.FormFieldUrl
+	FormFieldTel      = components.FormFieldTel
+	FormFieldSelect   = components.FormFieldSelect
+	FormFieldTextarea = components.FormFieldTextarea
+	FormFieldCheckbox = components.FormFieldCheckbox
+	FormFieldHidden   = components.FormFieldHidden
+
+	SearchFormLayoutInline  = components.SearchFormLayoutInline
+	SearchFormLayoutStacked = components.SearchFormLayoutStacked
+	SearchFormLayoutSidebar = components.SearchFormLayoutSidebar
 )
 
 // t helper function for translations
@@ -289,10 +389,10 @@ templ TestLayoutI18n(ctx context.Context) {
 							</div>
 						</div>
 						<div class="demo-item">
-							<div class="demo-label">HTMX (przez Attrs)</div>
+							<div class="demo-label">HTMX (via Attrs)</div>
 							<div class="flex gap-2 flex-wrap">
 								@Button(ButtonProps{
-									Text:    "Wyślij HTMX",
+									Text:    t(ctx, "button.send"),
 									Variant: VariantPrimary,
 									Attrs: templ.Attributes{
 										"hx-post":   "/api/example",
@@ -301,6 +401,137 @@ templ TestLayoutI18n(ctx context.Context) {
 									},
 								})
 							</div>
+						</div>
+					</div>
+				</section>
+				// SEARCH FORM
+				<section class="component-section">
+					<h2 class="component-title">🔍 { t(ctx, "section.search") }</h2>
+					<div class="demo-grid">
+						<div class="demo-item">
+							<div class="demo-label">{ t(ctx, "search.simple") }</div>
+							@SimpleSearch("q", t(ctx, "search.placeholder"), "", "/search", "#results")
+						</div>
+						<div class="demo-item">
+							<div class="demo-label">{ t(ctx, "search.inline") }</div>
+							@SearchForm(SearchFormProps{
+								Action:      "/search",
+								HXTarget:    "#results",
+								SearchLabel: t(ctx, "search.submit"),
+								Fields: []SearchField{
+									{Name: "q", Type: FormFieldText, Placeholder: t(ctx, "search.placeholder")},
+									{
+										Name:    "status",
+										Type:    FormFieldSelect,
+										Options: []SelectOption{{Value: "active", Label: t(ctx, "select.status.active")}, {Value: "inactive", Label: t(ctx, "select.status.inactive")}},
+									},
+								},
+							})
+						</div>
+						<div class="demo-item">
+							<div class="demo-label">{ t(ctx, "search.stacked") }</div>
+							@SearchForm(SearchFormProps{
+								Action:      "/search",
+								HXTarget:    "#results",
+								Layout:      SearchFormLayoutStacked,
+								Title:       t(ctx, "search.filters"),
+								SearchLabel: t(ctx, "search.submit"),
+								ResetLabel:  t(ctx, "search.reset"),
+								Fields: []SearchField{
+									{Name: "q", Label: t(ctx, "search.field.phrase"), Type: FormFieldText, Placeholder: t(ctx, "search.placeholder")},
+									{Name: "date_from", Label: t(ctx, "search.field.date_from"), Type: FormFieldDate},
+									{Name: "date_to", Label: t(ctx, "search.field.date_to"), Type: FormFieldDate},
+									{
+										Name:    "category",
+										Label:   t(ctx, "search.field.category"),
+										Type:    FormFieldSelect,
+										Options: []SelectOption{{Value: "a", Label: t(ctx, "search.category.a")}, {Value: "b", Label: t(ctx, "search.category.b")}},
+									},
+								},
+							})
+						</div>
+						<div class="demo-item">
+							<div class="demo-label">{ t(ctx, "search.sidebar") }</div>
+							@SearchForm(SearchFormProps{
+								Action:      "/search",
+								HXTarget:    "#results",
+								Layout:      SearchFormLayoutSidebar,
+								HXTrigger:   "input delay:300ms, submit",
+								SearchLabel: t(ctx, "search.submit"),
+								ResetLabel:  t(ctx, "search.reset"),
+								ResetHref:   "/search",
+								Fields: []SearchField{
+									{Name: "q", Label: t(ctx, "search.field.phrase"), Type: FormFieldText, Placeholder: t(ctx, "search.placeholder")},
+									{
+										Name:    "status",
+										Label:   t(ctx, "select.status"),
+										Type:    FormFieldSelect,
+										Options: []SelectOption{{Value: "active", Label: t(ctx, "select.status.active")}, {Value: "inactive", Label: t(ctx, "select.status.inactive")}},
+									},
+								},
+							})
+						</div>
+					</div>
+				</section>
+				// CREATE FORM
+				<section class="component-section">
+					<h2 class="component-title">➕ { t(ctx, "section.create_form") }</h2>
+					<div class="demo-grid">
+						<div class="demo-item">
+							<div class="demo-label">{ t(ctx, "form.create.basic") }</div>
+							@CreateForm(CreateFormProps{
+								Action:      "/api/items",
+								Title:       t(ctx, "form.create.title"),
+								SubmitLabel: t(ctx, "button.submit"),
+								CancelLabel: t(ctx, "button.cancel"),
+								Fields: []FormField{
+									{Name: "name", Label: t(ctx, "form.username"), Type: FormFieldText, Placeholder: t(ctx, "form.username.placeholder"), Required: true},
+									{Name: "email", Label: t(ctx, "form.email"), Type: FormFieldEmail, Placeholder: t(ctx, "form.email.placeholder")},
+									{
+										Name:    "status",
+										Label:   t(ctx, "select.status"),
+										Type:    FormFieldSelect,
+										Options: []SelectOption{{Value: "active", Label: t(ctx, "select.status.active")}, {Value: "inactive", Label: t(ctx, "select.status.inactive")}},
+									},
+									{Name: "description", Label: t(ctx, "form.message"), Type: FormFieldTextarea, Rows: 4},
+								},
+							})
+						</div>
+						<div class="demo-item">
+							<div class="demo-label">{ t(ctx, "form.success") }</div>
+							@CreateFormSuccess("create-form-demo", t(ctx, "form.create.success"), "/items")
+						</div>
+					</div>
+				</section>
+				// UPDATE FORM
+				<section class="component-section">
+					<h2 class="component-title">✏️ { t(ctx, "section.update_form") }</h2>
+					<div class="demo-grid">
+						<div class="demo-item">
+							<div class="demo-label">{ t(ctx, "form.update.basic") }</div>
+							@UpdateForm(UpdateFormProps{
+								ResourceID:  "123",
+								Action:      "/api/items/123",
+								Title:       t(ctx, "form.update.title"),
+								SubmitLabel: t(ctx, "button.save"),
+								CancelLabel: t(ctx, "button.cancel"),
+								Fields: []FormField{
+									{Name: "name", Label: t(ctx, "form.username"), Type: FormFieldText, Value: "John Doe", Required: true},
+									{Name: "email", Label: t(ctx, "form.email"), Type: FormFieldEmail, Value: "john@example.com"},
+									{
+										Name:    "status",
+										Label:   t(ctx, "select.status"),
+										Type:    FormFieldSelect,
+										Value:   "active",
+										Options: []SelectOption{{Value: "active", Label: t(ctx, "select.status.active")}, {Value: "inactive", Label: t(ctx, "select.status.inactive")}},
+									},
+									{Name: "description", Label: t(ctx, "form.message"), Type: FormFieldTextarea, Value: "...", Rows: 4},
+								},
+							})
+						</div>
+						<div class="demo-item">
+							<div class="demo-label">{ t(ctx, "form.success") }</div>
+							@UpdateFormSuccess("123", t(ctx, "form.update.success"), "/items")
 						</div>
 					</div>
 				</section>

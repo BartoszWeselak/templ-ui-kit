@@ -12,7 +12,10 @@
   "section.tabs": "Zakładki",
   "section.modals": "Okna Modalne",
   "section.combined": "Przykład Złożony - Formularz Profilu",
-  
+  "section.search": "Formularz Wyszukiwania",
+  "section.create_form": "Formularz Tworzenia",
+  "section.update_form": "Formularz Edycji",
+
   "button.primary": "Przycisk Główny",
   "button.secondary": "Przycisk Drugorzędny",
   "button.danger": "Przycisk Niebezpieczny",
@@ -98,7 +101,14 @@
   "form.yourname": "Twoje Imię",
   "form.yourname.placeholder": "Wprowadź swoje imię",
   "form.message": "Wiadomość",
-  
+  "form.success": "Stan sukcesu",
+  "form.create.basic": "Podstawowy formularz tworzenia",
+  "form.create.title": "Nowy element",
+  "form.create.success": "Element został pomyślnie utworzony.",
+  "form.update.basic": "Podstawowy formularz edycji",
+  "form.update.title": "Edytuj element",
+  "form.update.success": "Zmiany zostały zapisane.",
+
   "select.country": "Kraj",
   "select.country.placeholder": "Wybierz kraj...",
   "select.country.poland": "Polska",
@@ -118,7 +128,22 @@
   "select.role.admin": "Administrator",
   "select.role.user": "Użytkownik",
   "select.role.guest": "Gość",
-  
+
+  "search.simple": "Proste wyszukiwanie",
+  "search.inline": "Układ poziomy",
+  "search.stacked": "Układ pionowy z tytułem",
+  "search.sidebar": "Układ boczny z podglądem na żywo",
+  "search.placeholder": "Szukaj...",
+  "search.submit": "Szukaj",
+  "search.reset": "Wyczyść",
+  "search.filters": "Filtry",
+  "search.field.phrase": "Fraza",
+  "search.field.date_from": "Data od",
+  "search.field.date_to": "Data do",
+  "search.field.category": "Kategoria",
+  "search.category.a": "Kategoria A",
+  "search.category.b": "Kategoria B",
+
   "pagination.title": "Przykład Interaktywnej Paginacji",
   "pagination.description": "Kliknij numery stron aby zobaczyć dynamiczną zawartość",
   "pagination.page": "Strona",
@@ -139,6 +164,9 @@
   "modal.triggers": "Przełączniki Okien",
   
   "profile.title": "Edytuj Profil",
+
+  "footer.text": "Układ Testowy dla Komponentów Templ • Wszystkie komponenty w jednym miejscu",
+
   "todo.title": "Lista zadań",
   "todo.add": "Dodaj zadanie",
   "todo.list": "Zadania",
@@ -154,14 +182,12 @@
   "priority.low": "Niski",
   "priority.medium": "Średni",
   "priority.high": "Wysoki",
-  "nav.back": "Wróć do demo",
-  "required": "To pole jest wymagane.",
-  "min": "Minimum %d znaków.",
-  "invalid": "Nieprawidłowa wartość.",
-  "footer.text": "Układ Testowy dla Komponentów Templ • Wszystkie komponenty w jednym miejscu",
 
   "nav.home": "Strona główna",
   "nav.back": "Wróć",
+  "required": "To pole jest wymagane.",
+  "min": "Minimum %d znaków.",
+  "invalid": "Nieprawidłowa wartość.",
   "error.generic": "Coś poszło nie tak. Spróbuj ponownie.",
   "error.internal": "Wystąpił nieoczekiwany błąd.",
   "error.render": "Nie udało się załadować strony.",
