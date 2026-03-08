@@ -1,9 +1,9 @@
 package components
 
 type CreateFormProps struct {
-	FormID      string // opcjonalne, domyślnie "create-form"
+	FormID      string 
 	Fields      []FormField
-	Action      string // URL do hx-post
+	Action      string 
 	HXTarget    string
 	HXSwap      string
 	Title       string
@@ -14,7 +14,6 @@ type CreateFormProps struct {
 	ErrorMsg    string
 	ClassName   string
 
-	// Dowolne atrybuty HTML (w tym hx-* z HTMX)
 	Attrs templ.Attributes
 }
 
